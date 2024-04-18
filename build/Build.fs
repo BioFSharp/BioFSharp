@@ -15,6 +15,9 @@ open BasicTasks
 open TestTasks
 open PackageTasks
 open ReleaseTasks
+open DocumentationTasks
+
+DocumentationTasks.watchDocs |> ignore
 
 /// Full release of nuget package, git tag, and documentation for the stable version.
 let _release = 

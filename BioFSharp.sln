@@ -40,9 +40,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{236C409B-8
 		docs\03_04_genbank_parsing.fsx = docs\03_04_genbank_parsing.fsx
 		docs\03_05_obo.fsx = docs\03_05_obo.fsx
 		docs\03_06_newick.fsx = docs\03_06_newick.fsx
-		docs\_template.html = docs\_template.html
-		docs\_template.ipynb = docs\_template.ipynb
 		docs\NuGet.config = docs\NuGet.config
+		docs\_template.ipynb = docs\_template.ipynb
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".ci", ".ci", "{A5C98CA2-8C64-4684-BF9A-6D76033BF822}"

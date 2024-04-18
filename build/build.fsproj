@@ -11,6 +11,7 @@
     <Compile Include="ProjectInfo.fs" />
     <Compile Include="BasicTasks.fs" />
     <Compile Include="TestTasks.fs" />
+    <Compile Include="DocumentationTasks.fs" />
     <Compile Include="PackageTasks.fs" />
     <Compile Include="ReleaseTasks.fs" />
     <Compile Include="Build.fs" />
