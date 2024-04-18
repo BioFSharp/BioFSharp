@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" data-root="https://csbiology.github.io/BioFSharp/">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" name="author">
+    <!-- Opengraph properties (https://ogp.me/) -->
+    <meta property="og:site_name" content="BioFSharp">
+    <meta property="og:title" content="Formulas" />
+    <meta property="og:url" content="https://csbiology.github.io/BioFSharp/script.html">
+    <meta property="og:type" content="website" />
+    <!-- Twitter cards (https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="https://csbiology.github.io/BioFSharp/">
+    <meta name="twitter:title" content="Formulas">
+    
+    <title>Formulas | BioFSharp</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://csbiology.github.io/BioFSharp/img/favicon.ico" rel="icon" sizes="32x32" type="image/png"/>
+    <script type="application/javascript" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme-set-dark.js"></script>
+    <link href="https://csbiology.github.io/BioFSharp/content/fsdocs-default.css" rel="stylesheet" type="text/css"/>
+    <link href="https://csbiology.github.io/BioFSharp/content/fsdocs-theme.css" rel="stylesheet" type="text/css"/>
+    
+    
+</head>
+<body class="content">
+<header>
+    <div class="start">
+        <div id="menu-toggle">
+            <iconify-icon class="icon closed" height="22" icon="eva:menu-fill" width="22"></iconify-icon>
+            <iconify-icon class="icon open" height="22" icon="mi:close" width="22"></iconify-icon>
+            <input type="checkbox" name="mobile-menu" />
+            <ul class="menu">
+                <li class="nav-header">Links</li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License</a>
+                </li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md">Release
+                    Notes</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/">Source
+                    Repository</a></li>
+                <li class="nav-header active">
+  BioFSharp Core
+</li>             
+<li class="nav-item active">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_03_biocollections.html">
+    BioCollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+        <a href="https://csbiology.github.io/BioFSharp/">
+            <img alt="Header menu logo" src="https://csbiology.github.io/BioFSharp/img/logo.png">
+            <strong>BioFSharp</strong>
+        </a>
+    </div>
+    <div class="end">
+        <a href="https://github.com/CSBiology/BioFSharp/" target="_blank">
+            <iconify-icon icon="uil:github" width="26" height="26"></iconify-icon>
+        </a>
+        <iconify-icon id="search-btn" icon="carbon:search" class="search" width="24" height="24"></iconify-icon>
+        <fsdocs-theme-toggle></fsdocs-theme-toggle>
+    </div>
+</header>
+<aside id="fsdocs-main-menu">
+    <ul class="menu">
+        <li class="nav-header">Links</li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License</a>
+        </li>
+        <li class="nav-item"><a class="nav-link"
+                                href="https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md">Release
+            Notes</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/">Source
+            Repository</a></li>
+        <li class="nav-header active">
+  BioFSharp Core
+</li>             
+<li class="nav-item active">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_03_biocollections.html">
+    BioCollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+        <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+    </ul>
+</aside>
+<main>
+    <div id="content">
+        
+<h1><a name="Formula" class="anchor" href="#Formula">Formula</a></h1>
+<p><em>Summary:</em> This example shows how to use chemical formulas in BioFSharp</p>
+<p>BioFSharp offers a great bunch of functionality for working with molecules. All elements are represented as the composition of their stable isotopes. A <code>Formula</code> is a collection of those Elements with the given count. Creating and altering formulas is quite easy. Also functions for obtaining a mass of a molecule, which becomes quite handy especially for mass spectrometry, can be used straightforwardly.</p>
+<p>To create formulas, no direct fiddling around with the data type is necessary. You can just use the stringparser:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">BioFSharp</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">CO2</span> <span class="o">=</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">parseFormulaString</span> <span class="s">&quot;CO2&quot;</span>
+<span class="id">Formula</span><span class="pn">.</span><span class="id">toString</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="id">CO2</span>
+</code></pre>
+<table class="pre"><tbody><tr><td><pre><code>C1.00 O2.00</code></pre></td></tr></tbody></table>
+<p>We just created some Carbon Dioxide. Luckily there is no in silico climate change. But let's get rid of it anyways, by making some <em>Sprudel</em> (german term for sprinkly water)</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="id">sprudel</span> <span class="o">=</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">add</span> <span onmouseout="hideTip(event, 'fs1', 4)" onmouseover="showTip(event, 'fs1', 4)" class="id">CO2</span> <span class="pn">(</span><span class="id">Formula</span><span class="pn">.</span><span class="id">Table</span><span class="pn">.</span><span class="id">H2O</span><span class="pn">)</span>
+<span class="id">Formula</span><span class="pn">.</span><span class="id">toString</span> <span onmouseout="hideTip(event, 'fs2', 5)" onmouseover="showTip(event, 'fs2', 5)" class="id">sprudel</span>
+</code></pre>
+<table class="pre"><tbody><tr><td><pre><code>C1.00 H2.00 O3.00</code></pre></td></tr></tbody></table>
+<p>Quite refreshing, but boring nevertheless. Let's make some radioactive sprudel.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// create a monoisotopic carbon consisting only of C14</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 6)" onmouseover="showTip(event, 'fs3', 6)" class="id">monoC14</span> <span class="o">=</span> 
+    <span class="id">Elements</span><span class="pn">.</span><span class="id">createMono</span> <span class="s">&quot;C14&quot;</span> <span class="pn">(</span><span class="id">Isotopes</span><span class="pn">.</span><span class="id">Table</span><span class="pn">.</span><span class="id">C14</span><span class="pn">,</span><span class="n">1.</span><span class="pn">)</span>
+    <span class="o">|&gt;</span> <span class="id">Elements</span><span class="pn">.</span><span class="id">Mono</span> 
+
+<span class="c">/// exchanges all carbon in formula with monoIsotopic C14</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs4', 7)" onmouseover="showTip(event, 'fs4', 7)" class="fn">lableWithC14</span> <span onmouseout="hideTip(event, 'fs5', 8)" onmouseover="showTip(event, 'fs5', 8)" class="fn">molecule</span> <span class="o">=</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">replaceElement</span> <span onmouseout="hideTip(event, 'fs5', 9)" onmouseover="showTip(event, 'fs5', 9)" class="id">molecule</span> <span class="id">Elements</span><span class="pn">.</span><span class="id">Table</span><span class="pn">.</span><span class="id">C</span> <span onmouseout="hideTip(event, 'fs3', 10)" onmouseover="showTip(event, 'fs3', 10)" class="id">monoC14</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 11)" onmouseover="showTip(event, 'fs6', 11)" class="id">radioactiveSprudel</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs4', 12)" onmouseover="showTip(event, 'fs4', 12)" class="fn">lableWithC14</span> <span onmouseout="hideTip(event, 'fs2', 13)" onmouseover="showTip(event, 'fs2', 13)" class="id">sprudel</span>
+</code></pre>
+<p>As you can see converting a refreshing drink to a refreshing, radioactive drink is quickly done. As a check up, let's compare the masses:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">Formula</span><span class="pn">.</span><span class="id">monoisoMass</span> <span onmouseout="hideTip(event, 'fs2', 14)" onmouseover="showTip(event, 'fs2', 14)" class="id">sprudel</span><span class="pn">,</span>
+<span class="id">Formula</span><span class="pn">.</span><span class="id">monoisoMass</span> <span onmouseout="hideTip(event, 'fs6', 15)" onmouseover="showTip(event, 'fs6', 15)" class="id">radioactiveSprudel</span>
+</code></pre>
+<p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>(62.00039392114, 64.00363591054)</code></span></summary><div><table><thead><tr></tr></thead><tbody><tr><td>Item1</td><td><div class="dni-plaintext"><pre>62.00039392114</pre></div></td></tr><tr><td>Item2</td><td><div class="dni-plaintext"><pre>64.00363591054</pre></div></td></tr></tbody></table></div></details><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+
+        <div class="fsdocs-tip" id="fs1">val CO2: obj</div>
+<div class="fsdocs-tip" id="fs2">val sprudel: obj</div>
+<div class="fsdocs-tip" id="fs3">val monoC14: obj<br /><em>&#160;create a monoisotopic carbon consisting only of C14</em></div>
+<div class="fsdocs-tip" id="fs4">val lableWithC14: molecule: &#39;a -&gt; &#39;b<br /><em>&#160;exchanges all carbon in formula with monoIsotopic C14</em></div>
+<div class="fsdocs-tip" id="fs5">val molecule: &#39;a</div>
+<div class="fsdocs-tip" id="fs6">val radioactiveSprudel: obj</div>
+
+    </div>
+</main>
+<aside id="fsdocs-page-menu">
+    <p id="on-this-page">On this page</p>
+    <ul>
+  <li class="level-1">
+    <a href="#Formula">
+      Formula
+    </a>
+  </li>
+</ul>
+</aside>
+<dialog>
+    <input type="search" placeholder="Search docs" />
+    <div class="results">
+        <ul></ul>
+        <p class="empty">Type something to start searching.</p>
+    </div>
+</dialog>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-tips.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme-toggle.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-search.js"></script>
+
+</body>
+</html>

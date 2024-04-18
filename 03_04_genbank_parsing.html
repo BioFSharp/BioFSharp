@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en" data-root="https://csbiology.github.io/BioFSharp/">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" name="author">
+    <!-- Opengraph properties (https://ogp.me/) -->
+    <meta property="og:site_name" content="BioFSharp">
+    <meta property="og:title" content="GenBank" />
+    <meta property="og:url" content="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    <meta property="og:type" content="website" />
+    <!-- Twitter cards (https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="https://csbiology.github.io/BioFSharp/">
+    <meta name="twitter:title" content="GenBank">
+    
+    <title>GenBank | BioFSharp</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://csbiology.github.io/BioFSharp/img/favicon.ico" rel="icon" sizes="32x32" type="image/png"/>
+    <script type="application/javascript" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme-set-dark.js"></script>
+    <link href="https://csbiology.github.io/BioFSharp/content/fsdocs-default.css" rel="stylesheet" type="text/css"/>
+    <link href="https://csbiology.github.io/BioFSharp/content/fsdocs-theme.css" rel="stylesheet" type="text/css"/>
+    
+    
+</head>
+<body class="content">
+<header>
+    <div class="start">
+        <div id="menu-toggle">
+            <iconify-icon class="icon closed" height="22" icon="eva:menu-fill" width="22"></iconify-icon>
+            <iconify-icon class="icon open" height="22" icon="mi:close" width="22"></iconify-icon>
+            <input type="checkbox" name="mobile-menu" />
+            <ul class="menu">
+                <li class="nav-header">Links</li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License</a>
+                </li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md">Release
+                    Notes</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/">Source
+                    Repository</a></li>
+                <li class="nav-header ">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_03_biocollections.html">
+    BioCollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header active">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item active">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+        <a href="https://csbiology.github.io/BioFSharp/">
+            <img alt="Header menu logo" src="https://csbiology.github.io/BioFSharp/img/logo.png">
+            <strong>BioFSharp</strong>
+        </a>
+    </div>
+    <div class="end">
+        <a href="https://github.com/CSBiology/BioFSharp/" target="_blank">
+            <iconify-icon icon="uil:github" width="26" height="26"></iconify-icon>
+        </a>
+        <iconify-icon id="search-btn" icon="carbon:search" class="search" width="24" height="24"></iconify-icon>
+        <fsdocs-theme-toggle></fsdocs-theme-toggle>
+    </div>
+</header>
+<aside id="fsdocs-main-menu">
+    <ul class="menu">
+        <li class="nav-header">Links</li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License</a>
+        </li>
+        <li class="nav-item"><a class="nav-link"
+                                href="https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md">Release
+            Notes</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/">Source
+            Repository</a></li>
+        <li class="nav-header ">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_03_biocollections.html">
+    BioCollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header active">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item active">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+        <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+    </ul>
+</aside>
+<main>
+    <div id="content">
+        
+<h1><a name="GenBank-parsing" class="anchor" href="#GenBank-parsing">GenBank parsing</a></h1>
+<p><a href="https://mybinder.org/v2/gh/CSBiology/BioFSharp/gh-pages?filepath=03_04_genbank_parsing.ipynb"><img src="https://csbiology.github.io/BioFSharp/img/badge-binder.svg" alt="Binder" /></a>&emsp;
+<a href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.fsx"><img src="https://csbiology.github.io/BioFSharp/img/badge-script.svg" alt="Script" /></a>&emsp;
+<a href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.ipynb"><img src="https://csbiology.github.io/BioFSharp/img/badge-notebook.svg" alt="Notebook" /></a></p>
+<p><em>Summary:</em> This example shows how to parse and write genbank formatted files with BioFSharp</p>
+<h2><a name="GenBank-format" class="anchor" href="#GenBank-format">GenBank format</a></h2>
+<p>GenBank is the NIH genetic sequence database, an annotated collection of all publicly available DNA sequences
+(<a href="https://www.ncbi.nlm.nih.gov/pubmed/23193287">Nucleic Acids Research, 2013 Jan;41(D1):D36-42</a>).
+A GenBank file contains various information about a sequence and its features.</p>
+<p>The file structure of a GenBank (.gb) flat file can be split into 4 subsections:</p>
+<table>
+<thead>
+<tr class="header">
+<th><p>Section</p></th>
+<th><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><p>Meta</p></td>
+<td><p>Contains meta information about the annotated sequence, the file itself and the organism the sequence is found in</p></td>
+</tr>
+<tr class="even">
+<td><p>References</p></td>
+<td><p>A collection of publications about the annotated sequence(or a subsequence of it) and information associated with them</p></td>
+</tr>
+<tr class="odd">
+<td><p>Features</p></td>
+<td><p>A collection of features and their position within the sequence</p></td>
+</tr>
+<tr class="even">
+<td><p>Origin</p></td>
+<td><p>The annotated sequence itself</p></td>
+</tr>
+</tbody>
+</table>
+
+<p>With the origins section being optional and the features section usually being by far the largest amongst them.
+For more information about the sections and their formatting, have a look at this
+<a href="https://www.ncbi.nlm.nih.gov/genbank/samplerecord/">annotated sample record</a> over at NCBI.</p>
+<p>This file will also be used for the purpose of this tutorial and in plain text looks like this:</p>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="text">LOCUS       SCU49845                5028 bp    DNA     linear   PLN 14-JUL-2016 
+DEFINITION  Saccharomyces cerevisiae TCP1-beta gene, partial cds; and Axl2p     
+            (AXL2) and Rev7p (REV7) genes, complete cds.                        
+ACCESSION   U49845                                                              
+VERSION     U49845.1                                                            
+KEYWORDS    .                                                                   
+SOURCE      Saccharomyces cerevisiae (baker's yeast)                            
+    ORGANISM  Saccharomyces cerevisiae                                            
+            Eukaryota; Fungi; Dikarya; Ascomycota; Saccharomycotina;            
+            Saccharomycetes; Saccharomycetales; Saccharomycetaceae;             
+            Saccharomyces.                                                      
+REFERENCE   1  (bases 1 to 5028)                                                
+    AUTHORS   Roemer,T., Madden,K., Chang,J. and Snyder,M.                        
+    TITLE     Selection of axial growth sites in yeast requires Axl2p, a novel    
+            plasma membrane glycoprotein                                        
+    JOURNAL   Genes Dev. 10 (7), 777-793 (1996)                                   
+    PUBMED   8846915                                                             
+REFERENCE   2  (bases 1 to 5028)                                                
+    AUTHORS   Roemer,T.                                                           
+    TITLE     Direct Submission                                                   
+    JOURNAL   Submitted (22-FEB-1996) Biology, Yale University, New Haven, CT     
+            06520, USA                                                          
+FEATURES             Location/Qualifiers                                        
+        source          1..5028                                                    
+                        /organism="Saccharomyces cerevisiae"                       
+                        /mol_type="genomic DNA"                                    
+                        /db_xref="taxon:4932"                                      
+                        /chromosome="IX"                                           
+        mRNA            &lt;1..&gt;206                                                   
+                        /product="TCP1-beta"                                       
+        CDS             &lt;1..206                                                    
+                        /codon_start=3                                             
+                        /product="TCP1-beta"                                       
+                        /protein_id="AAA98665.1"                                   
+                        /translation="SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEA 
+                        AEVLLRVDNIIRARPRTANRQHM"                                   
+        gene            &lt;687..&gt;3158                                                
+                        /gene="AXL2"                                               
+        mRNA            &lt;687..&gt;3158                                                
+                        /gene="AXL2"                                               
+                        /product="Axl2p"                                           
+        CDS             687..3158                                                  
+                        /gene="AXL2"                                               
+                        /note="plasma membrane glycoprotein"                       
+                        /codon_start=1                                             
+                        /product="Axl2p"                                           
+                        /protein_id="AAA98666.1"                                   
+                        /translation="MTQLQISLLLTATISLLHLVVATPYEAYPIGKQYPPVARVNESF 
+                        TFQISNDTYKSSVDKTAQITYNCFDLPSWLSFDSSSRTFSGEPSSDLLSDANTTLYFN 
+                        VILEGTDSADSTSLNNTYQFVVTNRPSISLSSDFNLLALLKNYGYTNGKNALKLDPNE 
+                        VFNVTFDRSMFTNEESIVSYYGRSQLYNAPLPNWLFFDSGELKFTGTAPVINSAIAPE 
+                        TSYSFVIIATDIEGFSAVEVEFELVIGAHQLTTSIQNSLIINVTDTGNVSYDLPLNYV 
+                        YLDDDPISSDKLGSINLLDAPDWVALDNATISGSVPDELLGKNSNPANFSVSIYDTYG 
+                        DVIYFNFEVVSTTDLFAISSLPNINATRGEWFSYYFLPSQFTDYVNTNVSLEFTNSSQ 
+                        DHDWVKFQSSNLTLAGEVPKNFDKLSLGLKANQGSQSQELYFNIIGMDSKITHSNHSA 
+                        NATSTRSSHHSTSTSSYTSSTYTAKISSTSAAATSSAPAALPAANKTSSHNKKAVAIA 
+                        CGVAIPLGVILVALICFLIFWRRRRENPDDENLPHAISGPDLNNPANKPNQENATPLN 
+                        NPFDDDASSYDDTSIARRLAALNTLKLDNHSATESDISSVDEKRDSLSGMNTYNDQFQ 
+                        SQSKEELLAKPPVQPPESPFFDPQNRSSSVYMDSEPAVNKSWRYTGNLSPVSDIVRDS 
+                        YGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTK 
+                        HRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRL 
+                        VDFSNKSNVNVGQVKDIHGRIPEML"                                 
+        gene            complement(&lt;3300..&gt;4037)                                   
+                        /gene="REV7"                                               
+        mRNA            complement(&lt;3300..&gt;4037)                                   
+                        /gene="REV7"                                               
+                        /product="Rev7p"                                           
+        CDS             complement(3300..4037)                                     
+                        /gene="REV7"                                               
+                        /codon_start=1                                             
+                        /product="Rev7p"                                           
+                        /protein_id="AAA98667.1"                                   
+                        /translation="MNRWVEKWLRVYLKCYINLILFYRNVYPPQSFDYTTYQSFNLPQ 
+                        FVPINRHPALIDYIEELILDVLSKLTHVYRFSICIINKKNDLCIEKYVLDFSELQHVD 
+                        KDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNR 
+                        RVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEK 
+                        LISGDDKILNGVYSQYEEGESIFGSLF"                               
+ORIGIN                                                                          
+        1 gatcctccat atacaacggt atctccacct caggtttaga tctcaacaac ggaaccattg     
+        61 ccgacatgag acagttaggt atcgtcgaga gttacaagct aaaacgagca gtagtcagct     
+        121 ctgcatctga agccgctgaa gttctactaa gggtggataa catcatccgt gcaagaccaa     
+        181 gaaccgccaa tagacaacat atgtaacata tttaggatat acctcgaaaa taataaaccg     
+        241 ccacactgtc attattataa ttagaaacag aacgcaaaaa ttatccacta tataattcaa     
+        301 agacgcgaaa aaaaaagaac aacgcgtcat agaacttttg gcaattcgcg tcacaaataa     
+        361 attttggcaa cttatgtttc ctcttcgagc agtactcgag ccctgtctca agaatgtaat     
+        421 aatacccatc gtaggtatgg ttaaagatag catctccaca acctcaaagc tccttgccga     
+        481 gagtcgccct cctttgtcga gtaattttca cttttcatat gagaacttat tttcttattc     
+        541 tttactctca catcctgtag tgattgacac tgcaacagcc accatcacta gaagaacaga     
+        601 acaattactt aatagaaaaa ttatatcttc ctcgaaacga tttcctgctt ccaacatcta     
+        661 cgtatatcaa gaagcattca cttaccatga cacagcttca gatttcatta ttgctgacag     
+        721 ctactatatc actactccat ctagtagtgg ccacgcccta tgaggcatat cctatcggaa     
+        781 aacaataccc cccagtggca agagtcaatg aatcgtttac atttcaaatt tccaatgata     
+        841 cctataaatc gtctgtagac aagacagctc aaataacata caattgcttc gacttaccga     
+        901 gctggctttc gtttgactct agttctagaa cgttctcagg tgaaccttct tctgacttac     
+        961 tatctgatgc gaacaccacg ttgtatttca atgtaatact cgagggtacg gactctgccg     
+        1021 acagcacgtc tttgaacaat acataccaat ttgttgttac aaaccgtcca tccatctcgc     
+        1081 tatcgtcaga tttcaatcta ttggcgttgt taaaaaacta tggttatact aacggcaaaa     
+        1141 acgctctgaa actagatcct aatgaagtct tcaacgtgac ttttgaccgt tcaatgttca     
+        1201 ctaacgaaga atccattgtg tcgtattacg gacgttctca gttgtataat gcgccgttac     
+        1261 ccaattggct gttcttcgat tctggcgagt tgaagtttac tgggacggca ccggtgataa     
+        1321 actcggcgat tgctccagaa acaagctaca gttttgtcat catcgctaca gacattgaag     
+        1381 gattttctgc cgttgaggta gaattcgaat tagtcatcgg ggctcaccag ttaactacct     
+        1441 ctattcaaaa tagtttgata atcaacgtta ctgacacagg taacgtttca tatgacttac     
+        1501 ctctaaacta tgtttatctc gatgacgatc ctatttcttc tgataaattg ggttctataa     
+        1561 acttattgga tgctccagac tgggtggcat tagataatgc taccatttcc gggtctgtcc     
+        1621 cagatgaatt actcggtaag aactccaatc ctgccaattt ttctgtgtcc atttatgata     
+        1681 cttatggtga tgtgatttat ttcaacttcg aagttgtctc cacaacggat ttgtttgcca     
+        1741 ttagttctct tcccaatatt aacgctacaa ggggtgaatg gttctcctac tattttttgc     
+        1801 cttctcagtt tacagactac gtgaatacaa acgtttcatt agagtttact aattcaagcc     
+        1861 aagaccatga ctgggtgaaa ttccaatcat ctaatttaac attagctgga gaagtgccca     
+        1921 agaatttcga caagctttca ttaggtttga aagcgaacca aggttcacaa tctcaagagc     
+        1981 tatattttaa catcattggc atggattcaa agataactca ctcaaaccac agtgcgaatg     
+        2041 caacgtccac aagaagttct caccactcca cctcaacaag ttcttacaca tcttctactt     
+        2101 acactgcaaa aatttcttct acctccgctg ctgctacttc ttctgctcca gcagcgctgc     
+        2161 cagcagccaa taaaacttca tctcacaata aaaaagcagt agcaattgcg tgcggtgttg     
+        2221 ctatcccatt aggcgttatc ctagtagctc tcatttgctt cctaatattc tggagacgca     
+        2281 gaagggaaaa tccagacgat gaaaacttac cgcatgctat tagtggacct gatttgaata     
+        2341 atcctgcaaa taaaccaaat caagaaaacg ctacaccttt gaacaacccc tttgatgatg     
+        2401 atgcttcctc gtacgatgat acttcaatag caagaagatt ggctgctttg aacactttga     
+        2461 aattggataa ccactctgcc actgaatctg atatttccag cgtggatgaa aagagagatt     
+        2521 ctctatcagg tatgaataca tacaatgatc agttccaatc ccaaagtaaa gaagaattat     
+        2581 tagcaaaacc cccagtacag cctccagaga gcccgttctt tgacccacag aataggtctt     
+        2641 cttctgtgta tatggatagt gaaccagcag taaataaatc ctggcgatat actggcaacc     
+        2701 tgtcaccagt ctctgatatt gtcagagaca gttacggatc acaaaaaact gttgatacag     
+        2761 aaaaactttt cgatttagaa gcaccagaga aggaaaaacg tacgtcaagg gatgtcacta     
+        2821 tgtcttcact ggacccttgg aacagcaata ttagcccttc tcccgtaaga aaatcagtaa     
+        2881 caccatcacc atataacgta acgaagcatc gtaaccgcca cttacaaaat attcaagact     
+        2941 ctcaaagcgg taaaaacgga atcactccca caacaatgtc aacttcatct tctgacgatt     
+        3001 ttgttccggt taaagatggt gaaaattttt gctgggtcca tagcatggaa ccagacagaa     
+        3061 gaccaagtaa gaaaaggtta gtagattttt caaataagag taatgtcaat gttggtcaag     
+        3121 ttaaggacat tcacggacgc atcccagaaa tgctgtgatt atacgcaacg atattttgct     
+        3181 taattttatt ttcctgtttt attttttatt agtggtttac agatacccta tattttattt     
+        3241 agtttttata cttagagaca tttaatttta attccattct tcaaatttca tttttgcact     
+        3301 taaaacaaag atccaaaaat gctctcgccc tcttcatatt gagaatacac tccattcaaa     
+        3361 attttgtcgt caccgctgat taatttttca ctaaactgat gaataatcaa aggccccacg     
+        3421 tcagaaccga ctaaagaagt gagttttatt ttaggaggtt gaaaaccatt attgtctggt     
+        3481 aaattttcat cttcttgaca tttaacccag tttgaatccc tttcaatttc tgctttttcc     
+        3541 tccaaactat cgaccctcct gtttctgtcc aacttatgtc ctagttccaa ttcgatcgca     
+        3601 ttaataactg cttcaaatgt tattgtgtca tcgttgactt taggtaattt ctccaaatgc     
+        3661 ataatcaaac tatttaagga agatcggaat tcgtcgaaca cttcagtttc cgtaatgatc     
+        3721 tgatcgtctt tatccacatg ttgtaattca ctaaaatcta aaacgtattt ttcaatgcat     
+        3781 aaatcgttct ttttattaat aatgcagatg gaaaatctgt aaacgtgcgt taatttagaa     
+        3841 agaacatcca gtataagttc ttctatatag tcaattaaag caggatgcct attaatggga     
+        3901 acgaactgcg gcaagttgaa tgactggtaa gtagtgtagt cgaatgactg aggtgggtat     
+        3961 acatttctat aaaataaaat caaattaatg tagcatttta agtataccct cagccacttc     
+        4021 tctacccatc tattcataaa gctgacgcaa cgattactat tttttttttc ttcttggatc     
+        4081 tcagtcgtcg caaaaacgta taccttcttt ttccgacctt ttttttagct ttctggaaaa     
+        4141 gtttatatta gttaaacagg gtctagtctt agtgtgaaag ctagtggttt cgattgactg     
+        4201 atattaagaa agtggaaatt aaattagtag tgtagacgta tatgcatatg tatttctcgc     
+        4261 ctgtttatgt ttctacgtac ttttgattta tagcaagggg aaaagaaata catactattt     
+        4321 tttggtaaag gtgaaagcat aatgtaaaag ctagaataaa atggacgaaa taaagagagg     
+        4381 cttagttcat cttttttcca aaaagcaccc aatgataata actaaaatga aaaggatttg     
+        4441 ccatctgtca gcaacatcag ttgtgtgagc aataataaaa tcatcacctc cgttgccttt     
+        4501 agcgcgtttg tcgtttgtat cttccgtaat tttagtctta tcaatgggaa tcataaattt     
+        4561 tccaatgaat tagcaatttc gtccaattct ttttgagctt cttcatattt gctttggaat     
+        4621 tcttcgcact tcttttccca ttcatctctt tcttcttcca aagcaacgat ccttctaccc     
+        4681 atttgctcag agttcaaatc ggcctctttc agtttatcca ttgcttcctt cagtttggct     
+        4741 tcactgtctt ctagctgttg ttctagatcc tggtttttct tggtgtagtt ctcattatta     
+        4801 gatctcaagt tattggagtc ttcagccaat tgctttgtat cagacaattg actctctaac     
+        4861 ttctccactt cactgtcgag ttgctcgttt ttagcggaca aagatttaat ctcgttttct     
+        4921 ttttcagtgt tagattgctc taattctttg agctgttctc tcagctcctc atatttttct     
+        4981 tgccatgact cagattctaa ttttaagcta ttcaatttct ctttgatc                  
+</code></pre></td></tr></table>
+<h2><a name="Reading-GenBank-files" class="anchor" href="#Reading-GenBank-files">Reading GenBank files</a></h2>
+<p>The type equivalent for a GenBank file in BioFSharp is a dictionary, mapping <code>string</code> keys to the <code>GenBankItem&lt;'a&gt;</code> type, where 'a is the type of the origin sequence in the file.
+More information about the type modelling can be found in our <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-genbank.html">API reference</a>.
+The default reader <code>fromFile</code> simply takes the origin sequence as a sequence of <code>chars</code>.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="id">BioFSharp</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="id">BioFSharp</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="id">IO</span>
+
+<span class="c">///Path of the example file</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="id">exampleFilePath</span> <span class="o">=</span> <span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">@&quot;\data\sequence.gb&quot;</span>
+</code></pre>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">///Parsed Example File </span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="id">parsedGBFile</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 6)" onmouseover="showTip(event, 'fs5', 6)" class="m">GenBank</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="m">Read</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="id">fromFile</span> <span onmouseout="hideTip(event, 'fs3', 9)" onmouseover="showTip(event, 'fs3', 9)" class="id">exampleFilePath</span>
+</code></pre>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="text">dict
+[("LOCUS",
+  Value
+    "SCU49845                5028 bp    DNA     linear   PLN 14-JUL-2016");
+ ("DEFINITION",
+  Value
+    "Saccharomyces cerevisiae TCP1-beta gene, partial cds; and Axl2p(AXL2) and Rev7p (REV7) genes, complete cds.");
+ ("ACCESSION", Value "U49845"); ("VERSION", Value "U49845.1");
+ ("KEYWORDS", Value ".");
+ ("SOURCE", Value "Saccharomyces cerevisiae (baker's yeast)");
+ ("ORGANISM",
+ ...
+]
+</code></pre></td></tr></table>
+<p>You can also use converter functions for the origin sequence, which makes it easier to use them for other BioFSharp workflows. There are multiple prebuilt converters contained in the
+OriginConverters module for reading and writing. For example, the following code will parse the sequence as a <code>BioSeq</code> containing nucleotides</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="fn">converter</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 11)" onmouseover="showTip(event, 'fs5', 11)" class="m">GenBank</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="m">OriginConverters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs10', 13)" onmouseover="showTip(event, 'fs10', 13)" class="m">Input</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs11', 14)" onmouseover="showTip(event, 'fs11', 14)" class="id">nucleotideConverter</span>
+</code></pre>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 15)" onmouseover="showTip(event, 'fs12', 15)" class="id">parsedGBFile&#39;</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 16)" onmouseover="showTip(event, 'fs5', 16)" class="m">GenBank</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 17)" onmouseover="showTip(event, 'fs6', 17)" class="m">Read</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs13', 18)" onmouseover="showTip(event, 'fs13', 18)" class="id">fromFileWithOriginConverter</span> <span onmouseout="hideTip(event, 'fs8', 19)" onmouseover="showTip(event, 'fs8', 19)" class="fn">converter</span> <span onmouseout="hideTip(event, 'fs3', 20)" onmouseover="showTip(event, 'fs3', 20)" class="id">exampleFilePath</span>
+</code></pre>
+<p>This makes it easy to perform additional tasks with the origin sequence:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 21)" onmouseover="showTip(event, 'fs14', 21)" class="id">origin</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 22)" onmouseover="showTip(event, 'fs5', 22)" class="m">GenBank</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 23)" onmouseover="showTip(event, 'fs15', 23)" class="id">getOrigin</span> <span onmouseout="hideTip(event, 'fs12', 24)" onmouseover="showTip(event, 'fs12', 24)" class="id">parsedGBFile&#39;</span>
+</code></pre>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="text">seq [G; A; T; C; ...]
+</code></pre></td></tr></table>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">///Transcribed origin sequence</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 25)" onmouseover="showTip(event, 'fs16', 25)" class="id">rnaSeq</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs14', 26)" onmouseover="showTip(event, 'fs14', 26)" class="id">origin</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs17', 27)" onmouseover="showTip(event, 'fs17', 27)" class="m">BioSeq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs18', 28)" onmouseover="showTip(event, 'fs18', 28)" class="id">transcribeCodingStrand</span> 
+</code></pre>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="text">seq [G; A; U; C; ...]
+</code></pre></td></tr></table>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">///Translated origin sequence</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 29)" onmouseover="showTip(event, 'fs19', 29)" class="id">protein</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs16', 30)" onmouseover="showTip(event, 'fs16', 30)" class="id">rnaSeq</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs17', 31)" onmouseover="showTip(event, 'fs17', 31)" class="m">BioSeq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 32)" onmouseover="showTip(event, 'fs20', 32)" class="id">translate</span> <span class="n">0</span>
+</code></pre>
+<table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="text">seq [Asp; Pro; Pro; Tyr; ...]
+</code></pre></td></tr></table>
+<h2><a name="Writing-GenBank-files" class="anchor" href="#Writing-GenBank-files">Writing GenBank files</a></h2>
+<p>Just as in the Read module, there is a default writer for a GenBank dictionary that contains a sequence of chars, as a writer taking a custom converter function. Just specify the output path, and you are ready to go.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs21', 33)" onmouseover="showTip(event, 'fs21', 33)" class="id">outputPath1</span> <span class="o">=</span> <span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">@&quot;\data\sequenceTestWrite1.gb&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs22', 34)" onmouseover="showTip(event, 'fs22', 34)" class="id">outputPath2</span> <span class="o">=</span> <span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">@&quot;\data\sequenceTestWrite2.gb&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 35)" onmouseover="showTip(event, 'fs23', 35)" class="fn">outputConverter</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 36)" onmouseover="showTip(event, 'fs5', 36)" class="m">GenBank</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs9', 37)" onmouseover="showTip(event, 'fs9', 37)" class="m">OriginConverters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs24', 38)" onmouseover="showTip(event, 'fs24', 38)" class="m">Output</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs25', 39)" onmouseover="showTip(event, 'fs25', 39)" class="id">bioItemConverter</span>
+</code></pre>
+<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs4', 40)" onmouseover="showTip(event, 'fs4', 40)" class="id">parsedGBFile</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs5', 41)" onmouseover="showTip(event, 'fs5', 41)" class="m">GenBank</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs26', 42)" onmouseover="showTip(event, 'fs26', 42)" class="m">Write</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs27', 43)" onmouseover="showTip(event, 'fs27', 43)" class="id">toFile</span> <span onmouseout="hideTip(event, 'fs21', 44)" onmouseover="showTip(event, 'fs21', 44)" class="id">outputPath1</span>
+</code></pre>
+<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs12', 45)" onmouseover="showTip(event, 'fs12', 45)" class="id">parsedGBFile&#39;</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs5', 46)" onmouseover="showTip(event, 'fs5', 46)" class="m">GenBank</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs26', 47)" onmouseover="showTip(event, 'fs26', 47)" class="m">Write</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs28', 48)" onmouseover="showTip(event, 'fs28', 48)" class="id">toFileWithOriginConverter</span> <span onmouseout="hideTip(event, 'fs22', 49)" onmouseover="showTip(event, 'fs22', 49)" class="id">outputPath2</span> <span onmouseout="hideTip(event, 'fs23', 50)" onmouseover="showTip(event, 'fs23', 50)" class="fn">outputConverter</span>
+</code></pre>
+
+        <div class="fsdocs-tip" id="fs1">namespace BioFSharp</div>
+<div class="fsdocs-tip" id="fs2">namespace BioFSharp.IO</div>
+<div class="fsdocs-tip" id="fs3">val exampleFilePath: string<br /><em>Path of the example file</em></div>
+<div class="fsdocs-tip" id="fs4">val parsedGBFile: System.Collections.Generic.Dictionary&lt;string,GenBank.GenBankItem&lt;char seq&gt;&gt;<br /><em>Parsed Example File </em></div>
+<div class="fsdocs-tip" id="fs5">module GenBank
+
+from BioFSharp.IO<br /><em>&lt;summary&gt;
+functions for reading and writing GenBank files
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs6">module Read
+
+from BioFSharp.IO.GenBank<br /><em>&lt;summary&gt;
+functions for parsing a GenBank file.
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs7">val fromFile: path: string -&gt; System.Collections.Generic.Dictionary&lt;string,GenBank.GenBankItem&lt;char seq&gt;&gt;<br /><em>&lt;summary&gt;
+Returns a dictionary containing GenBank items, that represents the GenBank file at the input path
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs8">val converter: (char seq -&gt; BioSeq.BioSeq&lt;Nucleotides.Nucleotide&gt;)</div>
+<div class="fsdocs-tip" id="fs9">module OriginConverters
+
+from BioFSharp.IO.GenBank<br /><em>&lt;summary&gt;
+contains prebuilt converters for origin sequences in a gb file for both reading and writing
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs10">module Input
+
+from BioFSharp.IO.GenBank.OriginConverters<br /><em>&lt;summary&gt;
+contains a collection of prebuilt converters for parsing specific origin sequences 
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs11">val nucleotideConverter: sequence: char seq -&gt; BioSeq.BioSeq&lt;Nucleotides.Nucleotide&gt;<br /><em>&lt;summary&gt;
+converts the origin sequence into a BioSeq of nucleotides
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs12">val parsedGBFile&#39;: System.Collections.Generic.Dictionary&lt;string,GenBank.GenBankItem&lt;BioSeq.BioSeq&lt;Nucleotides.Nucleotide&gt;&gt;&gt;</div>
+<div class="fsdocs-tip" id="fs13">val fromFileWithOriginConverter: originConverter: (char seq -&gt; &#39;a) -&gt; path: string -&gt; System.Collections.Generic.Dictionary&lt;string,GenBank.GenBankItem&lt;&#39;a&gt;&gt;<br /><em>&lt;summary&gt;
+Returns a dictionary containing GenBank items, that represents the GenBank file at the input path
+taking a converter function for the origin sequence of the file 
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs14">val origin: BioSeq.BioSeq&lt;Nucleotides.Nucleotide&gt;</div>
+<div class="fsdocs-tip" id="fs15">val getOrigin: gb: System.Collections.Generic.Dictionary&lt;string,GenBank.GenBankItem&lt;&#39;a&gt;&gt; -&gt; &#39;a<br /><em>&lt;summary&gt;
+Returns the Origin of a GenBank file representation
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs16">val rnaSeq: BioSeq.BioSeq&lt;Nucleotides.Nucleotide&gt;<br /><em>Transcribed origin sequence</em></div>
+<div class="fsdocs-tip" id="fs17">Multiple items<br />module BioSeq
+
+from BioFSharp.BioCollectionsExtensions<br /><br />--------------------<br />module BioSeq
+
+from BioFSharp<br /><em>&lt;summary&gt;
+This module contains the BioSeq type and its according functions. The BioSeq type is a sequence of objects using the IBioItem interface
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs18">val transcribeCodingStrand: nucs: Nucleotides.Nucleotide seq -&gt; BioSeq.BioSeq&lt;Nucleotides.Nucleotide&gt;<br /><em>&lt;summary&gt;
+ Transcribe a given DNA coding strand (5&#39;-----3&#39;)
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs19">val protein: BioSeq.BioSeq&lt;AminoAcids.AminoAcid&gt;<br /><em>Translated origin sequence</em></div>
+<div class="fsdocs-tip" id="fs20">val translate: nucleotideOffset: int -&gt; rnaSeq: Nucleotides.Nucleotide seq -&gt; BioSeq.BioSeq&lt;AminoAcids.AminoAcid&gt;<br /><em>&lt;summary&gt;
+ translates nucleotide sequence to aminoacid sequence    
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs21">val outputPath1: string</div>
+<div class="fsdocs-tip" id="fs22">val outputPath2: string</div>
+<div class="fsdocs-tip" id="fs23">val outputConverter: (BioSeq.BioSeq&lt;#IBioItem&gt; -&gt; char seq)</div>
+<div class="fsdocs-tip" id="fs24">module Output
+
+from BioFSharp.IO.GenBank.OriginConverters<br /><em>&lt;summary&gt;
+contains a collection of prebuilt converters for writing specific origin sequences 
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs25">val bioItemConverter: sequence: BioSeq.BioSeq&lt;#IBioItem&gt; -&gt; char seq<br /><em>&lt;summary&gt;
+converts the BioSeq to the 1 letter code representing the contained items
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs26">module Write
+
+from BioFSharp.IO.GenBank<br /><em>&lt;summary&gt;
+Functions for writing a GenBank file  
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs27">val toFile: path: string -&gt; gb: System.Collections.Generic.Dictionary&lt;string,GenBank.GenBankItem&lt;#(char seq)&gt;&gt; -&gt; unit<br /><em>&lt;summary&gt;
+creates a GenBank file at the specified path
+&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs28">val toFileWithOriginConverter: path: string -&gt; originConverter: (&#39;a -&gt; char seq) -&gt; gb: System.Collections.Generic.Dictionary&lt;string,GenBank.GenBankItem&lt;&#39;a&gt;&gt; -&gt; unit<br /><em>&lt;summary&gt;
+creates a GenBank file at the specified path, taking a converter function for the origin sequence of the file 
+&lt;/summary&gt;</em></div>
+
+    </div>
+</main>
+<aside id="fsdocs-page-menu">
+    <p id="on-this-page">On this page</p>
+    <ul>
+  <li class="level-1">
+    <a href="#GenBank-parsing">
+      GenBank parsing
+    </a>
+  </li>
+  <li class="level-2">
+    <a href="#GenBank-format">
+      GenBank format
+    </a>
+  </li>
+  <li class="level-2">
+    <a href="#Reading-GenBank-files">
+      Reading GenBank files
+    </a>
+  </li>
+  <li class="level-2">
+    <a href="#Writing-GenBank-files">
+      Writing GenBank files
+    </a>
+  </li>
+</ul>
+</aside>
+<dialog>
+    <input type="search" placeholder="Search docs" />
+    <div class="results">
+        <ul></ul>
+        <p class="empty">Type something to start searching.</p>
+    </div>
+</dialog>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-tips.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme-toggle.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-search.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en" data-root="https://csbiology.github.io/BioFSharp/">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" name="author">
+    <!-- Opengraph properties (https://ogp.me/) -->
+    <meta property="og:site_name" content="BioFSharp">
+    <meta property="og:title" content="BioItems" />
+    <meta property="og:url" content="https://csbiology.github.io/BioFSharp/script.html">
+    <meta property="og:type" content="website" />
+    <!-- Twitter cards (https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="https://csbiology.github.io/BioFSharp/">
+    <meta name="twitter:title" content="BioItems">
+    
+    <title>BioItems | BioFSharp</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://csbiology.github.io/BioFSharp/img/favicon.ico" rel="icon" sizes="32x32" type="image/png"/>
+    <script type="application/javascript" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme-set-dark.js"></script>
+    <link href="https://csbiology.github.io/BioFSharp/content/fsdocs-default.css" rel="stylesheet" type="text/css"/>
+    <link href="https://csbiology.github.io/BioFSharp/content/fsdocs-theme.css" rel="stylesheet" type="text/css"/>
+    
+    
+</head>
+<body class="content">
+<header>
+    <div class="start">
+        <div id="menu-toggle">
+            <iconify-icon class="icon closed" height="22" icon="eva:menu-fill" width="22"></iconify-icon>
+            <iconify-icon class="icon open" height="22" icon="mi:close" width="22"></iconify-icon>
+            <input type="checkbox" name="mobile-menu" />
+            <ul class="menu">
+                <li class="nav-header">Links</li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License</a>
+                </li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md">Release
+                    Notes</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/">Source
+                    Repository</a></li>
+                <li class="nav-header active">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item active">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_03_biocollections.html">
+    BioCollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+        <a href="https://csbiology.github.io/BioFSharp/">
+            <img alt="Header menu logo" src="https://csbiology.github.io/BioFSharp/img/logo.png">
+            <strong>BioFSharp</strong>
+        </a>
+    </div>
+    <div class="end">
+        <a href="https://github.com/CSBiology/BioFSharp/" target="_blank">
+            <iconify-icon icon="uil:github" width="26" height="26"></iconify-icon>
+        </a>
+        <iconify-icon id="search-btn" icon="carbon:search" class="search" width="24" height="24"></iconify-icon>
+        <fsdocs-theme-toggle></fsdocs-theme-toggle>
+    </div>
+</header>
+<aside id="fsdocs-main-menu">
+    <ul class="menu">
+        <li class="nav-header">Links</li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License</a>
+        </li>
+        <li class="nav-item"><a class="nav-link"
+                                href="https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md">Release
+            Notes</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/">Source
+            Repository</a></li>
+        <li class="nav-header active">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item active">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_03_biocollections.html">
+    BioCollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+        <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+    </ul>
+</aside>
+<main>
+    <div id="content">
+        
+<h1><a name="BioItems" class="anchor" href="#BioItems">BioItems</a></h1>
+<p><em>Summary:</em> This example shows how to use BioItemsin BioFSharp</p>
+<p>Often, dealing with similar problems separately results in different approaches. In a programming background, this might make things needlessly complex. Therefore in BioFSharp nucleotides and amino acids are based on the same structural scaffold, leading to a consistent way of working with them. This can come in handy especially when working with their formulas.</p>
+<h3><a name="Table-of-contents" class="anchor" href="#Table-of-contents">Table of contents</a></h3>
+<ul>
+<li><a href="#Basics">Basics</a></li>
+<li>
+<a href="#Amino-Acids">AminoAcids</a>
+<ul>
+<li><a href="#Modifying-Amino-Acids">Modifying Amino Acids</a></li>
+</ul>
+</li>
+<li><a href="#Nucleotides">Nucleotides</a></li>
+</ul>
+<h2><a name="Basics" class="anchor" href="#Basics">Basics</a></h2>
+<p>Many functions are similar for AminoAcids and Nucleotides, like for example:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span class="id">BioFSharp</span>
+<span class="k">open</span> <span class="id">BioFSharp</span><span class="pn">.</span><span class="id">AminoAcids</span>
+<span class="k">open</span> <span class="id">BioFSharp</span><span class="pn">.</span><span class="id">Nucleotides</span>
+</code></pre>
+<p>Accessing the full name:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">AminoAcids</span><span class="pn">.</span><span class="id">name</span> <span class="id">Ala</span><span class="pn">,</span>
+<span class="id">Nucleotides</span><span class="pn">.</span><span class="id">name</span> <span class="id">G</span> 
+</code></pre>
+<p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>(Alanine, Guanine)</code></span></summary><div><table><thead><tr></tr></thead><tbody><tr><td>Item1</td><td><div class="dni-plaintext"><pre>Alanine</pre></div></td></tr><tr><td>Item2</td><td><div class="dni-plaintext"><pre>Guanine</pre></div></td></tr></tbody></table></div></details><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+<p>or the underlying chemical formula:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">AminoAcids</span><span class="pn">.</span><span class="id">formula</span> <span class="id">Lys</span> <span class="o">|&gt;</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">toString</span><span class="pn">,</span>
+<span class="id">Nucleotides</span><span class="pn">.</span><span class="id">formula</span> <span class="id">T</span> <span class="o">|&gt;</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">toString</span> 
+</code></pre>
+<p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>(C6.00 H12.00 N2.00 O1.00, C10.00 H14.00 N2.00 O5.00)</code></span></summary><div><table><thead><tr></tr></thead><tbody><tr><td>Item1</td><td><div class="dni-plaintext"><pre>C6.00 H12.00 N2.00 O1.00</pre></div></td></tr><tr><td>Item2</td><td><div class="dni-plaintext"><pre>C10.00 H14.00 N2.00 O5.00</pre></div></td></tr></tbody></table></div></details><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+<p>Nucleotides and AminoAcids in BioFSharp are represented as Union cases. This makes applying functions selectively very easy.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="fn">filterLysine</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="fn">aa</span> <span class="o">=</span> 
+    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="fn">aa</span> <span class="k">with</span>
+    <span class="pn">|</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">Lys</span> <span class="k">-&gt;</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">Gap</span>
+    <span class="pn">|</span> <span class="id">_</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="id">aa</span>
+
+<span onmouseout="hideTip(event, 'fs1', 5)" onmouseover="showTip(event, 'fs1', 5)" class="fn">filterLysine</span> <span class="id">Ala</span> 
+</code></pre>
+<p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>Ala</code></span></summary><div><table><thead><tr></tr></thead><tbody></tbody></table></div></details><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs1', 6)" onmouseover="showTip(event, 'fs1', 6)" class="fn">filterLysine</span> <span class="id">Lys</span>
+</code></pre>
+<p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>Gap</code></span></summary><div><table><thead><tr></tr></thead><tbody></tbody></table></div></details><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+<p>Of course some functions like these are already defined. Let's use a predefined function to find charged amino acids.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 7)" onmouseover="showTip(event, 'fs3', 7)" class="fn">giveMePositiveAAs</span> <span onmouseout="hideTip(event, 'fs4', 8)" onmouseover="showTip(event, 'fs4', 8)" class="fn">aminoAcid</span> <span class="o">=</span> 
+    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs4', 9)" onmouseover="showTip(event, 'fs4', 9)" class="fn">aminoAcid</span> <span class="k">with</span>
+    <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs5', 10)" onmouseover="showTip(event, 'fs5', 10)" class="fn">a</span> <span class="k">when</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">isPosCharged</span> <span onmouseout="hideTip(event, 'fs5', 11)" onmouseover="showTip(event, 'fs5', 11)" class="id">a</span> <span class="k">-&gt;</span> 
+        <span onmouseout="hideTip(event, 'fs6', 12)" onmouseover="showTip(event, 'fs6', 12)" class="fn">printfn</span> 
+            <span class="s">&quot;Hey, how are you? I am </span><span class="pf">%s</span><span class="s">, but my friends call me </span><span class="pf">%c</span><span class="s">. I&#39;m usually in a positive mood&quot;</span>
+            <span class="pn">(</span><span class="id">AminoAcids</span><span class="pn">.</span><span class="id">name</span> <span onmouseout="hideTip(event, 'fs5', 13)" onmouseover="showTip(event, 'fs5', 13)" class="id">a</span><span class="pn">)</span>
+            <span class="pn">(</span><span class="id">AminoAcids</span><span class="pn">.</span><span class="id">symbol</span> <span onmouseout="hideTip(event, 'fs5', 14)" onmouseover="showTip(event, 'fs5', 14)" class="id">a</span><span class="pn">)</span>
+
+    <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs5', 15)" onmouseover="showTip(event, 'fs5', 15)" class="fn">a</span> <span class="k">when</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">isNegCharged</span> <span onmouseout="hideTip(event, 'fs5', 16)" onmouseover="showTip(event, 'fs5', 16)" class="id">a</span> <span class="k">-&gt;</span> 
+        <span onmouseout="hideTip(event, 'fs6', 17)" onmouseover="showTip(event, 'fs6', 17)" class="fn">printfn</span> 
+            <span class="s">&quot;I am </span><span class="pf">%s</span><span class="s">, short: </span><span class="pf">%c</span><span class="s">. I&#39;m usually in a negative mood&quot;</span>
+            <span class="pn">(</span><span class="id">AminoAcids</span><span class="pn">.</span><span class="id">name</span> <span onmouseout="hideTip(event, 'fs5', 18)" onmouseover="showTip(event, 'fs5', 18)" class="id">a</span><span class="pn">)</span>
+            <span class="pn">(</span><span class="id">AminoAcids</span><span class="pn">.</span><span class="id">symbol</span> <span onmouseout="hideTip(event, 'fs5', 19)" onmouseover="showTip(event, 'fs5', 19)" class="id">a</span><span class="pn">)</span>
+
+    <span class="pn">|</span> <span class="id">_</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs6', 20)" onmouseover="showTip(event, 'fs6', 20)" class="fn">printfn</span> <span class="s">&quot;Just strolling around, minding my own business.&quot;</span>
+</code></pre>
+<p>Alanine is usually not charged</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs3', 21)" onmouseover="showTip(event, 'fs3', 21)" class="fn">giveMePositiveAAs</span> <span class="id">Ala</span>
+</code></pre>
+<table class="pre"><tbody><tr><td><pre><code>Just strolling around, minding my own business.
+</code></pre></td></tr></tbody></table>
+<p>Lysine is usually positively charged:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs3', 22)" onmouseover="showTip(event, 'fs3', 22)" class="fn">giveMePositiveAAs</span> <span class="id">Lys</span>
+</code></pre>
+<table class="pre"><tbody><tr><td><pre><code>Hey, how are you? I am Lysine, but my friends call me K. I'm usually in a positive mood
+</code></pre></td></tr></tbody></table>
+<p>Glutamic acid is usually negatively charged:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs3', 23)" onmouseover="showTip(event, 'fs3', 23)" class="fn">giveMePositiveAAs</span> <span class="id">Glu</span>
+</code></pre>
+<table class="pre"><tbody><tr><td><pre><code>I am Glutamic Acid, short: E. I'm usually in a negative mood
+</code></pre></td></tr></tbody></table>
+<h2><a name="Amino-Acids" class="anchor" href="#Amino-Acids">Amino Acids</a></h2>
+<h3><a name="Modifying-Amino-Acids" class="anchor" href="#Modifying-Amino-Acids">Modifying Amino Acids</a></h3>
+<p>What makes working on Amino Acids with BioFSharp truly powerful is the ability to easily modify AminoAcids, even altering their mass and formula. In the following example we try to find out the mass of a phosphorylated Serine. Applications like these might be quite usefull for identification of peptides in mass spectrometry.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">Ser</span>
+<span class="o">|&gt;</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">formula</span> 
+<span class="o">|&gt;</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">toString</span>
+</code></pre>
+<table class="pre"><tbody><tr><td><pre><code>C3.00 H5.00 N1.00 O2.00</code></pre></td></tr></tbody></table>
+<p>As you can see by the formula, ur Serine is missing two H and an O. In BioFSharp, all Amino Acids are dehydrolysed by default, because it is assumed that the user will use collections representing a peptide, rather than single Amino Acids. For our cause we want serine in hydrolysed form. An easy way to achieve this is to modify it. An addition of H2O is quite common and therefore premade:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">///Hydrolysed serine</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 24)" onmouseover="showTip(event, 'fs7', 24)" class="id">hydroSerine</span> <span class="o">=</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">setModification</span> <span class="id">ModificationInfo</span><span class="pn">.</span><span class="id">Table</span><span class="pn">.</span><span class="id">H2O</span> <span class="id">Ser</span>
+
+<span onmouseout="hideTip(event, 'fs7', 25)" onmouseover="showTip(event, 'fs7', 25)" class="id">hydroSerine</span>
+<span class="o">|&gt;</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">formula</span> 
+<span class="o">|&gt;</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">toString</span>
+</code></pre>
+<table class="pre"><tbody><tr><td><pre><code>C3.00 H7.00 N1.00 O3.00</code></pre></td></tr></tbody></table>
+<p>So far so good. Now let's add the phosphate. For this we first create a function which alters the formula of a given molecule in the way a phosphorylation would. In the second step we create a modification resembling a phosphorylation of a residual. At last we modify our Serine with this modification.</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="c">///Phosphorylation of OH-Groups adds PO3 to formula and removes one H</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs8', 26)" onmouseover="showTip(event, 'fs8', 26)" class="fn">phosporylate</span> <span onmouseout="hideTip(event, 'fs9', 27)" onmouseover="showTip(event, 'fs9', 27)" class="fn">formula</span> <span class="o">=</span>  
+    <span class="id">Formula</span><span class="pn">.</span><span class="id">add</span> <span class="pn">(</span><span class="id">Formula</span><span class="pn">.</span><span class="id">parseFormulaString</span> <span class="s">&quot;PO3&quot;</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs9', 28)" onmouseover="showTip(event, 'fs9', 28)" class="id">formula</span>
+    <span class="o">|&gt;</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">substract</span> <span class="pn">(</span><span class="id">Formula</span><span class="pn">.</span><span class="id">parseFormulaString</span> <span class="s">&quot;H&quot;</span><span class="pn">)</span>
+
+<span class="c">//We create a modification at the residual called phosphorylation which in our case is hypothetical, hence the `false` for the &#39;isBiological` parameter</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 29)" onmouseover="showTip(event, 'fs10', 29)" class="id">phosphorylation</span> <span class="o">=</span> <span class="id">ModificationInfo</span><span class="pn">.</span><span class="id">createModification</span> <span class="s">&quot;Phosphorylation&quot;</span> <span class="k">false</span> <span class="id">ModificationInfo</span><span class="pn">.</span><span class="id">ModLocation</span><span class="pn">.</span><span class="id">Residual</span> <span onmouseout="hideTip(event, 'fs8', 30)" onmouseover="showTip(event, 'fs8', 30)" class="id">phosporylate</span>
+
+<span class="c">///phosphorylated Serine</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 31)" onmouseover="showTip(event, 'fs11', 31)" class="id">phosphoSerine</span> <span class="o">=</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">setModification</span> <span onmouseout="hideTip(event, 'fs10', 32)" onmouseover="showTip(event, 'fs10', 32)" class="id">phosphorylation</span> <span onmouseout="hideTip(event, 'fs7', 33)" onmouseover="showTip(event, 'fs7', 33)" class="id">hydroSerine</span>
+
+<span onmouseout="hideTip(event, 'fs11', 34)" onmouseover="showTip(event, 'fs11', 34)" class="id">phosphoSerine</span> 
+<span class="o">|&gt;</span> <span class="id">AminoAcids</span><span class="pn">.</span><span class="id">formula</span> 
+<span class="o">|&gt;</span> <span class="id">Formula</span><span class="pn">.</span><span class="id">toString</span>
+</code></pre>
+<table class="pre"><tbody><tr><td><pre><code>P1.00 C3.00 H6.00 N1.00 O6.00</code></pre></td></tr></tbody></table>
+<p>As you can see the Serine is phosphorylated just as we wanted. Our inital aim was to check the mass, this can be done quite easily:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">AminoAcids</span><span class="pn">.</span><span class="id">averageMass</span> <span class="id">Ser</span>
+</code></pre>
+<p><div class="dni-plaintext"><pre>87.07757500000001</pre></div><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">AminoAcids</span><span class="pn">.</span><span class="id">averageMass</span> <span onmouseout="hideTip(event, 'fs11', 35)" onmouseover="showTip(event, 'fs11', 35)" class="id">phosphoSerine</span>
+</code></pre>
+<p><div class="dni-plaintext"><pre>183.05688399999997</pre></div><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+<h2><a name="Nucleotides" class="anchor" href="#Nucleotides">Nucleotides</a></h2>
+<p>As working with nucleotides is usually focused on the sequence of the bases, rather than how they actually look like, the list of nucleotide specific functions would be quite short. Here are some of the basic helper functions:</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 36)" onmouseover="showTip(event, 'fs12', 36)" class="id">myAdenine</span> <span class="o">=</span> <span class="id">Nucleotides</span><span class="pn">.</span><span class="id">A</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs13', 37)" onmouseover="showTip(event, 'fs13', 37)" class="id">myThymine</span> <span class="o">=</span> <span class="id">Nucleotides</span><span class="pn">.</span><span class="id">complement</span> <span onmouseout="hideTip(event, 'fs12', 38)" onmouseover="showTip(event, 'fs12', 38)" class="id">myAdenine</span> 
+
+<span onmouseout="hideTip(event, 'fs12', 39)" onmouseover="showTip(event, 'fs12', 39)" class="id">myAdenine</span><span class="pn">,</span> <span onmouseout="hideTip(event, 'fs13', 40)" onmouseover="showTip(event, 'fs13', 40)" class="id">myThymine</span>
+</code></pre>
+<p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>(A, T)</code></span></summary><div><table><thead><tr></tr></thead><tbody><tr><td>Item1</td><td><details class="dni-treeview"><summary><span class="dni-code-hint"><code>A</code></span></summary><div><table><thead><tr></tr></thead><tbody></tbody></table></div></details></td></tr><tr><td>Item2</td><td><details class="dni-treeview"><summary><span class="dni-code-hint"><code>T</code></span></summary><div><table><thead><tr></tr></thead><tbody></tbody></table></div></details></td></tr></tbody></table></div></details><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">Nucleotides</span><span class="pn">.</span><span class="id">replaceTbyU</span> <span onmouseout="hideTip(event, 'fs12', 41)" onmouseover="showTip(event, 'fs12', 41)" class="id">myAdenine</span>
+</code></pre>
+<p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>A</code></span></summary><div><table><thead><tr></tr></thead><tbody></tbody></table></div></details><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">Nucleotides</span><span class="pn">.</span><span class="id">replaceTbyU</span> <span onmouseout="hideTip(event, 'fs13', 42)" onmouseover="showTip(event, 'fs13', 42)" class="id">myThymine</span> 
+</code></pre>
+<p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>U</code></span></summary><div><table><thead><tr></tr></thead><tbody></tbody></table></div></details><style>
+.dni-code-hint {
+    font-style: italic;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.dni-treeview {
+    white-space: nowrap;
+}
+.dni-treeview td {
+    vertical-align: top;
+    text-align: start;
+}
+details.dni-treeview {
+    padding-left: 1em;
+}
+table td {
+    text-align: start;
+}
+table tr { 
+    vertical-align: top; 
+    margin: 0em 0px;
+}
+table tr td pre 
+{ 
+    vertical-align: top !important; 
+    margin: 0em 0px !important;
+} 
+table th {
+    text-align: start;
+}
+</style>
+</p>
+
+        <div class="fsdocs-tip" id="fs1">val filterLysine: aa: &#39;a -&gt; &#39;b</div>
+<div class="fsdocs-tip" id="fs2">val aa: &#39;a</div>
+<div class="fsdocs-tip" id="fs3">val giveMePositiveAAs: aminoAcid: &#39;a -&gt; unit</div>
+<div class="fsdocs-tip" id="fs4">val aminoAcid: &#39;a</div>
+<div class="fsdocs-tip" id="fs5">val a: &#39;a</div>
+<div class="fsdocs-tip" id="fs6">val printfn: format: Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T</div>
+<div class="fsdocs-tip" id="fs7">val hydroSerine: obj<br /><em>Hydrolysed serine</em></div>
+<div class="fsdocs-tip" id="fs8">val phosporylate: formula: &#39;a -&gt; &#39;b<br /><em>Phosphorylation of OH-Groups adds PO3 to formula and removes one H</em></div>
+<div class="fsdocs-tip" id="fs9">val formula: &#39;a</div>
+<div class="fsdocs-tip" id="fs10">val phosphorylation: obj</div>
+<div class="fsdocs-tip" id="fs11">val phosphoSerine: obj<br /><em>phosphorylated Serine</em></div>
+<div class="fsdocs-tip" id="fs12">val myAdenine: obj</div>
+<div class="fsdocs-tip" id="fs13">val myThymine: obj</div>
+
+    </div>
+</main>
+<aside id="fsdocs-page-menu">
+    <p id="on-this-page">On this page</p>
+    <ul>
+  <li class="level-1">
+    <a href="#BioItems">
+      BioItems
+    </a>
+  </li>
+  <li class="level-3">
+    <a href="#Table-of-contents">
+      Table of contents
+    </a>
+  </li>
+  <li class="level-2">
+    <a href="#Basics">
+      Basics
+    </a>
+  </li>
+  <li class="level-2">
+    <a href="#Amino-Acids">
+      Amino Acids
+    </a>
+  </li>
+  <li class="level-3">
+    <a href="#Modifying-Amino-Acids">
+      Modifying Amino Acids
+    </a>
+  </li>
+  <li class="level-2">
+    <a href="#Nucleotides">
+      Nucleotides
+    </a>
+  </li>
+</ul>
+</aside>
+<dialog>
+    <input type="search" placeholder="Search docs" />
+    <div class="results">
+        <ul></ul>
+        <p class="empty">Type something to start searching.</p>
+    </div>
+</dialog>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-tips.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme-toggle.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-search.js"></script>
+
+</body>
+</html>
