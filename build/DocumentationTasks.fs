@@ -12,7 +12,7 @@ let buildDocs =
 
         runDotNet
             (sprintf
-                "fsdocs build --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
+                "fsdocs build --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
                 stableVersionTag)
             "./"
     }
@@ -23,7 +23,7 @@ let buildDocsPrerelease =
 
         runDotNet
             (sprintf
-                "fsdocs build --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
+                "fsdocs build --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
                 prereleaseTag)
             "./"
     }
@@ -34,7 +34,7 @@ let watchDocs =
 
         runDotNet
             (sprintf
-                "fsdocs watch --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
+                "fsdocs watch --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
                 stableVersionTag)
             "./"
     }
@@ -45,7 +45,7 @@ let watchDocsPrerelease =
 
         runDotNet
             (sprintf
-                "fsdocs watch --eval --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
+                "fsdocs watch --clean --properties Configuration=Release --parameters fsdocs-package-version %s"
                 prereleaseTag)
             "./"
     }
