@@ -40,7 +40,6 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         fail_ci_if_error: true # optional (default = false)
-        directory: ./
         files: ./codeCov.xml
         name: codecov-umbrella # optional
         token: ${{ secrets.CODECOV_TOKEN }} # required
