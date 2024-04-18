@@ -37,8 +37,8 @@
     <None Include="Playground\SurprisalAnalysisEmpiricalPermutationTest.fsx" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharpAux" Version="1.1.0" />
-    <PackageReference Include="FSharpAux.IO" Version="1.1.0" />
-    <PackageReference Include="FSharp.Stats" Version="0.4.3" />
+    <PackageReference Include="FSharpAux" Version="2.0.0" />
+    <PackageReference Include="FSharpAux.IO" Version="2.0.0" />
+    <PackageReference Include="FSharp.Stats" Version="0.4.11" />
   </ItemGroup>
 </Project>

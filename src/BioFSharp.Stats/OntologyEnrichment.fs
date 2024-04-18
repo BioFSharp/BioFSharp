@@ -82,7 +82,7 @@ module OntologyEnrichment =
     /// Calculates p value based on hypergeometric distribution (pValue <= k)
     let CalcHyperGeoPvalue numberOfDEsInBin numberInBin totalUnivers totalNumberOfDE (splitPvalueThreshold:int) =
         if (numberOfDEsInBin > 1) then
-            let hp = FSharp.Stats.Distributions.Discrete.hypergeometric totalUnivers totalNumberOfDE numberInBin            
+            let hp = FSharp.Stats.Distributions.Discrete.Hypergeometric.Init totalUnivers totalNumberOfDE numberInBin            
             if numberInBin > splitPvalueThreshold then                                
                 // Calculate normal pValue
                 1. -  hp.CDF (float (numberOfDEsInBin - 1)) 

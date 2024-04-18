@@ -29,10 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="altcover" Version="8.2.837" />
-    <PackageReference Include="Expecto" Version="9.*" />
+    <PackageReference Include="altcover" Version="8.8.21" />
+    <PackageReference Include="Expecto" Version="10.2.1" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.*" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.*" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0-release-24177-07" />
     <ProjectReference Include="..\..\src\BioFSharp\BioFSharp.fsproj" />
     <ProjectReference Include="..\..\src\BioFSharp.IO\BioFSharp.IO.fsproj" />
   </ItemGroup>
