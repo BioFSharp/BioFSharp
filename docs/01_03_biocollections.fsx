@@ -53,15 +53,15 @@ let s1 = "PEPTIDE" |> BioSeq.ofAminoAcidString
 let s2 = "PEPTIDE" |> BioList.ofAminoAcidString 
 let s3 = "TAGCAT"  |> BioArray.ofNucleotideString 
 
-///Peptide represented as a Bioseq
+//Peptide represented as a Bioseq
 "PEPTIDE" |> BioSeq.ofAminoAcidString 
 (***include-it***)
 
-///Peptide represented as a BioList
+//Peptide represented as a BioList
 "PEPTIDE"|> BioList.ofAminoAcidString 
 (***include-it***)
 
-///Nucleotide sequence represented as a BioArray
+//Nucleotide sequence represented as a BioArray
 "TAGCAT" |> BioArray.ofNucleotideString 
 (***include-it***)
 
