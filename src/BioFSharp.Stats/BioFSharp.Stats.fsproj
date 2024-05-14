@@ -32,9 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="OntologyEnrichment.fs" />
+    <Compile Include="RNASeq.fs" />
     <Compile Include="SurprisalAnalysisEmpiricalPermutationTest.fs" />
+
     <None Include="Playground\OntologyEnrichment.fsx" />
     <None Include="Playground\SurprisalAnalysisEmpiricalPermutationTest.fsx" />
+    <None Include="Playground\RNASeq.fsx" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FSharpAux" Version="2.0.0" />
