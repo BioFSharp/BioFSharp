@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Formatters.fs" />
     <Compile Include="Extension.fs" />
   </ItemGroup>
 
