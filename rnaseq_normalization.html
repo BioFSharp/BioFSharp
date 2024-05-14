@@ -57,8 +57,8 @@
   </a>
 </li>             
 <li class="nav-item ">
-  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_03_biocollections.html">
-    BioCollections
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/biocollections.html">
+    Biocollections
   </a>
 </li>             
 <li class="nav-item ">
@@ -177,8 +177,8 @@
   </a>
 </li>             
 <li class="nav-item ">
-  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_03_biocollections.html">
-    BioCollections
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/biocollections.html">
+    Biocollections
   </a>
 </li>             
 <li class="nav-item ">
@@ -263,9 +263,9 @@
 <main>
     <div id="content">
         
-<h2><a name="RPKM-amp-TPM" class="anchor" href="#RPKM-amp-TPM">RPKM &amp; TPM</a></h2>
+<h2><a name="RNA-Seq-data-normalization" class="anchor" href="#RNA-Seq-data-normalization">RNA-Seq data normalization</a></h2>
 <p>RNA-Seq is a high-throughput transcriptomics technique, that quantifies RNA molecules in a biological sample. RNA-Seq provides a view of the whole transcriptome and allows to look at gene-expression, post-transcriptonal modifications and look at different populations of RNA. When dealing with RNA-sequencing data, normalization is needed to correct technical biases. RPKM and TPM are two metrics that normalize for gene length and sequencing depth. RNA-Sequencing data needs to be normalized for gene length, because longer genes show greater read counts when expressed at the same level and for sequencing depth, as deeper sequencing depth produces more read counts per gene.</p>
-<h4><a name="RPKM" class="anchor" href="#RPKM">RPKM:</a></h4>
+<h4><a name="RPKM-Reads-per-kilobase-million" class="anchor" href="#RPKM-Reads-per-kilobase-million">RPKM (Reads per kilobase million)</a></h4>
 <p>RPKM (Reads per kilobase million) normalization at first determines a scaling factor, by calculating the sum of all reads in a sample and dividing that number by 1,000,000. That scaling factor is used to calculate RPM (Reads per million), by dividing the read counts for each sample with it, normalizing for sequencing depth. To get RPKM and normalize for gene length, RPM values are divided by genelength in kilobases. RPKM is calculated by
 <span class="math">\[RPKM = 10^9 * \frac {\text {Reads mapped to transcript}} {\text {Total reads * Transcript length}}\]</span></p>
 <p>The formula is applied by using the <code>RNASeq.rpkms</code> function.</p>
@@ -282,7 +282,7 @@
 <span class="k">open</span> <span onmouseout="hideTip(event, 'fs4', 29)" onmouseover="showTip(event, 'fs4', 29)" class="id">BioFSharp</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs5', 30)" onmouseover="showTip(event, 'fs5', 30)" class="id">Stats</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 31)" onmouseover="showTip(event, 'fs19', 31)" class="id">rpkmData</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs16', 32)" onmouseover="showTip(event, 'fs16', 32)" class="m">RNASeq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 33)" onmouseover="showTip(event, 'fs20', 33)" class="id">rpkms</span> <span onmouseout="hideTip(event, 'fs10', 34)" onmouseover="showTip(event, 'fs10', 34)" class="id">rawData</span>
 </code></pre>
-<h4><a name="TPM" class="anchor" href="#TPM">TPM:</a></h4>
+<h4><a name="TPM-Transcripts-per-kilobase-million" class="anchor" href="#TPM-Transcripts-per-kilobase-million">TPM (Transcripts per kilobase million)</a></h4>
 <p>What differentiates TPM (Transcripts per kilobase million) from RPKM is the order of operations. To calculate TPM values, data gets normalized for gene length first. This is achieved by calculating RPK values (reads per kilobase), by dividing the read counts by genelength in kilobases. The sum of all RPK values is divided by 1,000,000, to get a scaling factor. Finally, TPM values are calculated by dividing the RPK values by the scaling factor, also normalizing for sequencing depth.
 By normalizing for gene length first, the sum of all samples is always 1,000,000, making comparisons of proportions easier. TPM is calculated by
 <span class="math">\[TPM = 10^6 * \frac {\text{Reads mapped to transcript / Transcript length}} {\text {Sum(reads mapped to transcript / Transcript length)}}\]</span></p>
@@ -450,18 +450,18 @@ from BioFSharp.Stats<br /><em>&lt;summary&gt;
     <p id="on-this-page">On this page</p>
     <ul>
   <li class="level-2">
-    <a href="#RPKM-amp-TPM">
-      RPKM &amp; TPM
+    <a href="#RNA-Seq-data-normalization">
+      RNA-Seq data normalization
     </a>
   </li>
   <li class="level-4">
-    <a href="#RPKM">
-      RPKM:
+    <a href="#RPKM-Reads-per-kilobase-million">
+      RPKM (Reads per kilobase million)
     </a>
   </li>
   <li class="level-4">
-    <a href="#TPM">
-      TPM:
+    <a href="#TPM-Transcripts-per-kilobase-million">
+      TPM (Transcripts per kilobase million)
     </a>
   </li>
 </ul>
