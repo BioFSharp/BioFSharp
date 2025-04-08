@@ -90,7 +90,7 @@
   <ItemGroup>
     <PackageReference Include="FSharpAux" Version="2.0.0" />
     <PackageReference Include="FSharpAux.IO" Version="2.0.0" />
-    <PackageReference Include="FSharp.Stats" Version="0.4.11" />
+
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>
