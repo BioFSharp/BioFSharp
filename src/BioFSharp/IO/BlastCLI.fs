@@ -132,9 +132,11 @@ module BlastCLI =
                 prependArgString = "-task blastp-fast"
             )
 
-    let readCustomBlastResult (cAttributes:seq<OutputCustom>) separator filePath =
-        let lineHasHeader = cAttributes |> Seq.map stringOfOutputCustom |> String.concat (separator.ToString())
+module CustomBlastResult =
+
+    let read (cAttributes:seq<OutputCustom>) separator filePath =
+        let headerLine = cAttributes |> Seq.map OutputCustom.toCLIString |> String.concat (separator.ToString())
         let csvReader = SchemaReader.Csv.CsvReader<CBlastResult>(SchemaMode=SchemaReader.Csv.Fill)
-        csvReader.ReadFile(filePath,separator,lineHasHeader)
+        csvReader.ReadFile(filePath,separator,headerLine)
 
 
