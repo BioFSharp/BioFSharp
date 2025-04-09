@@ -1,16 +1,14 @@
 ﻿namespace BioFSharp.IO
 
-open FSharpAux
-open System.Text
-open System.IO
 open BioFSharp
-open BioFSharp.BioID
+open BioFSharp.FileFormats
+open BioFSharp.FileFormats.Clustal
+open FSharpAux
+open System.IO
+open System.Text
 
 ///Contains functions for reading clustal alignment files
 module Clustal = 
-
-    //Header of file and info on conservation of sequences
-    type AlignmentInfo = {Header : seq<char>; ConservationInfo : seq<char>}
 
     ///Reads file character by character
     let private readFile (file:string) =   
@@ -96,31 +94,14 @@ module Clustal =
         }
     
     ///Reads clustal File (W or Omega) of given path and creates an alignment out of it. Also reads in numbers at end of line. Those have to be filtered out afterwards if not needed.
-    let ofFile (path:string) =
+    let read (path:string) =
         readFile path
         |> tokenizer
         |> parser
     
-    ///Checks if the header of a parsed clustal alignment matches the clustal file conventions
-    let hasClustalFileHeader (alignment:Alignment.Alignment<TaggedSequence<string,char>,AlignmentInfo>) = 
-        let en = alignment.MetaData.Header.GetEnumerator()
-        let rec loop i =
-            match en.MoveNext() with
-            | false -> 
-                false
-            | true ->      
-                let symbol = en.Current
-                if symbol = "CLUSTAL".[i] || symbol = "clustal".[i] then 
-                    if i = 6 then 
-                        true
-                    else 
-                        loop (i+1)
-                else 
-                    false     
-        loop 0
     
     ///Writes an alignment to given path in clustal format. Overwrites file if it already exists
-    let toFileWithOverWrite (path:string) (alignment: Alignment.Alignment<TaggedSequence<string,char>,AlignmentInfo>) =
+    let write (path:string) (alignment: Alignment.Alignment<TaggedSequence<string,char>,AlignmentInfo>) =
         use sw = new System.IO.StreamWriter(path)     
         let seqs = 
             let sb = StringBuilder()
