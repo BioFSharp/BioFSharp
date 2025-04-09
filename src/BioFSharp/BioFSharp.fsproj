@@ -39,7 +39,6 @@
   </ItemGroup>
   <ItemGroup>
    <!-- Core -->
-    <Compile Include="Refactor.fs" />
     <Compile Include="PhysicalConstants.fs" />
     <Compile Include="BioID.fs" />
     <Compile Include="Isotopes.fs" />
@@ -68,6 +67,30 @@
     <Compile Include="Alignment.fs" />
     <Compile Include="PeptideClassification.fs" />
     <Compile Include="WorkflowLanguage.fs" />
+    <!-- Biological File formats -->
+    <Compile Include="FileFormats\AgilentRaw.fs" />
+    <Compile Include="FileFormats\BlastQueries.fs" />
+    <Compile Include="FileFormats\BlastCLI.fs" />
+    <Compile Include="FileFormats\Clustal.fs" />
+    <Compile Include="FileFormats\ClustalOWrapper.fs" />
+    <Compile Include="FileFormats\DSSP_Stride.fs" />
+    <Compile Include="FileFormats\FastA.fs" />
+    <Compile Include="FileFormats\FastQ.fs" />
+    <Compile Include="FileFormats\FSIPrinters.fs" />
+    <Compile Include="FileFormats\GAF.fs" />
+    <Compile Include="FileFormats\GenBank.fs" />
+    <Compile Include="FileFormats\GFF3.fs" />
+    <Compile Include="FileFormats\Mgf.fs" />
+    <Compile Include="FileFormats\Newick.fs" />
+    <Compile Include="FileFormats\Obo.fs" />
+    <Compile Include="FileFormats\OrthoMCL.fs" />
+    <Compile Include="FileFormats\PDB.fs" />
+    <Compile Include="FileFormats\SOFT.fs" />
+    <Compile Include="IO\AgilentRaw.fs" />
+    <Compile Include="IO\BlastQueries.fs" />
+    <Compile Include="IO\BlastCLI.fs" />
+    <!-- Readers/Writers -->
+    
     <!-- Algorithm -->
     <Compile Include="Algorithm\PatternQuery.fs" />
     <Compile Include="Algorithm\PairwiseAlignment.fs" />
@@ -86,10 +109,10 @@
     <None Include="Playground.fsx" />
     <!-- Playground -->
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <PackageReference Include="FSharpAux" Version="2.0.0" />
     <PackageReference Include="FSharpAux.IO" Version="2.0.0" />
+    <PackageReference Include="DynamicObj" Version="7.0.1" />
 
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace BioFSharp.IO
+﻿namespace BioFSharp.FileFormats
 
 open System
 
@@ -10,8 +10,7 @@ open FSharpAux.IO.SchemaReader.Attribute
    
 
 module AgilentRaw =
-    
-    
+
     type GalProbeDescription = {
         //The block number for the feature
         [<FieldAttribute("Block")>]    Block        : int;
@@ -24,11 +23,6 @@ module AgilentRaw =
 
     let createGalProbeDescription block row column id genename identscore =
         { Block = block; Row = row; Column = column; ID = id; GeneName = genename; }
-
-
-
-
-
 
     let readGalProbeDescription separator (hasHeader:bool) path = 
         let reader = new CsvReader<GalProbeDescription>(SchemaMode=Csv.Fill)
@@ -43,8 +37,7 @@ module AgilentRaw =
     type ProbeMapping = {
         [<FieldAttribute(0)>] ProbeName      : string;
         [<FieldAttribute(1)>] GeneName       : string         
-        }
-
+    }
 
     /// Reads probe mapping. Map: probe name -> gene name 
     let probeMappingReader separator (hasHeader:bool) path =
@@ -53,19 +46,12 @@ module AgilentRaw =
         |> Seq.map (fun (x:ProbeMapping) -> (x.ProbeName,x.GeneName))
         |> Map.ofSeq
 
-
-
-
-
-
-
     type AgilentControlType =
     | None = 0
     | PositiveControl = 1
     | NegativeControl = -1
     | DeletionControl = -10000
     | NotProbe = -2000
-
 
     type AgilentControlTypeConverter() = 
         inherit ConverterAttribute()
@@ -77,7 +63,6 @@ module AgilentRaw =
         inherit ConverterAttribute()
         override this.convertToObj = 
             Converter.Single(fun (str : string) -> str.Equals("1") |> box )
-                            
 
     //http://www.molmine.com/magma/loading/agilentSignals.html
     /// Record type representing microarray Agilent raw data item 
@@ -149,15 +134,7 @@ module AgilentRaw =
         /// 
         [<AgilentBooleanConverter>]
         [<FieldAttribute("rIsWellAboveBG")>] IsWellAboveBG_red : bool                
-        }   
-
-
-    /// Reads agilent raw data from file
-    let readAgilentDataRaw path =    
-        let reader = new CsvReader<AgilentDataRaw>(SchemaMode = Csv.Fill)
-        reader.ReadFile(path, '\t', true,SkipLinesBeforeHeader = 9)
-
-    
+    }   
 
     type AgilentRawDescription = { 
         [<FieldAttribute("ProbeName")>]         ProbeName : string
@@ -170,7 +147,4 @@ module AgilentRaw =
         [<FieldAttribute("Sequence")>] Sequence : string
         //  Unique integer for each unique probe in a design
         [<FieldAttribute("ProbeUID")>] ProbeUID : int
-
-
-
     }
