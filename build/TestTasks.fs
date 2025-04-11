@@ -17,7 +17,6 @@ let runTests = BuildTask.create "RunTests" [clean; buildSolution] {
     ) testProject
 }
 
-// to do: use this once we have actual tests
 let runTestsWithCodeCov = BuildTask.create "RunTestsWithCodeCov" [clean; buildSolution] {
     let standardParams = Fake.DotNet.MSBuild.CliArguments.Create ()
 
