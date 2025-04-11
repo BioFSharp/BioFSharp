@@ -35,7 +35,7 @@ module Mass =
     ///   Converts m/z to neutral mass
     /// </summary>
     ///
-    /// <param name="mass">Mass-charge ratio m/z</param>    
+    /// <param name="mz">Mass-charge ratio m/z</param>    
     /// <param name="z">Charge z</param>
     /// <returns>Returns neutral mass</returns> 
     let ofMZ (mz:float) (z:float) = 

@@ -38,7 +38,6 @@
     <EmbeddedResource Remove="Playground\**" />
   </ItemGroup>
   <ItemGroup>
-   <!-- Core -->
     <Compile Include="PhysicalConstants.fs" />
     <Compile Include="BioID.fs" />
     <Compile Include="Isotopes.fs" />
@@ -69,7 +68,6 @@
     <Compile Include="WorkflowLanguage.fs" />
     <Compile Include="FileFormats\Fasta.fs" />
     <Compile Include="FileFormats\Fastq.fs" />
-    <!-- Biological File formats -->
     <Compile Include="FileFormats\AgilentRaw.fs" />
     <Compile Include="FileFormats\BlastQueries.fs" />
     <Compile Include="FileFormats\BlastCLI.fs" />
@@ -92,13 +90,9 @@
     <Compile Include="IO\BlastCLI.fs" />
     <Compile Include="IO\Clustal.fs" />
     <Compile Include="IO\ClustalOCLI.fs" />
-    <!-- Readers/Writers -->
-    
-    <!-- Algorithm -->
     <Compile Include="Algorithm\PatternQuery.fs" />
     <Compile Include="Algorithm\PairwiseAlignment.fs" />
     <Compile Include="Algorithm\ScoringMatrix.fs" />
-    <!-- Resources -->
     <EmbeddedResource Include="Resources\BLOSUM45.txt" />
     <EmbeddedResource Include="Resources\BLOSUM50.txt" />
     <EmbeddedResource Include="Resources\BLOSUM80.txt" />

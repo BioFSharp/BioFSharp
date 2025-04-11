@@ -144,9 +144,9 @@ module Fasta =
     /// <param name="sequenceItemConverter">Function to convert each item of the sequence of each record to the desired type</param>
     /// <param name="filePath">The file to write to</param>
     /// <param name="data">A sequence of fasta items to write to the input file path</param>
-    let append (toString:'T -> char) (filePath:string) (data:seq<FastaItem<#seq<'T>>>) =
+    let append (sequenceItemConverter: 'SequenceItem -> char) (filePath:string) (data:seq<FastaItem<'SequenceItem>>) =
         let file = new FileStream(filePath,FileMode.Append)
-        writeToStream toString file data   
+        writeToStream sequenceItemConverter file data   
         file.Dispose()
 
     // translate this from C# docs
