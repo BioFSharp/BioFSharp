@@ -1,58 +1,27 @@
 
 ![Logo](docs/img/Logo_large.png)
 
-
 [![Made with F#](https://img.shields.io/badge/Made%20with-FSharp-rgb(184,69,252).svg)](https://fsharp.org/)
 [![Nuget](https://img.shields.io/nuget/v/BioFSharp?label=nuget(stable))](https://www.nuget.org/packages/BioFSharp/)
 [![Nuget](https://img.shields.io/nuget/vpre/BioFSharp?label=nuget(prerelease))](https://www.nuget.org/packages/BioFSharp/)
-![GitHub contributors](https://img.shields.io/github/contributors/CSBiology/BioFSharp)
+![GitHub contributors](https://img.shields.io/github/contributors/BioFSharp/BioFSharp)
 
-BioFSharp is an open source bioinformatics and computational biology toolbox written in F#. <https://csbiology.github.io/BioFSharp/>
+BioFSharp is an open source bioinformatics and computational biology toolbox written in F#. https://biofsharp.com/BioFSharp
 
 | Build status (ubuntu and windows) | Test Coverage |
 |---|---|
 | ![](https://github.com/CSBiology/BioFSharp/actions/workflows/build-test.yml/badge.svg) | [![codecov](https://codecov.io/gh/BioFSharp/BioFSharp/branch/developer/graph/badge.svg)](https://codecov.io/gh/BioFSharp/BioFSharp) |
 
-Core functionality
-------------------
+Overview
+--------
 
-In its core namespace, BioFSharp contains the basic data structures for common biological objects and their modification. Our type modeling starts at chemical elements, abstracts those to form formulas, and finally molecules of high biological relevance such as amino acids and nucleotides. Sequences of these molecules are modelled by BioCollections, which provide extensive functionality for investigating their real life counterparts.
+BioFSharp provides a type models, readers, writers and algorithms for various domains across bioinformatics and computational biology.
 
-![Data model](docs/img/Core.png)
+This repo contains the core (types, IO, and some algorithms)
 
-Additionally, core algorithms for biological sequences such as alignments and pattern matching algorithms are implemented.
+BioFSharp has an ecosystem of extension packages, which include more sophisticated statistical analysis and ML.
 
-Besides the core functionality, BioFSharp has several namespaces as sub-projects with different scopes:
-
-IO functionality
-----------------
-
-The IO namespace aims to make data available and ease further processing. It contains read/write functions for a diverse set of biological file formats such as [Fasta](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=BlastHelp), [FastQ](https://www.ncbi.nlm.nih.gov/sra/docs/submitformats/#fastq-files), [GeneBank](https://www.ncbi.nlm.nih.gov/Sitemap/samplerecord.html) or [GFF](https://github.com/The-Sequence-Ontology/Specifications/blob/master/gff3.md), as well as helper function for searching on or transforming the input data. Wrappers for commonly used command line tools like [NCBI's Blast](https://www.ncbi.nlm.nih.gov/books/NBK153387/) assure interoperability with an array of existing bioinformatic workflows
-
-BioDB functionality
--------------------
-
-The BioDB namespace offers API access to powerful popular databases like [GEO](https://www.ncbi.nlm.nih.gov/geo/) and [EBI(including SwissProt/Expasy)](https://www.ebi.ac.uk/). We additionally provide an API access for [FATool](http://iomiqsweb1.bio.uni-kl.de/), a webservice by our workgroup for querying functional annotations of proteins.
-
-This project is netframework only and has a new home here: https://github.com/CSBiology/BioFSharp.BioDB
-
-BioContainers functionality
-----------------------
-
-The BioContainers namespace is our newest BioFSharp project and we are very excited about it! It is all about making common bioinformatics tools programmatically accessible from F#. 
-This is realized by making the containerized tool accessible via the Docker daemon. We wrap some functionality from
-[Docker.DotNet](https://github.com/microsoft/Docker.DotNet) to communicate with the docker API while providing extensive, type safe bindings for already 9 tools, including Blast, ClustalO, and TMHMM
-
-ML functionality
-----------------
-
-Make your workflow ML ready with BioFSharp.ML. Currently contains helper functionf for [CNTK](https://docs.microsoft.com/en-us/cognitive-toolkit/) and a pre-trained model we used in our [publication about predicting peptide observability](https://www.frontiersin.org/articles/10.3389/fpls.2018.01559/full).
-
-Stats functionality
-----------------------
-
-The Stats namespace contains statistical functions with a clear biological focus such as functions for calculating Gene Ontology Enrichments.
-
+Check out all repos [here](https://github.com/BioFSharp)
 
 Documentation
 -------------
