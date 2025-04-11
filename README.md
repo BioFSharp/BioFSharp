@@ -2,20 +2,16 @@
 ![Logo](docs/img/Logo_large.png)
 
 
-[![Nuget](https://img.shields.io/nuget/v/BioFSharp)](https://www.nuget.org/packages/BioFSharp/)
 [![Made with F#](https://img.shields.io/badge/Made%20with-FSharp-rgb(184,69,252).svg)](https://fsharp.org/)
-
+[![Nuget](https://img.shields.io/nuget/v/BioFSharp?label=nuget(stable))](https://www.nuget.org/packages/BioFSharp/)
+[![Nuget](https://img.shields.io/nuget/vpre/BioFSharp?label=nuget(prerelease))](https://www.nuget.org/packages/BioFSharp/)
+![GitHub contributors](https://img.shields.io/github/contributors/CSBiology/BioFSharp)
 
 BioFSharp is an open source bioinformatics and computational biology toolbox written in F#. <https://csbiology.github.io/BioFSharp/>
 
-[![Gitter](https://badges.gitter.im/CSBiology/BioFSharp.svg)](https://gitter.im/CSBiology/BioFSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-![GitHub contributors](https://img.shields.io/github/contributors/CSBiology/BioFSharp)
-
 | Build status (ubuntu and windows) | Test Coverage |
 |---|---|
-| ![](https://github.com/CSBiology/BioFSharp/actions/workflows/build-test.yml/badge.svg) | [![codecov](https://codecov.io/gh/CSBiology/BioFSharp/branch/developer/graph/badge.svg)](https://codecov.io/gh/CSBiology/BioFSharp) |
-
-
+| ![](https://github.com/CSBiology/BioFSharp/actions/workflows/build-test.yml/badge.svg) | [![codecov](https://codecov.io/gh/BioFSharp/BioFSharp/branch/developer/graph/badge.svg)](https://codecov.io/gh/BioFSharp/BioFSharp) |
 
 Core functionality
 ------------------
