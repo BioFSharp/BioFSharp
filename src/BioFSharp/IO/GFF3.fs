@@ -1,42 +1,14 @@
 ﻿namespace BioFSharp.IO
-///Contains functions for reading and writing GFF3 files
-module GFF3 =
 
-    open FSharpAux
-    open FSharpAux.IO
-    open System.Collections.Generic
-    
-    ///represents fields of one GFF3 entry line
-    type GFFEntry = {
-        ///name of sequence where the feature is located
-        Seqid       : string
-        ///program, organization or database where the sequence is derived from
-        Source      : string
-        ///feature, type or method; has to be a term from SO or SO accession number
-        Feature     : string
-        ///positive 1-based integer start coordinate, relative to the landmark given in column 1
-        StartPos    : int
-        ///positive 1-based integer end coordinate, relative to the landmark given in column 1
-        EndPos      : int
-        ///the score of the feature; semantics are ill-defined
-        Score       : float
-        ///the strand of the feature
-        Strand      : char
-        ///for CDS features: indicates where the feature begins with reference to the reading frame
-        Phase       : int
-        ///a semicolon-separated list of tag-value pairs, providing additional information about each feature
-        Attributes  : Map<string,(string list)>
-        ///additional supplement information about the feature (optional)
-        Supplement  : string [] 
-                   }
-    
-    ///represents all kinds of lines which can be present in a GFF3 file
-    type GFFLine<'a>  =
-    | GFFEntryLine    of GFFEntry
-    | Comment         of string
-    | Directive       of string
-    | Fasta           of seq<FastA.FastaItem<'a>>
-    
+open FSharpAux
+open FSharpAux.IO
+open BioFSharp.FileFormats.GFF3
+open System.IO
+open System.Text
+open System.Collections.Generic
+open BioFSharp.FileFormats.Fasta
+
+module GFF3 =
     ///Separates every key-value pair of field 'attributes' at ';'. Seperates key from value at '=' and separates values at ','.
     let private innerTokenizer (attributes: string) = 
         ///Regex for separation of key and values
@@ -116,7 +88,7 @@ module GFF3 =
                 else 
                     acc 
                     |> List.rev
-                    |> fun x -> FastA.fromFileEnumerator converter x
+                    |> fun x -> Fasta.readLines converter x
             loop [en.Current]
 
         let finalSeq =
@@ -319,7 +291,7 @@ module GFF3 =
                         | Comment (x)      ->   yield x             
                         | Directive (x)    ->   yield x            
                         | Fasta (x)        ->   yield "##FASTA"    
-                                                yield! FastA.toString converter x
+                                                yield! x |> Seq.map (FastaItem.toString converter)
                 }
         toString
 
@@ -396,7 +368,7 @@ module GFF3 =
     module FastAHeaderParser = 
         
         /// Takes a sequence of FastA items and a regex pattern and transforms them into a sequence of GFF3 RNA items with decoy gene loci.
-        let createGFF3OfFastAWithRegex pattern (fastA : seq<FastA.FastaItem<'A>>) = 
+        let createGFF3OfFastAWithRegex pattern (fastA : seq<FastaItem<'A>>) = 
             fastA
             |> Seq.mapi (fun i item -> 
                 let id = 
@@ -414,7 +386,7 @@ module GFF3 =
         /// Takes a sequence of FastA items and transforms them into a sequence of GFF3 RNA and gene items. FastA headers have to be UniProt style.
         ///
         /// For Reference see: https://www.uniprot.org/help/fasta-headers
-        let createGFF3OfFastA (fastA : seq<FastA.FastaItem<'A>>)= 
+        let createGFF3OfFastA (fastA : seq<FastaItem<'A>>)= 
             let fastAHeaders = 
                 fastA
                 |> Seq.map (fun item -> item.Header |> BioFSharp.BioID.FastA.fromString)

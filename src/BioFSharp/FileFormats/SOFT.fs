@@ -1,4 +1,4 @@
-﻿namespace BioFSharp.IO
+﻿namespace BioFSharp.FileFormats
 
 [<AutoOpen>]
 module SOFT =

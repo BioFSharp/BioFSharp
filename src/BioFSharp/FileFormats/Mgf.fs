@@ -1,4 +1,4 @@
-﻿namespace BioFSharp.IO
+﻿namespace BioFSharp.FileFormats
 
 /// Mgf <http://www.matrixscience.com/help/data_file_help.html>`_ is a simple
 /// human-readable format for MS/MS data. It allows storing MS/MS peak lists and

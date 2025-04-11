@@ -10,7 +10,7 @@ let floatsClose accuracy (seq1:seq<float>) (seq2:seq<float>) =
 
 let readEmbeddedDocument resourceName= 
     let assembly = Assembly.GetExecutingAssembly()
-    use stream = assembly.GetManifestResourceStream("BioFSharp.Tests.data." + resourceName)
+    use stream = assembly.GetManifestResourceStream("BioFSharp.Tests.resources." + resourceName)
     use reader = new System.IO.StreamReader(stream)
     seq [
         while not reader.EndOfStream do                              

@@ -1,22 +1,23 @@
-namespace BioFSharp.IO
+namespace BioFSharp.FileFormats
 
 open System
 open FSharpAux
 open FSharpAux.IO
 
-module FastQ =
+module Fastq =
 
     /// FastqItem record contains header, sequence, qualityheader, qualitysequence of one entry
-    type FastqItem<'a,'b> = {
-        Header    : string;
-        Sequence  : 'a;
+    type FastqItem<'SequenceItem,'QualitySequenceItem> = {
+        Header    : string
+        Sequence  : seq<'SequenceItem>
         QualityHeader : string;
-        QualitySequence : 'b;       
-    }
+        QualitySequence : seq<'QualitySequenceItem>
+    } with
+
      
-    /// Creates FastqItem with header line, sequence, qualityHeader and qualitySequence
-    let createFastqItem header sequence qualityHeader qualitySequence =
-        { Header = header; Sequence = sequence; QualityHeader = qualityHeader; QualitySequence = qualitySequence}
+        /// Creates FastqItem with header line, sequence, qualityHeader and qualitySequence
+        static member inline create (header: string) (sequence: #seq<'SequenceItem>) (qualityHeader:string) (qualitySequence: #seq<'QualitySequenceItem>) : FastqItem<'SequenceItem,'QualitySequenceItem> =
+            { Header = header; Sequence = sequence; QualityHeader = qualityHeader; QualitySequence = qualitySequence}
 
     /// Maps each lines from an entry to FastqItem
     let fromFileEnumerator converter qualityConverter (fileEnumerator:seq<string>) =
@@ -31,7 +32,7 @@ module FastQ =
                        |0 -> parse (counter+1) en.Current sequence qualityheader qualitysequence en
                        |1 -> parse (counter+1) header en.Current  qualityheader qualitysequence en
                        |2 -> parse (counter+1) header sequence en.Current   qualitysequence en
-                       |3 -> createFastqItem header (converter sequence) qualityheader (qualityConverter en.Current)
+                       |3 -> FastqItem.create header (converter sequence) qualityheader (qualityConverter en.Current)
                        |_ -> failwith "Unexpected line counter"
                
                 parse 0 "" "" "" "" en'

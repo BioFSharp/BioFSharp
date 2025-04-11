@@ -24,7 +24,7 @@ module Fasta =
     /// <param name="lines">The input to parse in the form of strings each representing a line of a fasta formatted file</param>
     /// <returns>Sequence of FastaItems</returns>
     /// <exception cref="System.IO.InvalidDataException">If the input is not in the correct fasta format</exception>
-    let readLines (sequenceConverter: seq<char>-> seq<'SequenceItem>) (lines: seq<string>) : seq<FastaItem<'SequenceItem>> =
+    let readLines (sequenceConverter: seq<char>-> #seq<'SequenceItem>) (lines: seq<string>) : seq<FastaItem<'SequenceItem>> =
         // Matches grouped lines and aggregates to a single fasta record
         let parseRecord (l: string list) = 
             match l with
@@ -51,7 +51,7 @@ module Fasta =
     /// <param name="filePath">Path to a fasta formatted file</param>
     /// <returns>Sequence of FastaItems</returns>
     /// <exception cref="System.IO.InvalidDataException">If the input is not in the correct fasta format</exception>
-    let read (sequenceConverter: seq<char>-> seq<'SequenceItem>) (filePath: string) =
+    let read (sequenceConverter: seq<char>-> #seq<'SequenceItem>) (filePath: string) =
         FileIO.readFile filePath
         |> readLines sequenceConverter
 
@@ -66,7 +66,7 @@ module Fasta =
     /// <param name="filePath">Path to a gzip compressed fasta formatted file</param>
     /// <returns>Sequence of FastaItems</returns>
     /// <exception cref="System.IO.InvalidDataException">If the input is not in the correct fasta format</exception>
-    let readGzip (sequenceConverter: seq<char>-> seq<'SequenceItem>) (filePath: string) =
+    let readGzip (sequenceConverter: seq<char>-> #seq<'SequenceItem>) (filePath: string) =
         FileIO.readFileGZip filePath
         |> readLines sequenceConverter
 
@@ -130,6 +130,10 @@ module Fasta =
         writeToStream sequenceItemConverter file data
         file.Dispose()
 
+    // translate this from C# docs
+    // https://learn.microsoft.com/en-us/dotnet/api/system.io.compression.gzipstream.write?view=net-8.0
+    //let writeGZip (sequenceItemConverter: 'SequenceItem -> char) (filePath:string) (data:seq<FastaItem<'SequenceItem>>) = ...
+
     /// <summary>
     /// Writes a sequence of FastaItem to a stream.
     ///
@@ -144,3 +148,7 @@ module Fasta =
         let file = new FileStream(filePath,FileMode.Append)
         writeToStream toString file data   
         file.Dispose()
+
+    // translate this from C# docs
+    // https://learn.microsoft.com/en-us/dotnet/api/system.io.compression.gzipstream.write?view=net-8.0
+    //let appendGZip (sequenceItemConverter: 'SequenceItem -> char) (filePath:string) (data:seq<FastaItem<'SequenceItem>>) = ...

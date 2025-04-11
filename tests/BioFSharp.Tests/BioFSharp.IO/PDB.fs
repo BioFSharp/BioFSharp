@@ -2,7 +2,7 @@
 
 open BioFSharp
 open BioFSharp.IO
-open BioFSharp.IO.PDB
+open BioFSharp.FileFormats
 open Expecto
 open System.Reflection
 
@@ -54,7 +54,7 @@ let recordTests = testList "PDB.RecordTests" [
             [atomSingleton]
             |> Seq.choose PDB.tryParseCoordinateLine
             |> Seq.item 0
-            |> Coordinate.toString
+            |> PDB.Coordinate.toString
 
         Expect.equal actual atomSingleton "atom singleton roundtrip unsuccessful"
     )
@@ -63,7 +63,7 @@ let recordTests = testList "PDB.RecordTests" [
         let actual =
             atomSequence
             |> Array.choose PDB.tryParseCoordinateLine
-            |> Array.map Coordinate.toString
+            |> Array.map PDB.Coordinate.toString
 
         Expect.sequenceEqual actual atomSequence "atom sequence roundtrip unsuccessful"
     )
@@ -100,7 +100,7 @@ let recordTests = testList "PDB.RecordTests" [
             [hetatmSingleton]
             |> Seq.choose PDB.tryParseCoordinateLine
             |> Seq.item 0
-            |> Coordinate.toString
+            |> PDB.Coordinate.toString
 
         Expect.equal actual hetatmSingleton "atom singleton roundtrip unsuccessful"
     )
@@ -109,7 +109,7 @@ let recordTests = testList "PDB.RecordTests" [
         let actual =
             hetatmSequence
             |> Array.choose PDB.tryParseCoordinateLine
-            |> Array.map Coordinate.toString
+            |> Array.map PDB.Coordinate.toString
 
         Expect.sequenceEqual actual hetatmSequence "atom sequence roundtrip unsuccessful"
     )
@@ -121,7 +121,7 @@ let compositeTests = testList "PDB.CompositeTests" [
         let actual = 
             glucagon
             |> Array.choose PDB.tryParseCoordinateLine
-            |> Array.map Coordinate.toString
+            |> Array.map PDB.Coordinate.toString
 
         Expect.equal actual glucagon "glucagon chain roundtrip unsuccessful"
     )
@@ -130,7 +130,7 @@ let compositeTests = testList "PDB.CompositeTests" [
         let actual = 
             HasA
             |> Array.choose PDB.tryParseCoordinateLine
-            |> Array.map Coordinate.toString
+            |> Array.map PDB.Coordinate.toString
 
         Expect.equal actual HasA "glucagon chain roundtrip unsuccessful"
     )

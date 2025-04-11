@@ -1,14 +1,14 @@
-﻿namespace BioFSharp.IO
+﻿namespace BioFSharp.FileFormats
 
 ///Pretty printers for various custom types in the library
-module FSIPrinters =
+module Formatting =
 
     open BioFSharp
-    open BioFSharp.Alignment
-    open BioFSharp.BioID
     open BioFSharp.IO
-    open BioFSharp.IO.Clustal
-    open BioFSharp.IO.GFF3
+    open BioFSharp.Alignment
+    open BioFSharp.FileFormats
+    open BioFSharp.FileFormats.Clustal
+    open BioFSharp.FileFormats.GFF3
     open FSharpAux
     open System.Text
 
@@ -199,8 +199,8 @@ module FSIPrinters =
         sprintf "\r\n%s\r\n" (prnt.ToString())
 
     ///print GFF3 formatted file as seen in the specifications.
-    let prettyPrintGFF3 (input : seq<GFFLine<#seq<'a>>>) =
-        toString id input
+    let prettyPrintGFF3 (input : seq<GFFLine<#IBioItem>>) =
+        GFF3.toString BioItem.symbol input
         |> String.concat "\r\n"
 
     let prettyPrintSampleRecord (sample:SOFT.SampleRecord) =
