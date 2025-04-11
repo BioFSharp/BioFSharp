@@ -11,8 +11,9 @@
     <EmbeddedResource Include="resources\Glucagon.txt" />
     <EmbeddedResource Include="resources\HasA.txt" />
     <EmbeddedResource Include="resources\HETATMSequence.txt" />
-    <None Include="fixtures/**" CopyToOutputDirectory="Always"/>
+    <None Include="fixtures/**" CopyToOutputDirectory="Always" />
     <Compile Include="FileFormats\Fasta.fs" />
+    <Compile Include="FileFormats\Fastq.fs" />
     <Compile Include="FileFormats\Main.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="BioFSharp.IO\DSSP.fs" />

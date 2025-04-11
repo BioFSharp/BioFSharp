@@ -84,6 +84,7 @@
     <Compile Include="FileFormats\PDB.fs" />
     <Compile Include="FileFormats\SOFT.fs" />
     <Compile Include="IO\Fasta.fs" />
+    <Compile Include="IO\Fastq.fs" />
     <Compile Include="IO\GFF3.fs" />
     <Compile Include="IO\AgilentRaw.fs" />
     <Compile Include="IO\BlastQueries.fs" />

@@ -7,4 +7,5 @@ let main =
     testList "FileFormats and IO" [
         // Fasta
         FastaTests.fastaTests
+        FastqTests.fastqTests
     ]

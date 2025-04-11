@@ -8,11 +8,6 @@ open System.Text
 
 /// Functions to read and write fasta formatted files
 module Fasta =
-
-    // Conditon of grouping lines
-    let private same_group l =             
-        not (String.length l = 0 || l.[0] <> '>')
-    
     /// <summary>
     /// Creates a sequence of FastaItems by parsing the input line per line.
     ///
@@ -25,10 +20,15 @@ module Fasta =
     /// <returns>Sequence of FastaItems</returns>
     /// <exception cref="System.IO.InvalidDataException">If the input is not in the correct fasta format</exception>
     let readLines (sequenceConverter: seq<char>-> #seq<'SequenceItem>) (lines: seq<string>) : seq<FastaItem<'SequenceItem>> =
+
+        // Conditon of grouping lines
+        let same_group l =             
+            not (String.length l = 0 || l.[0] <> '>')
+    
         // Matches grouped lines and aggregates to a single fasta record
         let parseRecord (l: string list) = 
             match l with
-            | [] -> raise (System.IO.InvalidDataException "Incorrect FASTA format: no header line starting with '>' in the input.")
+            | [] -> raise (System.IO.InvalidDataException "Incorrect FASTA format: input was empty")
             | (h:string) :: t when h.StartsWith ">" ->
                 let header = h.Remove(0,1)
                 let sequence = (Seq.concat t) |> sequenceConverter
