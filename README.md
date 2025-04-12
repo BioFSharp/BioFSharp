@@ -1,4 +1,4 @@
-
+﻿
 ![Logo](docs/img/Logo_large.png)
 
 [![Made with F#](https://img.shields.io/badge/Made%20with-FSharp-rgb(184,69,252).svg)](https://fsharp.org/)
@@ -12,8 +12,7 @@ BioFSharp is an open source bioinformatics and computational biology toolbox wri
 |---|---|
 | ![](https://github.com/CSBiology/BioFSharp/actions/workflows/build-test.yml/badge.svg) | [![codecov](https://codecov.io/gh/BioFSharp/BioFSharp/branch/developer/graph/badge.svg)](https://codecov.io/gh/BioFSharp/BioFSharp) |
 
-Overview
---------
+## Overview
 
 BioFSharp provides a type models, readers, writers and algorithms for various domains across bioinformatics and computational biology.
 
@@ -23,24 +22,91 @@ BioFSharp has an ecosystem of extension packages, which include more sophisticat
 
 Check out all repos [here](https://github.com/BioFSharp)
 
-Documentation
--------------
+## Documentation
 
-Functions, types and Classes contained in BioFSharp come with short explanatory description, which can be found in the [API Reference](https://csbiology.github.io/BioFSharp/reference/index.html).
+Functions, types and Classes contained in BioFSharp come with short explanatory description, which can be found in the [API Reference](https://biofsharp.com/BioFSharp/reference/index.html).
 
-More indepth explanations, tutorials and general information about the project can be found [here](http://csbiology.github.io/BioFSharp).
+More indepth explanations, tutorials and general information about the project can be found [here](http://biofsharp.com/BioFSharp).
 
-The documentation and tutorials for this library are automatically generated (using the F# Formatting) from *.fsx and *.md files in the docs folder. If you find a typo, please submit a pull request!
+The documentation and tutorials for this library are generated from scripts and notebooks in the [docs folder](./docs).
 
-Contributing
-------------
+## Contributing
 
-Please refer to the [Contribution guidelines](.github/CONTRIBUTING.md)
+Every contribution is welcome, such as:
 
-Community/Social
-----------------
-Want to get in touch with us? We recently joined the twitter crowd:
+- Bug reports
+- Feature requests
+- Documentation improvement requests
+- Typo fixes
+- Performance discussions and improvements
+- New alogithm implementations
+- etc.
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/BioFSharp.svg?style=social)](https://twitter.com/biofsharp)
+**Please start by opening an issue**.
 
-[![Twitter Follow](https://img.shields.io/twitter/follow/cs_biology.svg?style=social)](https://twitter.com/cs_biology)
+**Check the [Development section](#development)** for general guidance on the codebase
+
+**Pull Requests should target the `main` branch from a forked version of the repo.**
+
+This is an **open source project** created as the result of scientific teaching and research efforts.
+Please follow the [Code of Conduct](CODE_OF_CONDUCT.md) and refrain from unrealistic expectations from maintainers.
+
+## Development
+
+### General
+
+BioFSharp repositories usually folllow this structure:
+
+```
+root
+│   📄<project name>.sln
+│   📄build.cmd
+│   📄build.sh
+├───📁build
+├───📁docs
+├───📁src
+|   └───📁<project name>
+└───tests
+    └───📁<testproject name>
+```
+
+- <project name>.sln is the root solution file.
+- `build` contains a [FAKE](https://fake.build/) build project with targets for building, testing and packaging the project.
+- `build/sh` and `build.cmd` in the root are shorthand scripts to execute the buildproject.
+- `docs` contains the documentation in form of literate scripts and notebooks. 
+- `src` contains folders with the source code of the project(s).
+- `tests` contains folders with test projects.
+
+### Build
+
+just call `build.sh` or `build.cmd` depending on your OS.
+
+### Test
+
+```bash
+build.sh runtests
+```
+
+```bash
+build.cmd runtests
+```
+
+### Create Nuget package
+
+```bash
+build.sh pack
+```
+```bash
+build.cmd pack
+```
+
+### Docs
+
+You can watch locally with hot reload via
+
+```bash
+build.sh watchdocs
+```
+```bash
+build.cmd watchdocs
+```
