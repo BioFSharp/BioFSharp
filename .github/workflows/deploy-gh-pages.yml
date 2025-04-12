@@ -1,32 +1,31 @@
-name: deploy-gh-pages
+name: Deploy Docs
 
 on:
   push:
-    branches: [ developer ]
+    branches: [ main ]
     paths:
       - 'docs/**'
 
 jobs:
-  build-and-deploy:
-    
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.x.x
-    - name: Restore tools
-      run: dotnet tool restore
-    - name: make script executable
-      run: chmod u+x build.sh
-    - name: Build example docs
-      run: ./build.sh buildDocs
-    - name: deploy
-      uses: JamesIves/github-pages-deploy-action@3.7.1
-      with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: ./output # The folder the action should deploy.
-          CLEAN: true # Automatically remove deleted files from the deploy branch
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: make script executable
+        run: chmod u+x build.sh
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x.x
+      - name: make script executable
+        run: chmod u+x build.sh
+      - name: restore tools
+        run: dotnet tool restore
+      - name: Build Docs
+        working-directory: ./
+        run: ./build.sh builddocs
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: output # The folder the action should deploy.
