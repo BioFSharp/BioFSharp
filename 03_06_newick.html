@@ -348,7 +348,7 @@ Gouda:-0.00113)
 <span class="c">//As path we set an examplefile included in biofsharp which consists of the tree shown above</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 20)" onmouseover="showTip(event, 'fs15', 20)" class="id">path</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs3', 21)" onmouseover="showTip(event, 'fs3', 21)" class="id">fileDir</span> <span class="o">+</span> <span class="s">&quot;treeExample.txt&quot;</span>
 
-<span onmouseout="hideTip(event, 'fs16', 22)" onmouseover="showTip(event, 'fs16', 22)" class="m">Newick</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 23)" onmouseover="showTip(event, 'fs17', 23)" class="id">ofFile</span> <span onmouseout="hideTip(event, 'fs4', 24)" onmouseover="showTip(event, 'fs4', 24)" class="fn">floatMapping</span> <span onmouseout="hideTip(event, 'fs15', 25)" onmouseover="showTip(event, 'fs15', 25)" class="id">path</span>
+<span class="id">Newick</span><span class="pn">.</span><span class="id">ofFile</span> <span onmouseout="hideTip(event, 'fs4', 22)" onmouseover="showTip(event, 'fs4', 22)" class="id">floatMapping</span> <span onmouseout="hideTip(event, 'fs15', 23)" onmouseover="showTip(event, 'fs15', 23)" class="id">path</span>
 </code></pre>
 Warning: Output, it-value and value references require --eval
 <p>As written above, having an idea about the <code>PhylTree</code> in BioFSharp makes understanding this result much easier. Its API reference can be found <a href="reference/biofsharp-phyltree.html">here</a>.</p>
@@ -356,18 +356,18 @@ Warning: Output, it-value and value references require --eval
 <p>To write a Newick file, the function <code>toFile</code> is used. Besides the output path and the tree it takes two additional functions. <code>nodeConverter</code> is intended to be used as a kind of separator of node name and distance, as sometimes the node info is not stored as a simple tuple, but has to be parsed as such. Both have to be converted to strings for parsing reasons.</p>
 <p>Let's see this in action. As an example we want to rebuild the original treeFile we read out above. Keep one thing in mind though: Of course we want to have it exactly look like the original. If you have read the tree with the converter function which returns a zero if the distance is not mappable to float, then the conversion back to string has to cover this case, or this zero will end up being in the file. This is not really a safe approach though, as real zeros might be lost with it. Therefore we will read and write the distance as an option and use the floatConverterOptional defined above:</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">//Tree with distancevalue wrapped as option</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 26)" onmouseover="showTip(event, 'fs18', 26)" class="id">myOptionalTree</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs16', 27)" onmouseover="showTip(event, 'fs16', 27)" class="m">Newick</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 28)" onmouseover="showTip(event, 'fs17', 28)" class="id">ofFile</span> <span onmouseout="hideTip(event, 'fs8', 29)" onmouseover="showTip(event, 'fs8', 29)" class="fn">floatMappingOptional</span> <span onmouseout="hideTip(event, 'fs15', 30)" onmouseover="showTip(event, 'fs15', 30)" class="id">path</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 24)" onmouseover="showTip(event, 'fs16', 24)" class="id">myOptionalTree</span> <span class="o">=</span> <span class="id">Newick</span><span class="pn">.</span><span class="id">ofFile</span> <span onmouseout="hideTip(event, 'fs8', 25)" onmouseover="showTip(event, 'fs8', 25)" class="id">floatMappingOptional</span> <span onmouseout="hideTip(event, 'fs15', 26)" onmouseover="showTip(event, 'fs15', 26)" class="id">path</span>
 
 <span class="c">//convertes nodeinformation to writeable name and distance</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 31)" onmouseover="showTip(event, 'fs19', 31)" class="fn">converter</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs20', 32)" onmouseover="showTip(event, 'fs20', 32)" class="fn">n</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs21', 33)" onmouseover="showTip(event, 'fs21', 33)" class="fn">d</span><span class="pn">)</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs20', 34)" onmouseover="showTip(event, 'fs20', 34)" class="fn">n</span><span class="pn">,</span>
-    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs21', 35)" onmouseover="showTip(event, 'fs21', 35)" class="fn">d</span> <span class="k">with</span>
-    <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs13', 36)" onmouseover="showTip(event, 'fs13', 36)" class="uc">Some</span> <span onmouseout="hideTip(event, 'fs22', 37)" onmouseover="showTip(event, 'fs22', 37)" class="fn">fl</span>   <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs6', 38)" onmouseover="showTip(event, 'fs6', 38)" class="fn">string</span> <span onmouseout="hideTip(event, 'fs22', 39)" onmouseover="showTip(event, 'fs22', 39)" class="fn">fl</span>
-    <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs14', 40)" onmouseover="showTip(event, 'fs14', 40)" class="uc">None</span>      <span class="k">-&gt;</span> <span class="s">&quot;&quot;</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs17', 27)" onmouseover="showTip(event, 'fs17', 27)" class="fn">converter</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs18', 28)" onmouseover="showTip(event, 'fs18', 28)" class="fn">n</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs19', 29)" onmouseover="showTip(event, 'fs19', 29)" class="fn">d</span><span class="pn">)</span> <span class="o">=</span> 
+    <span onmouseout="hideTip(event, 'fs18', 30)" onmouseover="showTip(event, 'fs18', 30)" class="fn">n</span><span class="pn">,</span>
+    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs19', 31)" onmouseover="showTip(event, 'fs19', 31)" class="fn">d</span> <span class="k">with</span>
+    <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs13', 32)" onmouseover="showTip(event, 'fs13', 32)" class="uc">Some</span> <span onmouseout="hideTip(event, 'fs20', 33)" onmouseover="showTip(event, 'fs20', 33)" class="fn">fl</span>   <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs6', 34)" onmouseover="showTip(event, 'fs6', 34)" class="fn">string</span> <span onmouseout="hideTip(event, 'fs20', 35)" onmouseover="showTip(event, 'fs20', 35)" class="fn">fl</span>
+    <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs14', 36)" onmouseover="showTip(event, 'fs14', 36)" class="uc">None</span>      <span class="k">-&gt;</span> <span class="s">&quot;&quot;</span> 
 
 <span class="c">//write our original tree to path</span>
 </code></pre>
-<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs16', 41)" onmouseover="showTip(event, 'fs16', 41)" class="m">Newick</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs23', 42)" onmouseover="showTip(event, 'fs23', 42)" class="id">toFile</span> <span onmouseout="hideTip(event, 'fs19', 43)" onmouseover="showTip(event, 'fs19', 43)" class="fn">converter</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs3', 44)" onmouseover="showTip(event, 'fs3', 44)" class="id">fileDir</span> <span class="o">+</span> <span class="s">&quot;outputTree.txt&quot;</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs18', 45)" onmouseover="showTip(event, 'fs18', 45)" class="id">myOptionalTree</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="id">Newick</span><span class="pn">.</span><span class="id">toFile</span> <span onmouseout="hideTip(event, 'fs17', 37)" onmouseover="showTip(event, 'fs17', 37)" class="id">converter</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs3', 38)" onmouseover="showTip(event, 'fs3', 38)" class="id">fileDir</span> <span class="o">+</span> <span class="s">&quot;outputTree.txt&quot;</span><span class="pn">)</span> <span onmouseout="hideTip(event, 'fs16', 39)" onmouseover="showTip(event, 'fs16', 39)" class="id">myOptionalTree</span>
 </code></pre>
 
         <div class="fsdocs-tip" id="fs1">namespace BioFSharp</div>
@@ -398,22 +398,11 @@ type Double =
 <div class="fsdocs-tip" id="fs13">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
 <div class="fsdocs-tip" id="fs14">union case Option.None: Option&lt;&#39;T&gt;</div>
 <div class="fsdocs-tip" id="fs15">val path: string</div>
-<div class="fsdocs-tip" id="fs16">module Newick
-
-from BioFSharp.IO<br /><em>&lt;summary&gt;
-Contains functions for parsing phylogenetic trees in the Newick format
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs17">val ofFile: converter: (string -&gt; &#39;Distance) -&gt; path: string -&gt; BioFSharp.PhylogeneticTree&lt;string * &#39;Distance&gt;<br /><em>&lt;summary&gt;
-Returns a PhylTree of file. Converter is used to create a distancevalue of a string
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs18">val myOptionalTree: BioFSharp.PhylogeneticTree&lt;string * float option&gt;</div>
-<div class="fsdocs-tip" id="fs19">val converter: n: &#39;a * d: &#39;b option -&gt; &#39;a * string</div>
-<div class="fsdocs-tip" id="fs20">val n: &#39;a</div>
-<div class="fsdocs-tip" id="fs21">val d: &#39;b option</div>
-<div class="fsdocs-tip" id="fs22">val fl: &#39;b</div>
-<div class="fsdocs-tip" id="fs23">val toFile: nodeConverter: (&#39;T -&gt; string * string) -&gt; path: string -&gt; tree: BioFSharp.PhylogeneticTree&lt;&#39;T&gt; -&gt; unit<br /><em>&lt;summary&gt;
-Creates a NewickTree file of PhylTree. nodeConverter is used to split the distanceInfo and the name of a node, because they are parsed separately. First result of the tuple is name, second is distance.
-&lt;/summary&gt;</em></div>
+<div class="fsdocs-tip" id="fs16">val myOptionalTree: obj</div>
+<div class="fsdocs-tip" id="fs17">val converter: n: &#39;a * d: &#39;b option -&gt; &#39;a * string</div>
+<div class="fsdocs-tip" id="fs18">val n: &#39;a</div>
+<div class="fsdocs-tip" id="fs19">val d: &#39;b option</div>
+<div class="fsdocs-tip" id="fs20">val fl: &#39;b</div>
 
     </div>
 </main>

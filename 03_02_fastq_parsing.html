@@ -297,7 +297,7 @@ then you can use our converting function:</p>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 21)" onmouseover="showTip(event, 'fs14', 21)" class="id">yourFastqFile</span> <span class="o">=</span> <span class="pn">(</span><span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">&quot;/data/FastQtest.fastq&quot;</span><span class="pn">)</span>
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 22)" onmouseover="showTip(event, 'fs15', 22)" class="id">FastQSequence</span> <span class="o">=</span> 
-    <span onmouseout="hideTip(event, 'fs16', 23)" onmouseover="showTip(event, 'fs16', 23)" class="m">FastQ</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 24)" onmouseover="showTip(event, 'fs17', 24)" class="id">fromFile</span> <span onmouseout="hideTip(event, 'fs18', 25)" onmouseover="showTip(event, 'fs18', 25)" class="m">BioArray</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs19', 26)" onmouseover="showTip(event, 'fs19', 26)" class="id">ofAminoAcidString</span> <span onmouseout="hideTip(event, 'fs5', 27)" onmouseover="showTip(event, 'fs5', 27)" class="fn">qualityConvertFn</span> <span onmouseout="hideTip(event, 'fs14', 28)" onmouseover="showTip(event, 'fs14', 28)" class="id">yourFastqFile</span>
+    <span class="id">FastQ</span><span class="pn">.</span><span class="id">fromFile</span> <span onmouseout="hideTip(event, 'fs16', 23)" onmouseover="showTip(event, 'fs16', 23)" class="id">BioArray</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs17', 24)" onmouseover="showTip(event, 'fs17', 24)" class="id">ofAminoAcidString</span> <span onmouseout="hideTip(event, 'fs5', 25)" onmouseover="showTip(event, 'fs5', 25)" class="id">qualityConvertFn</span> <span onmouseout="hideTip(event, 'fs14', 26)" onmouseover="showTip(event, 'fs14', 26)" class="id">yourFastqFile</span>
 </code></pre>
 Warning: Output, it-value and value references require --eval
 
@@ -324,21 +324,15 @@ from Microsoft.FSharp.Collections</div>
 <div class="fsdocs-tip" id="fs12">namespace BioFSharp</div>
 <div class="fsdocs-tip" id="fs13">namespace BioFSharp.IO</div>
 <div class="fsdocs-tip" id="fs14">val yourFastqFile: string</div>
-<div class="fsdocs-tip" id="fs15">val FastQSequence: FastQ.FastqItem&lt;BioArray.BioArray&lt;AminoAcids.AminoAcid&gt;,int array&gt; seq</div>
-<div class="fsdocs-tip" id="fs16">module FastQ
-
-from BioFSharp.IO</div>
-<div class="fsdocs-tip" id="fs17">val fromFile: converter: (string -&gt; &#39;a) -&gt; qualityConverter: (string -&gt; &#39;b) -&gt; filePath: string -&gt; FastQ.FastqItem&lt;&#39;a,&#39;b&gt; seq<br /><em>&lt;summary&gt;
- Reads FastqItem from FastQ format file. Converter and qualityConverter determines type of sequence by converting seq&amp;lt;char&amp;gt; -&amp;gt; type
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs18">Multiple items<br />module BioArray
+<div class="fsdocs-tip" id="fs15">val FastQSequence: obj</div>
+<div class="fsdocs-tip" id="fs16">Multiple items<br />module BioArray
 
 from BioFSharp.BioCollectionsExtensions<br /><br />--------------------<br />module BioArray
 
 from BioFSharp<br /><em>&lt;summary&gt;
 This module contains the BioArray type and its according functions. The BioArray type is an array of objects using the IBioItem interface
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs19">val ofAminoAcidString: s: #(char seq) -&gt; BioArray.BioArray&lt;AminoAcids.AminoAcid&gt;<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs17">val ofAminoAcidString: s: #(char seq) -&gt; BioArray.BioArray&lt;AminoAcids.AminoAcid&gt;<br /><em>&lt;summary&gt;
  Generates amino acid sequence of one-letter-code raw string
 &lt;/summary&gt;</em></div>
 

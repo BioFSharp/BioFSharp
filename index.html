@@ -310,16 +310,16 @@ It provides a variety of parsers for many biological file formats and a variety 
 <h2><a name="Example" class="anchor" href="#Example">Example</a></h2>
 <p>The following example shows how easy it is to start working with sequences:</p>
 <p>Create a peptide sequence:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 5)" onmouseover="showTip(event, 'fs1', 5)" class="id">BioFSharp</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 2)" onmouseover="showTip(event, 'fs1', 2)" class="id">BioFSharp</span>
 
-<span class="s">&quot;PEPTIDE&quot;</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs5', 6)" onmouseover="showTip(event, 'fs5', 6)" class="m">BioArray</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="id">ofAminoAcidString</span>
+<span class="s">&quot;PEPTIDE&quot;</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 3)" onmouseover="showTip(event, 'fs2', 3)" class="m">BioArray</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="id">ofAminoAcidString</span>
 </code></pre>
 <p><pre>
          1  PEPTIDE
 </pre>
 </p>
 <p>Create a nucleotide sequence:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="s">&quot;ATGC&quot;</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs5', 8)" onmouseover="showTip(event, 'fs5', 8)" class="m">BioArray</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs7', 9)" onmouseover="showTip(event, 'fs7', 9)" class="id">ofNucleotideString</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="s">&quot;ATGC&quot;</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 5)" onmouseover="showTip(event, 'fs2', 5)" class="m">BioArray</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs4', 6)" onmouseover="showTip(event, 'fs4', 6)" class="id">ofNucleotideString</span>
 </code></pre>
 <p><pre>
          1  ATGC
@@ -327,7 +327,7 @@ It provides a variety of parsers for many biological file formats and a variety 
 </p>
 <p>BioFSharp comes equipped with a broad range of features and functions to map amino acids and nucleotides.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// Returns the corresponding nucleotide of the complementary strand</span>
-<span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="m">Nucleotides</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs9', 11)" onmouseover="showTip(event, 'fs9', 11)" class="id">G</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs8', 12)" onmouseover="showTip(event, 'fs8', 12)" class="m">Nucleotides</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs10', 13)" onmouseover="showTip(event, 'fs10', 13)" class="id">complement</span>
+<span onmouseout="hideTip(event, 'fs5', 7)" onmouseover="showTip(event, 'fs5', 7)" class="m">Nucleotides</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="id">G</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs5', 9)" onmouseover="showTip(event, 'fs5', 9)" class="m">Nucleotides</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="id">complement</span>
 </code></pre>
 <p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>C</code></span></summary><div><table><thead><tr></tr></thead><tbody></tbody></table></div></details><style>
 .dni-code-hint {
@@ -363,7 +363,7 @@ table th {
 </style>
 </p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">// Returns the monoisotopic mass of Arginine (minus H2O)</span>
-<span onmouseout="hideTip(event, 'fs11', 14)" onmouseover="showTip(event, 'fs11', 14)" class="m">AminoAcids</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs12', 15)" onmouseover="showTip(event, 'fs12', 15)" class="id">Arg</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs11', 16)" onmouseover="showTip(event, 'fs11', 16)" class="m">AminoAcids</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs13', 17)" onmouseover="showTip(event, 'fs13', 17)" class="id">monoisoMass</span>
+<span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="m">AminoAcids</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="id">Arg</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs8', 13)" onmouseover="showTip(event, 'fs8', 13)" class="m">AminoAcids</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs10', 14)" onmouseover="showTip(event, 'fs10', 14)" class="id">monoisoMass</span>
 </code></pre>
 <p><div class="dni-plaintext"><pre>156.10111102304</pre></div><style>
 .dni-code-hint {
@@ -399,15 +399,15 @@ table th {
 </style>
 </p>
 <p>The various file readers in BioFSharp help to easily retrieve information and write biology-associated file formats like for example FastA:</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 18)" onmouseover="showTip(event, 'fs1', 18)" class="id">BioFSharp</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs14', 19)" onmouseover="showTip(event, 'fs14', 19)" class="id">IO</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 15)" onmouseover="showTip(event, 'fs1', 15)" class="id">BioFSharp</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs11', 16)" onmouseover="showTip(event, 'fs11', 16)" class="id">IO</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs15', 20)" onmouseover="showTip(event, 'fs15', 20)" class="id">filepathFastaA</span> <span class="o">=</span> <span class="pn">(</span><span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">&quot;/data/Chlamy_Cp.fastA&quot;</span><span class="pn">)</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 17)" onmouseover="showTip(event, 'fs12', 17)" class="id">filepathFastaA</span> <span class="o">=</span> <span class="pn">(</span><span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">&quot;/data/Chlamy_Cp.fastA&quot;</span><span class="pn">)</span>
 <span class="c">//reads from file to an array of FastaItems.</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 21)" onmouseover="showTip(event, 'fs16', 21)" class="id">fastaItems</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs17', 22)" onmouseover="showTip(event, 'fs17', 22)" class="m">FastA</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs18', 23)" onmouseover="showTip(event, 'fs18', 23)" class="id">fromFile</span> <span onmouseout="hideTip(event, 'fs5', 24)" onmouseover="showTip(event, 'fs5', 24)" class="m">BioArray</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs6', 25)" onmouseover="showTip(event, 'fs6', 25)" class="id">ofAminoAcidString</span> <span onmouseout="hideTip(event, 'fs15', 26)" onmouseover="showTip(event, 'fs15', 26)" class="id">filepathFastaA</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs13', 18)" onmouseover="showTip(event, 'fs13', 18)" class="id">fastaItems</span> <span class="o">=</span> <span class="id">FastA</span><span class="pn">.</span><span class="id">fromFile</span> <span onmouseout="hideTip(event, 'fs2', 19)" onmouseover="showTip(event, 'fs2', 19)" class="id">BioArray</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs3', 20)" onmouseover="showTip(event, 'fs3', 20)" class="id">ofAminoAcidString</span> <span onmouseout="hideTip(event, 'fs12', 21)" onmouseover="showTip(event, 'fs12', 21)" class="id">filepathFastaA</span>
 </code></pre>
 <p>This will return a sequence of <code>FastaItem</code>s, where you can directly start working with the individual sequences represented as a <code>BioArray</code> of amino acids.</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs16', 27)" onmouseover="showTip(event, 'fs16', 27)" class="id">fastaItems</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs19', 28)" onmouseover="showTip(event, 'fs19', 28)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs20', 29)" onmouseover="showTip(event, 'fs20', 29)" class="id">item</span> <span class="n">0</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs13', 22)" onmouseover="showTip(event, 'fs13', 22)" class="id">fastaItems</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs14', 23)" onmouseover="showTip(event, 'fs14', 23)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs15', 24)" onmouseover="showTip(event, 'fs15', 24)" class="id">item</span> <span class="n">0</span>
 </code></pre>
 <p><details open="open" class="dni-treeview"><summary><span class="dni-code-hint"><code>{ Header = &quot;sp|P19528| cytochrome b6/f complex subunit 4 GN=petD PE=petD.p01&quot;\n  Sequence =\n   [|Met; Ser; Val; Thr; Lys; Lys; Pro; Asp; Leu; Ser; Asp; Pro; Val; Leu; Lys;\n     Ala; Lys; Leu; Ala; Lys; Gly; Met; Gly; His; Asn; Thr; Tyr; Gly; Glu; Pro;\n     Ala; Trp; Pro; Asn; Asp; Leu; Leu; Tyr; ...</code></span></summary><div><table><thead><tr></tr></thead><tbody><tr><td>Header</td><td><div class="dni-plaintext"><pre>sp|P19528| cytochrome b6/f complex subunit 4 GN=petD PE=petD.p01</pre></div></td></tr><tr><td>Sequence</td><td><pre>
          1  MSVTKKPDLS DPVLKAKLAK GMGHNTYGEP AWPNDLLYMF PVVILGTFAC VIGLSVLDPA
@@ -456,61 +456,50 @@ consider adding <a href="https://github.com/CSBiology/BioFSharp/tree/developer/d
 <a href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License file</a> in the GitHub repository.</p>
 
         <div class="fsdocs-tip" id="fs1">namespace BioFSharp</div>
-<div class="fsdocs-tip" id="fs2">namespace BioFSharp.Interactive</div>
-<div class="fsdocs-tip" id="fs3">module Formatters
-
-from BioFSharp.Interactive</div>
-<div class="fsdocs-tip" id="fs4">val registerAll: unit -&gt; unit</div>
-<div class="fsdocs-tip" id="fs5">Multiple items<br />module BioArray
+<div class="fsdocs-tip" id="fs2">Multiple items<br />module BioArray
 
 from BioFSharp.BioCollectionsExtensions<br /><br />--------------------<br />module BioArray
 
 from BioFSharp<br /><em>&lt;summary&gt;
 This module contains the BioArray type and its according functions. The BioArray type is an array of objects using the IBioItem interface
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs6">val ofAminoAcidString: s: #(char seq) -&gt; BioArray.BioArray&lt;AminoAcids.AminoAcid&gt;<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs3">val ofAminoAcidString: s: #(char seq) -&gt; BioArray.BioArray&lt;AminoAcids.AminoAcid&gt;<br /><em>&lt;summary&gt;
  Generates amino acid sequence of one-letter-code raw string
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs7">val ofNucleotideString: s: #(char seq) -&gt; BioArray.BioArray&lt;Nucleotides.Nucleotide&gt;<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs4">val ofNucleotideString: s: #(char seq) -&gt; BioArray.BioArray&lt;Nucleotides.Nucleotide&gt;<br /><em>&lt;summary&gt;
  Generates nucleotide sequence of one-letter-code raw string
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs8">module Nucleotides
+<div class="fsdocs-tip" id="fs5">module Nucleotides
 
 from BioFSharp<br /><em>&lt;summary&gt;
 Contains the Nucleotide type and its according functions.
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs9">union case Nucleotides.Nucleotide.G: Nucleotides.Nucleotide<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs6">union case Nucleotides.Nucleotide.G: Nucleotides.Nucleotide<br /><em>&lt;summary&gt;
  G : Guanine
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs10">val complement: nuc: Nucleotides.Nucleotide -&gt; Nucleotides.Nucleotide<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs7">val complement: nuc: Nucleotides.Nucleotide -&gt; Nucleotides.Nucleotide<br /><em>&lt;summary&gt;
  Returns the Nucleotide from the complementary strand 
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs11">module AminoAcids
+<div class="fsdocs-tip" id="fs8">module AminoAcids
 
 from BioFSharp<br /><em>&lt;summary&gt;
 Contains the AminoAcid type and its according functions. The AminoAcid type is a complex presentation of amino acids, allowing modifications
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs12">union case AminoAcids.AminoAcid.Arg: AminoAcids.AminoAcid<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs9">union case AminoAcids.AminoAcid.Arg: AminoAcids.AminoAcid<br /><em>&lt;summary&gt;
  &#39;R&#39; - Arg - Arginine
 
  Functionally similar to lysine.
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs13">val monoisoMass: aa: AminoAcids.AminoAcid -&gt; float<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs10">val monoisoMass: aa: AminoAcids.AminoAcid -&gt; float<br /><em>&lt;summary&gt;
  Returns the monoisotopic mass of AminoAcid (without H20)
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs14">namespace BioFSharp.IO</div>
-<div class="fsdocs-tip" id="fs15">val filepathFastaA: string</div>
-<div class="fsdocs-tip" id="fs16">val fastaItems: FastA.FastaItem&lt;BioArray.BioArray&lt;AminoAcids.AminoAcid&gt;&gt; seq</div>
-<div class="fsdocs-tip" id="fs17">module FastA
-
-from BioFSharp.IO</div>
-<div class="fsdocs-tip" id="fs18">val fromFile: converter: (char seq -&gt; &#39;a) -&gt; filePath: string -&gt; FastA.FastaItem&lt;&#39;a&gt; seq<br /><em>&lt;summary&gt;
- Reads FastaItem from file. Converter determines type of sequence by converting seq&amp;lt;char&amp;gt; -&amp;gt; type
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs19">module Seq
+<div class="fsdocs-tip" id="fs11">namespace BioFSharp.IO</div>
+<div class="fsdocs-tip" id="fs12">val filepathFastaA: string</div>
+<div class="fsdocs-tip" id="fs13">val fastaItems: obj seq</div>
+<div class="fsdocs-tip" id="fs14">module Seq
 
 from Microsoft.FSharp.Collections</div>
-<div class="fsdocs-tip" id="fs20">val item: index: int -&gt; source: &#39;T seq -&gt; &#39;T</div>
+<div class="fsdocs-tip" id="fs15">val item: index: int -&gt; source: &#39;T seq -&gt; &#39;T</div>
 
     </div>
 </main>

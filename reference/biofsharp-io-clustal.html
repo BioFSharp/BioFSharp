@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, Benedikt Venn, F# open source contributors" name="author">
+    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" name="author">
     <!-- Opengraph properties (https://ogp.me/) -->
     <meta property="og:site_name" content="BioFSharp">
     <meta property="og:title" content="Clustal (BioFSharp)" />
@@ -274,7 +274,7 @@
       </a>
     </dt>
     <dt>
-      Assembly: BioFSharp.IO.dll
+      Assembly: BioFSharp.dll
     </dt>
   </dl>
   <div class="fsdocs-xmldoc">
@@ -283,52 +283,6 @@
         Contains functions for reading clustal alignment files
       </p>
     </div>
-  </div>
-  <div>
-    <h3>
-      Types
-    </h3>
-    <table class="table outer-list fsdocs-entity-list">
-      <thead>
-        <tr>
-          <td>
-            Type
-          </td>
-          <td>
-            Description
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="fsdocs-entity-name">
-            <p>
-              <a name="AlignmentInfo">
-                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-clustal-alignmentinfo.html">
-                  AlignmentInfo
-                </a>
-              </a>
-            </p>
-          </td>
-          <td class="fsdocs-entity-xmldoc">
-            <div>
-              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.IO.Clustal.AlignmentInfo`')">
-                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
-              </div>
-              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.IO.Clustal.AlignmentInfo\'/>')">
-                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
-              </div>
-              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/Clustal.fs#L13-13" class="fsdocs-source-link" title="Source on GitHub">
-                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
-              </a>
-              <p class="fsdocs-summary">
-                
-              </p>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
   <div>
     <h3>
@@ -349,98 +303,19 @@
         <tr>
           <td class="fsdocs-member-usage">
             <div>
-              <code onmouseout="hideTip(event, '628', 628)" onmouseover="showTip(event, '628', 628)">
+              <code onmouseout="hideTip(event, '558', 558)" onmouseover="showTip(event, '558', 558)">
                 <p>
-                  <a id="hasClustalFileHeader">
-                    <a href="#hasClustalFileHeader">
-                      <code><span>hasClustalFileHeader&#32;<span>alignment</span></span></code>
+                  <a id="read">
+                    <a href="#read">
+                      <code><span>read&#32;<span>path</span></span></code>
                     </a>
                   </a>
                 </p>
               </code>
-              <div class="fsdocs-tip" id="628">
+              <div class="fsdocs-tip" id="558">
                 <div class="member-tooltip">
                   Full Usage: 
-                  <code><span>hasClustalFileHeader&#32;<span>alignment</span></span></code>
-                  <br/>
-                  <br/>
-                  Parameters: 
-                  <ul>
-                    <span>
-                      <b>
-                        alignment
-                      </b>
-                      :
-                      <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
-                    </span>
-                    <br/>
-                  </ul>
-                  <br/>
-                  <span>
-                    Returns: 
-                    <code>bool</code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <details>
-              <summary>
-                <div class="fsdocs-summary">
-                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:BioFSharp.IO.Clustal.hasClustalFileHeader`')">
-                    <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
-                  </div>
-                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.Clustal.hasClustalFileHeader\'/>')">
-                    <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
-                  </div>
-                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/Clustal.fs#L105-105" class="fsdocs-source-link" title="Source on GitHub">
-                    <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
-                  </a>
-                  <p class="fsdocs-summary">
-                    Checks if the header of a parsed clustal alignment matches the clustal file conventions
-                  </p>
-                </div>
-              </summary>
-              <dl class="fsdocs-params">
-                <dt class="fsdocs-param">
-                  <span class="fsdocs-param-name">
-                    alignment
-                  </span>
-                  :
-                  <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
-                </dt>
-                <dd class="fsdocs-param-docs"></dd>
-              </dl>
-              <dl class="fsdocs-returns">
-                <dt>
-                  <span class="fsdocs-return-name">
-                    Returns: 
-                  </span>
-                  <code>bool</code>
-                </dt>
-                <dd class="fsdocs-return-docs"></dd>
-              </dl>
-            </details>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '629', 629)" onmouseover="showTip(event, '629', 629)">
-                <p>
-                  <a id="ofFile">
-                    <a href="#ofFile">
-                      <code><span>ofFile&#32;<span>path</span></span></code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="629">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code><span>ofFile&#32;<span>path</span></span></code>
+                  <code><span>read&#32;<span>path</span></span></code>
                   <br/>
                   <br/>
                   Parameters: 
@@ -457,7 +332,7 @@
                   <br/>
                   <span>
                     Returns: 
-                    <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
+                    <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
                   </span>
                   <br/>
                 </div>
@@ -468,13 +343,13 @@
             <details>
               <summary>
                 <div class="fsdocs-summary">
-                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:BioFSharp.IO.Clustal.ofFile`')">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:BioFSharp.IO.Clustal.read`')">
                     <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
                   </div>
-                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.Clustal.ofFile\'/>')">
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.Clustal.read\'/>')">
                     <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
                   </div>
-                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/Clustal.fs#L99-99" class="fsdocs-source-link" title="Source on GitHub">
+                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/IO/Clustal.fs#L97-97" class="fsdocs-source-link" title="Source on GitHub">
                     <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
                   </a>
                   <p class="fsdocs-summary">
@@ -497,7 +372,7 @@
                   <span class="fsdocs-return-name">
                     Returns: 
                   </span>
-                  <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
+                  <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
                 </dt>
                 <dd class="fsdocs-return-docs"></dd>
               </dl>
@@ -507,19 +382,19 @@
         <tr>
           <td class="fsdocs-member-usage">
             <div>
-              <code onmouseout="hideTip(event, '630', 630)" onmouseover="showTip(event, '630', 630)">
+              <code onmouseout="hideTip(event, '559', 559)" onmouseover="showTip(event, '559', 559)">
                 <p>
-                  <a id="toFileWithOverWrite">
-                    <a href="#toFileWithOverWrite">
-                      <code><span>toFileWithOverWrite&#32;<span>path&#32;alignment</span></span></code>
+                  <a id="write">
+                    <a href="#write">
+                      <code><span>write&#32;<span>path&#32;alignment</span></span></code>
                     </a>
                   </a>
                 </p>
               </code>
-              <div class="fsdocs-tip" id="630">
+              <div class="fsdocs-tip" id="559">
                 <div class="member-tooltip">
                   Full Usage: 
-                  <code><span>toFileWithOverWrite&#32;<span>path&#32;alignment</span></span></code>
+                  <code><span>write&#32;<span>path&#32;alignment</span></span></code>
                   <br/>
                   <br/>
                   Parameters: 
@@ -537,7 +412,7 @@
                         alignment
                       </b>
                       :
-                      <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
+                      <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
                     </span>
                     <br/>
                   </ul>
@@ -550,13 +425,13 @@
             <details>
               <summary>
                 <div class="fsdocs-summary">
-                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:BioFSharp.IO.Clustal.toFileWithOverWrite`')">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:M:BioFSharp.IO.Clustal.write`')">
                     <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
                   </div>
-                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.Clustal.toFileWithOverWrite\'/>')">
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.Clustal.write\'/>')">
                     <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
                   </div>
-                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/Clustal.fs#L123-123" class="fsdocs-source-link" title="Source on GitHub">
+                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/IO/Clustal.fs#L104-104" class="fsdocs-source-link" title="Source on GitHub">
                     <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
                   </a>
                   <p class="fsdocs-summary">
@@ -578,7 +453,7 @@
                     alignment
                   </span>
                   :
-                  <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
+                  <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-alignment-alignment-2.html">Alignment</a>&lt;<span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-taggedsequence-2.html">TaggedSequence</a>&lt;<span>string,&#32;char</span>&gt;</span>,&#32;<a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-clustal-alignmentinfo.html">AlignmentInfo</a></span>&gt;</span></code>
                 </dt>
                 <dd class="fsdocs-param-docs"></dd>
               </dl>

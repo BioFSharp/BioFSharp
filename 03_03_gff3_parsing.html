@@ -398,17 +398,17 @@ If FastA sequences are included they are appended by a FastA writer described in
         <span onmouseout="hideTip(event, 'fs4', 36)" onmouseover="showTip(event, 'fs4', 36)" class="id">features</span> 
         <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 37)" onmouseover="showTip(event, 'fs23', 37)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs24', 38)" onmouseover="showTip(event, 'fs24', 38)" class="id">choose</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs25', 39)" onmouseover="showTip(event, 'fs25', 39)" class="fn">x</span> <span class="k">-&gt;</span>    
             <span class="k">match</span> <span onmouseout="hideTip(event, 'fs25', 40)" onmouseover="showTip(event, 'fs25', 40)" class="fn">x</span> <span class="k">with</span>
-            <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs5', 41)" onmouseover="showTip(event, 'fs5', 41)" class="m">GFF3</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs26', 42)" onmouseover="showTip(event, 'fs26', 42)" class="id">GFFEntryLine</span> <span onmouseout="hideTip(event, 'fs27', 43)" onmouseover="showTip(event, 'fs27', 43)" class="fn">x</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs28', 44)" onmouseover="showTip(event, 'fs28', 44)" class="uc">Some</span> <span onmouseout="hideTip(event, 'fs27', 45)" onmouseover="showTip(event, 'fs27', 45)" class="fn">x</span>
-            <span class="pn">|</span> <span class="id">_</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs29', 46)" onmouseover="showTip(event, 'fs29', 46)" class="uc">None</span><span class="pn">)</span>
+            <span class="pn">|</span> <span onmouseout="hideTip(event, 'fs5', 41)" onmouseover="showTip(event, 'fs5', 41)" class="m">GFF3</span><span class="pn">.</span><span class="id">GFFEntryLine</span> <span onmouseout="hideTip(event, 'fs25', 42)" onmouseover="showTip(event, 'fs25', 42)" class="id">x</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 43)" onmouseover="showTip(event, 'fs26', 43)" class="id">Some</span> <span onmouseout="hideTip(event, 'fs25', 44)" onmouseover="showTip(event, 'fs25', 44)" class="id">x</span>
+            <span class="pn">|</span> <span class="id">_</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs27', 45)" onmouseover="showTip(event, 'fs27', 45)" class="id">None</span><span class="pn">)</span>
 
     <span class="c">//get all CDS features</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 47)" onmouseover="showTip(event, 'fs30', 47)" class="fn">filteredCDSFeatures</span> <span class="o">=</span>
-        <span onmouseout="hideTip(event, 'fs22', 48)" onmouseover="showTip(event, 'fs22', 48)" class="fn">filteredGFFEntries</span>
-        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 49)" onmouseover="showTip(event, 'fs23', 49)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 50)" onmouseover="showTip(event, 'fs31', 50)" class="id">filter</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs27', 51)" onmouseover="showTip(event, 'fs27', 51)" class="fn">x</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs27', 52)" onmouseover="showTip(event, 'fs27', 52)" class="fn">x</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs32', 53)" onmouseover="showTip(event, 'fs32', 53)" class="id">Feature</span> <span class="o">=</span> <span class="s">&quot;CDS&quot;</span><span class="pn">)</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs28', 46)" onmouseover="showTip(event, 'fs28', 46)" class="fn">filteredCDSFeatures</span> <span class="o">=</span>
+        <span onmouseout="hideTip(event, 'fs22', 47)" onmouseover="showTip(event, 'fs22', 47)" class="fn">filteredGFFEntries</span>
+        <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 48)" onmouseover="showTip(event, 'fs23', 48)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs29', 49)" onmouseover="showTip(event, 'fs29', 49)" class="id">filter</span> <span class="pn">(</span><span class="k">fun</span> <span onmouseout="hideTip(event, 'fs30', 50)" onmouseover="showTip(event, 'fs30', 50)" class="fn">x</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs30', 51)" onmouseover="showTip(event, 'fs30', 51)" class="fn">x</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs31', 52)" onmouseover="showTip(event, 'fs31', 52)" class="id">Feature</span> <span class="o">=</span> <span class="s">&quot;CDS&quot;</span><span class="pn">)</span>
 
-    <span onmouseout="hideTip(event, 'fs30', 54)" onmouseover="showTip(event, 'fs30', 54)" class="fn">filteredCDSFeatures</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 55)" onmouseover="showTip(event, 'fs23', 55)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs33', 56)" onmouseover="showTip(event, 'fs33', 56)" class="id">head</span>
+    <span onmouseout="hideTip(event, 'fs28', 53)" onmouseover="showTip(event, 'fs28', 53)" class="fn">filteredCDSFeatures</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs23', 54)" onmouseover="showTip(event, 'fs23', 54)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs32', 55)" onmouseover="showTip(event, 'fs32', 55)" class="id">head</span>
 </code></pre>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 57)" onmouseover="showTip(event, 'fs34', 57)" class="id">firstCDSSequence</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 58)" onmouseover="showTip(event, 'fs5', 58)" class="m">GFF3</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs35', 59)" onmouseover="showTip(event, 'fs35', 59)" class="id">getSequence</span> <span onmouseout="hideTip(event, 'fs21', 60)" onmouseover="showTip(event, 'fs21', 60)" class="id">firstCDS</span> <span onmouseout="hideTip(event, 'fs4', 61)" onmouseover="showTip(event, 'fs4', 61)" class="id">features</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs33', 56)" onmouseover="showTip(event, 'fs33', 56)" class="id">firstCDSSequence</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs5', 57)" onmouseover="showTip(event, 'fs5', 57)" class="m">GFF3</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs34', 58)" onmouseover="showTip(event, 'fs34', 58)" class="id">getSequence</span> <span onmouseout="hideTip(event, 'fs21', 59)" onmouseover="showTip(event, 'fs21', 59)" class="id">firstCDS</span> <span onmouseout="hideTip(event, 'fs4', 60)" onmouseover="showTip(event, 'fs4', 60)" class="id">features</span>
 </code></pre>
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="text">seq [A; T; G; A; ...]
 </code></pre></td></tr></table>
@@ -416,13 +416,11 @@ If FastA sequences are included they are appended by a FastA writer described in
         <div class="fsdocs-tip" id="fs1">namespace BioFSharp</div>
 <div class="fsdocs-tip" id="fs2">namespace BioFSharp.IO</div>
 <div class="fsdocs-tip" id="fs3">val filepathGFF: string</div>
-<div class="fsdocs-tip" id="fs4">val features: GFF3.GFFLine&lt;BioArray.BioArray&lt;Nucleotides.Nucleotide&gt;&gt; seq</div>
+<div class="fsdocs-tip" id="fs4">val features: FileFormats.GFF3.GFFLine&lt;Nucleotides.Nucleotide&gt; seq</div>
 <div class="fsdocs-tip" id="fs5">module GFF3
 
-from BioFSharp.IO<br /><em>&lt;summary&gt;
-Contains functions for reading and writing GFF3 files
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs6">val fromFile: fastAconverter: (char seq -&gt; &#39;a) -&gt; filepath: string -&gt; GFF3.GFFLine&lt;&#39;a&gt; seq<br /><em>&lt;summary&gt;
+from BioFSharp.IO</div>
+<div class="fsdocs-tip" id="fs6">val fromFile: fastAconverter: (char seq -&gt; #(&#39;a0 seq)) -&gt; filepath: string -&gt; FileFormats.GFF3.GFFLine&lt;&#39;a0&gt; seq<br /><em>&lt;summary&gt;
 reads in a file and gives a GFFLine&amp;lt;&#39;a&amp;gt; list. If file contains a FastA sequence it is converted to FastA.FastaItem with given converter. (Use &#39;id&#39; as converter if no FastA is required).
 &lt;/summary&gt;</em></div>
 <div class="fsdocs-tip" id="fs7">module BioArray
@@ -441,12 +439,12 @@ This module contains the BioArray type and its according functions. The BioArray
 Validates GFF3 file. Prints all appearances of errors with line index. If no (SO)FA check is needed set &quot;&quot; as so_TermsPath.
 &lt;/summary&gt;</em></div>
 <div class="fsdocs-tip" id="fs14">val searchterm: string<br /><em>Term to search for:</em></div>
-<div class="fsdocs-tip" id="fs15">val gffExampleSearch: GFF3.GFFEntry seq<br /><em>with this function you can search features which are related to the searchterm</em></div>
-<div class="fsdocs-tip" id="fs16">val relationshipSearch: gffList: GFF3.GFFLine&lt;&#39;a&gt; seq -&gt; searchterm: string -&gt; GFF3.GFFEntry seq<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs15">val gffExampleSearch: FileFormats.GFF3.GFFEntry seq<br /><em>with this function you can search features which are related to the searchterm</em></div>
+<div class="fsdocs-tip" id="fs16">val relationshipSearch: gffList: FileFormats.GFF3.GFFLine&lt;&#39;a&gt; seq -&gt; searchterm: string -&gt; FileFormats.GFF3.GFFEntry seq<br /><em>&lt;summary&gt;
 Searches for a term and gives a list of all features of which the searchterm is the mainfeature (ID) or a child of it (Parent).
 &lt;/summary&gt;</em></div>
 <div class="fsdocs-tip" id="fs17">val gffExampleWrite: unit<br /><em>Takes a seq&lt;GFF&lt;&#39;a&gt;&gt;, a FASTA converter and a destination filepath and writes it into a .gff. Hint: Use converter = id if no FastA sequence is included.</em></div>
-<div class="fsdocs-tip" id="fs18">val write: converter: (&#39;a -&gt; char) -&gt; path: string -&gt; input: GFF3.GFFLine&lt;#(&#39;a seq)&gt; seq -&gt; unit<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs18">val write: converter: (&#39;a -&gt; char) -&gt; path: string -&gt; input: FileFormats.GFF3.GFFLine&lt;&#39;a&gt; seq -&gt; unit (requires &#39;a :&gt; &#39;a0 seq)<br /><em>&lt;summary&gt;
 writes GFF lines to file. Hint: Use id as converter if no FASTA sequence is included.
 &lt;/summary&gt;</em></div>
 <div class="fsdocs-tip" id="fs19">module BioItem
@@ -457,25 +455,24 @@ from BioFSharp<br /><em>&lt;summary&gt;
 <div class="fsdocs-tip" id="fs20">val symbol: bItem: #IBioItem -&gt; char<br /><em>&lt;summary&gt;
  Returns the symbol of the bio item
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs21">val firstCDS: GFF3.GFFEntry</div>
-<div class="fsdocs-tip" id="fs22">val filteredGFFEntries: GFF3.GFFEntry seq</div>
+<div class="fsdocs-tip" id="fs21">val firstCDS: FileFormats.GFF3.GFFEntry</div>
+<div class="fsdocs-tip" id="fs22">val filteredGFFEntries: FileFormats.GFF3.GFFEntry seq</div>
 <div class="fsdocs-tip" id="fs23">module Seq
 
 from Microsoft.FSharp.Collections</div>
 <div class="fsdocs-tip" id="fs24">val choose: chooser: (&#39;T -&gt; &#39;U option) -&gt; source: &#39;T seq -&gt; &#39;U seq</div>
-<div class="fsdocs-tip" id="fs25">val x: GFF3.GFFLine&lt;BioArray.BioArray&lt;Nucleotides.Nucleotide&gt;&gt;</div>
-<div class="fsdocs-tip" id="fs26">union case GFF3.GFFLine.GFFEntryLine: GFF3.GFFEntry -&gt; GFF3.GFFLine&lt;&#39;a&gt;</div>
-<div class="fsdocs-tip" id="fs27">val x: GFF3.GFFEntry</div>
-<div class="fsdocs-tip" id="fs28">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
-<div class="fsdocs-tip" id="fs29">union case Option.None: Option&lt;&#39;T&gt;</div>
-<div class="fsdocs-tip" id="fs30">val filteredCDSFeatures: GFF3.GFFEntry seq</div>
-<div class="fsdocs-tip" id="fs31">val filter: predicate: (&#39;T -&gt; bool) -&gt; source: &#39;T seq -&gt; &#39;T seq</div>
-<div class="fsdocs-tip" id="fs32">GFF3.GFFEntry.Feature: string<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs25">val x: FileFormats.GFF3.GFFLine&lt;Nucleotides.Nucleotide&gt;</div>
+<div class="fsdocs-tip" id="fs26">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="fsdocs-tip" id="fs27">union case Option.None: Option&lt;&#39;T&gt;</div>
+<div class="fsdocs-tip" id="fs28">val filteredCDSFeatures: FileFormats.GFF3.GFFEntry seq</div>
+<div class="fsdocs-tip" id="fs29">val filter: predicate: (&#39;T -&gt; bool) -&gt; source: &#39;T seq -&gt; &#39;T seq</div>
+<div class="fsdocs-tip" id="fs30">val x: FileFormats.GFF3.GFFEntry</div>
+<div class="fsdocs-tip" id="fs31">FileFormats.GFF3.GFFEntry.Feature: string<br /><em>&lt;summary&gt;
 feature, type or method; has to be a term from SO or SO accession number
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs33">val head: source: &#39;T seq -&gt; &#39;T</div>
-<div class="fsdocs-tip" id="fs34">val firstCDSSequence: Nucleotides.Nucleotide seq</div>
-<div class="fsdocs-tip" id="fs35">val getSequence: cDSfeature: GFF3.GFFEntry -&gt; gFFFile: GFF3.GFFLine&lt;#(&#39;a0 seq)&gt; seq -&gt; &#39;a0 seq<br /><em>&lt;summary&gt;
+<div class="fsdocs-tip" id="fs32">val head: source: &#39;T seq -&gt; &#39;T</div>
+<div class="fsdocs-tip" id="fs33">val firstCDSSequence: Nucleotides.Nucleotide seq</div>
+<div class="fsdocs-tip" id="fs34">val getSequence: cDSfeature: FileFormats.GFF3.GFFEntry -&gt; gFFFile: FileFormats.GFF3.GFFLine&lt;&#39;a&gt; seq -&gt; &#39;a seq (requires &#39;a :&gt; &#39;a0 seq)<br /><em>&lt;summary&gt;
 if a FastA sequence is included this function searches the features corresponding sequence
 &lt;/summary&gt;</em></div>
 

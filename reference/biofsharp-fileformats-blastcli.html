@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en" data-root="https://csbiology.github.io/BioFSharp/">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" name="author">
+    <!-- Opengraph properties (https://ogp.me/) -->
+    <meta property="og:site_name" content="BioFSharp">
+    <meta property="og:title" content="BlastCLI (BioFSharp)" />
+    <meta property="og:url" content="https://csbiology.github.io/BioFSharp/{{fsdocs-source-basename}}.html">
+    <meta property="og:type" content="website" />
+    <!-- Twitter cards (https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="https://csbiology.github.io/BioFSharp/">
+    <meta name="twitter:title" content="BlastCLI (BioFSharp)">
+    
+    <title>BlastCLI (BioFSharp) | BioFSharp</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://csbiology.github.io/BioFSharp/img/favicon.ico" rel="icon" sizes="32x32" type="image/png"/>
+    <script type="application/javascript" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme-set-dark.js"></script>
+    <link href="https://csbiology.github.io/BioFSharp/content/fsdocs-default.css" rel="stylesheet" type="text/css"/>
+    <link href="https://csbiology.github.io/BioFSharp/content/fsdocs-theme.css" rel="stylesheet" type="text/css"/>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+    
+</head>
+<body class="api-docs">
+<header>
+    <div class="start">
+        <div id="menu-toggle">
+            <iconify-icon class="icon closed" height="22" icon="eva:menu-fill" width="22"></iconify-icon>
+            <iconify-icon class="icon open" height="22" icon="mi:close" width="22"></iconify-icon>
+            <input type="checkbox" name="mobile-menu" />
+            <ul class="menu">
+                <li class="nav-header">Links</li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License</a>
+                </li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md">Release
+                    Notes</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/">Source
+                    Repository</a></li>
+                <li class="nav-header ">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/biocollections.html">
+    Biocollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/rnaseq_normalization.html">
+    RNA-Seq data normalization
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+        <a href="https://csbiology.github.io/BioFSharp/">
+            <img alt="Header menu logo" src="https://csbiology.github.io/BioFSharp/img/logo.png">
+            <strong>BioFSharp</strong>
+        </a>
+    </div>
+    <div class="end">
+        <a href="https://github.com/CSBiology/BioFSharp/" target="_blank">
+            <iconify-icon icon="uil:github" width="26" height="26"></iconify-icon>
+        </a>
+        <iconify-icon id="search-btn" icon="carbon:search" class="search" width="24" height="24"></iconify-icon>
+        <fsdocs-theme-toggle></fsdocs-theme-toggle>
+    </div>
+</header>
+<aside id="fsdocs-main-menu">
+    <ul class="menu">
+        <li class="nav-header">Links</li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE">License</a>
+        </li>
+        <li class="nav-item"><a class="nav-link"
+                                href="https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md">Release
+            Notes</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CSBiology/BioFSharp/">Source
+            Repository</a></li>
+        <li class="nav-header ">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/core/biocollections.html">
+    Biocollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/rnaseq_normalization.html">
+    RNA-Seq data normalization
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+        <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://csbiology.github.io/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+    </ul>
+</aside>
+<main>
+    <div id="content">
+        <div>
+  <h2>
+    BlastCLI Module
+  </h2>
+  <dl class="fsdocs-metadata">
+    <dt>
+      Namespace: 
+      <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats.html">
+        BioFSharp.FileFormats
+      </a>
+    </dt>
+    <dt>
+      Assembly: BioFSharp.dll
+    </dt>
+  </dl>
+  <div class="fsdocs-xmldoc">
+    <div>
+      <p class="fsdocs-summary">
+        DSLs for creating BLAST CLI commands
+
+Generated and tested for the tag blast:2.2.31--pl526h3066fca_3
+      </p>
+    </div>
+  </div>
+  <div>
+    <h3>
+      Types and nested modules
+    </h3>
+    <table class="table outer-list fsdocs-entity-list">
+      <thead>
+        <tr>
+          <td>
+            Type/Module
+          </td>
+          <td>
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="BlastN">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-blastn.html">
+                  BlastN
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.BlastN`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.BlastN\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L348-348" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                DSL for blastn programs
+The blastn application searches a nucleotide query against nucleotide subject sequences or a nucleotide database. 
+Four different tasks are supported: 
+
+1.) “megablast”, for very similar sequences (e.g, sequencing errors)
+
+2.) “dc-megablast”, typically used for inter-species comparisons
+
+3.) “blastn”, the traditional program used for inter-species comparisons
+
+4.) “blastn-short”, optimized for sequences less than 30 nucleotides.
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="BlastP">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-blastp.html">
+                  BlastP
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.BlastP`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.BlastP\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L717-717" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                DSL for blastp programs
+The blastp application searches a protein sequence against protein subject sequences or a protein database. 
+Three different tasks are supported: 
+
+1.) “blastp”, for standard protein-protein comparisons 
+
+2.) “blastp-short”, optimized for query sequences shorter than 30 residues 
+
+3.) “blastp-fast”, a faster version that uses a larger word-size
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="BlastParams">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-blastparams.html">
+                  BlastParams
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.BlastParams`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.BlastParams\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L240-240" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                DSL for command line parameters that are common to all blast applications
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="CBlastResult">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-cblastresult.html">
+                  CBlastResult
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.CBlastResult`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.CBlastResult\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L908-908" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="DbType">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-dbtype.html">
+                  DbType
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.DbType`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.DbType\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L40-40" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                Molecule type of input, values can be nucl or prot
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="MakeBlastDBInputType">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-makeblastdbinputtype.html">
+                  MakeBlastDBInputType
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.MakeBlastDBInputType`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.MakeBlastDBInputType\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L23-23" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                Input file type for makeblastdb
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="MakeBlastDbParams">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-makeblastdbparams.html">
+                  MakeBlastDbParams
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.MakeBlastDbParams`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.MakeBlastDbParams\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L49-49" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                DSL for command line arguments for the NCBI makeblastdb tool
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="OutputCustom">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-outputcustom.html">
+                  OutputCustom
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.OutputCustom`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.OutputCustom\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L142-142" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                OutputType options Tabular, TabularWithComments, and CSV can be additionally configured to produce a custom format specified by space delimited format specifiers.
+When not provided, the default value is:
+'qseqid sseqid pident length mismatch gapopen qstart qend sstart send
+evalue bitscore', which is equivalent to the keyword 'std'
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="OutputType">
+                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-blastcli-outputtype.html">
+                  OutputType
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.FileFormats.BlastCLI.OutputType`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.FileFormats.BlastCLI.OutputType\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/FileFormats/BlastCLI.fs#L104-104" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                alignment view options
+              </p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+        
+    </div>
+</main>
+<aside id="fsdocs-page-menu">
+    <p id="on-this-page">On this page</p>
+    <div class="empty"></div>
+</aside>
+<dialog>
+    <input type="search" placeholder="Search docs" />
+    <div class="results">
+        <ul></ul>
+        <p class="empty">Type something to start searching.</p>
+    </div>
+</dialog>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-tips.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme-toggle.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-theme.js"></script>
+<script type="module" src="https://csbiology.github.io/BioFSharp/content/fsdocs-search.js"></script>
+
+</body>
+</html>

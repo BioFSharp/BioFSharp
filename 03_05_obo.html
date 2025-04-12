@@ -280,10 +280,10 @@ editable.</p>
 
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="id">psiMs</span> <span class="o">=</span> 
     <span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs8', 8)" onmouseover="showTip(event, 'fs8', 8)" class="id">fromFile</span> <span class="pn">(</span><span onmouseout="hideTip(event, 'fs5', 9)" onmouseover="showTip(event, 'fs5', 9)" class="id">fileDir</span> <span class="o">+</span> <span class="s">&quot;Psi-MS.obo&quot;</span><span class="pn">)</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs9', 10)" onmouseover="showTip(event, 'fs9', 10)" class="m">Obo</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs10', 11)" onmouseover="showTip(event, 'fs10', 11)" class="id">parseOboTerms</span> <span class="k">true</span>
-    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs7', 12)" onmouseover="showTip(event, 'fs7', 12)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs11', 13)" onmouseover="showTip(event, 'fs11', 13)" class="id">toArray</span>
+    <span class="o">|&gt;</span> <span class="id">Obo</span><span class="pn">.</span><span class="id">parseOboTerms</span> <span class="k">true</span>
+    <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs9', 11)" onmouseover="showTip(event, 'fs9', 11)" class="id">toArray</span>
 
-<span onmouseout="hideTip(event, 'fs6', 14)" onmouseover="showTip(event, 'fs6', 14)" class="id">psiMs</span><span class="pn">.</span><span class="pn">[</span><span class="n">0</span><span class="pn">]</span>
+<span onmouseout="hideTip(event, 'fs6', 12)" onmouseover="showTip(event, 'fs6', 12)" class="id">psiMs</span><span class="pn">.</span><span class="pn">[</span><span class="n">0</span><span class="pn">]</span>
 </code></pre>
 Warning: Output, it-value and value references require --eval
 
@@ -292,7 +292,7 @@ Warning: Output, it-value and value references require --eval
 <div class="fsdocs-tip" id="fs3">namespace BioFSharp</div>
 <div class="fsdocs-tip" id="fs4">namespace BioFSharp.IO</div>
 <div class="fsdocs-tip" id="fs5">val fileDir: string</div>
-<div class="fsdocs-tip" id="fs6">val psiMs: Obo.OboTerm array</div>
+<div class="fsdocs-tip" id="fs6">val psiMs: obj array</div>
 <div class="fsdocs-tip" id="fs7">Multiple items<br />module Seq
 
 from Microsoft.FSharp.Collections<br /><br />--------------------<br />type Seq =
@@ -306,15 +306,7 @@ from Microsoft.FSharp.Collections<br /><br />--------------------<br />type Seq 
   static member write: path: string -&gt; data: &#39;a seq -&gt; unit
   static member writeOrAppend: path: string -&gt; data: &#39;a seq -&gt; unit</div>
 <div class="fsdocs-tip" id="fs8">static member Seq.fromFile: filePath: string -&gt; string seq</div>
-<div class="fsdocs-tip" id="fs9">module Obo
-
-from BioFSharp.IO<br /><em>&lt;summary&gt;
- Functions for par
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs10">val parseOboTerms: verbose: bool -&gt; input: string seq -&gt; Obo.OboTerm seq<br /><em>&lt;summary&gt;
- Parse Obo Terms [Term] from seq&amp;lt;string&amp;gt;
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs11">val toArray: source: &#39;T seq -&gt; &#39;T array</div>
+<div class="fsdocs-tip" id="fs9">val toArray: source: &#39;T seq -&gt; &#39;T array</div>
 
     </div>
 </main>

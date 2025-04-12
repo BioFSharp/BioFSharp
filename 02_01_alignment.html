@@ -379,38 +379,38 @@ Also besides the alignment functions which only take BioItems as input and repre
 <p>The first step is to create a wrapper-object. As optional input it takes a path to the clustalo executable you want to use. You have to fill this argument if you work with a precompiled verion or on linux.</p>
 <p>you will have to <a href="http://www.clustal.org/omega/clustal-omega-1.2.2-win64.zip">install clustal omega</a> yourself to use this wrapper.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 66)" onmouseover="showTip(event, 'fs1', 66)" class="id">BioFSharp</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs28', 67)" onmouseover="showTip(event, 'fs28', 67)" class="id">IO</span>
-<span class="k">open</span> <span onmouseout="hideTip(event, 'fs29', 68)" onmouseover="showTip(event, 'fs29', 68)" class="m">ClustalOWrapper</span>
-<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 69)" onmouseover="showTip(event, 'fs1', 69)" class="id">BioFSharp</span>
+<span class="k">open</span> <span class="id">ClustalOWrapper</span>
+<span class="k">open</span> <span onmouseout="hideTip(event, 'fs1', 68)" onmouseover="showTip(event, 'fs1', 68)" class="id">BioFSharp</span>
 </code></pre>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span class="id">cw</span> <span class="o">=</span> <span class="id">ClustalOWrapper</span><span class="pn">(</span><span class="s">&quot;path/where/you/extracted/clustal-omega/clustalo.exe&quot;</span><span class="pn">)</span>
 </code></pre>
 <p>The general structure of arguments the wrapper takes was kept the same as in the command line tool. In general, you need an <code>inputPath</code>, an <code>outputPath</code> and <code>parameters</code>. As there are several inputs possible, you have to choose what it is. As we want to align a normal sequence we just pick <code>SequenceFile</code>.</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs32', 72)" onmouseover="showTip(event, 'fs32', 72)" class="id">inputPath</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs33', 73)" onmouseover="showTip(event, 'fs33', 73)" class="rt">Input</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs34', 74)" onmouseover="showTip(event, 'fs34', 74)" class="id">SequenceFile</span> <span class="pn">(</span><span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">@&quot;\data\Chlamy_Cp.fastA&quot;</span><span class="pn">)</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs30', 70)" onmouseover="showTip(event, 'fs30', 70)" class="id">inputPath</span> <span class="o">=</span> <span class="id">Input</span><span class="pn">.</span><span class="id">SequenceFile</span> <span class="pn">(</span><span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">@&quot;\data\Chlamy_Cp.fastA&quot;</span><span class="pn">)</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 75)" onmouseover="showTip(event, 'fs35', 75)" class="id">outputPath</span> <span class="o">=</span> <span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">@&quot;\data\Chlamy_Cp.aln&quot;</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs31', 71)" onmouseover="showTip(event, 'fs31', 71)" class="id">outputPath</span> <span class="o">=</span> <span class="k">__SOURCE_DIRECTORY__</span> <span class="o">+</span> <span class="s">@&quot;\data\Chlamy_Cp.aln&quot;</span>
 </code></pre>
 <p>As additional parameters go, we'll restrict input to FastA format and the output to Clustal format. Also we will use the <code>Force</code> parameter to force the overwrite of a possilby already existing file with the name <code>ChlamyCp.aln</code>.</p>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">//Input has to be in FastA format</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs36', 76)" onmouseover="showTip(event, 'fs36', 76)" class="id">inputModifier</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 77)" onmouseover="showTip(event, 'fs37', 77)" class="m">Parameters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs38', 78)" onmouseover="showTip(event, 'fs38', 78)" class="rt">ClustalParams</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs39', 79)" onmouseover="showTip(event, 'fs39', 79)" class="id">Input</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs37', 80)" onmouseover="showTip(event, 'fs37', 80)" class="m">Parameters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs40', 81)" onmouseover="showTip(event, 'fs40', 81)" class="rt">InputCustom</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs41', 82)" onmouseover="showTip(event, 'fs41', 82)" class="id">Format</span> <span onmouseout="hideTip(event, 'fs37', 83)" onmouseover="showTip(event, 'fs37', 83)" class="m">Parameters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs42', 84)" onmouseover="showTip(event, 'fs42', 84)" class="rt">FileFormat</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs43', 85)" onmouseover="showTip(event, 'fs43', 85)" class="id">FastA</span><span class="pn">]</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs32', 72)" onmouseover="showTip(event, 'fs32', 72)" class="id">inputModifier</span> <span class="o">=</span> <span class="id">Parameters</span><span class="pn">.</span><span class="id">ClustalParams</span><span class="pn">.</span><span class="id">Input</span> <span class="pn">[</span><span class="id">Parameters</span><span class="pn">.</span><span class="id">InputCustom</span><span class="pn">.</span><span class="id">Format</span> <span class="id">Parameters</span><span class="pn">.</span><span class="id">FileFormat</span><span class="pn">.</span><span class="id">FastA</span><span class="pn">]</span>
 <span class="c">//Output has to be in Clustal format</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs44', 86)" onmouseover="showTip(event, 'fs44', 86)" class="id">outputModifier</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 87)" onmouseover="showTip(event, 'fs37', 87)" class="m">Parameters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs38', 88)" onmouseover="showTip(event, 'fs38', 88)" class="rt">ClustalParams</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs45', 89)" onmouseover="showTip(event, 'fs45', 89)" class="id">Output</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs37', 90)" onmouseover="showTip(event, 'fs37', 90)" class="m">Parameters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs46', 91)" onmouseover="showTip(event, 'fs46', 91)" class="rt">OutputCustom</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs47', 92)" onmouseover="showTip(event, 'fs47', 92)" class="id">Format</span> <span onmouseout="hideTip(event, 'fs37', 93)" onmouseover="showTip(event, 'fs37', 93)" class="m">Parameters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs42', 94)" onmouseover="showTip(event, 'fs42', 94)" class="rt">FileFormat</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs48', 95)" onmouseover="showTip(event, 'fs48', 95)" class="id">Clustal</span><span class="pn">]</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs33', 73)" onmouseover="showTip(event, 'fs33', 73)" class="id">outputModifier</span> <span class="o">=</span> <span class="id">Parameters</span><span class="pn">.</span><span class="id">ClustalParams</span><span class="pn">.</span><span class="id">Output</span> <span class="pn">[</span><span class="id">Parameters</span><span class="pn">.</span><span class="id">OutputCustom</span><span class="pn">.</span><span class="id">Format</span> <span class="id">Parameters</span><span class="pn">.</span><span class="id">FileFormat</span><span class="pn">.</span><span class="id">Clustal</span><span class="pn">]</span>
 <span class="c">//Forces overwriting</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs49', 96)" onmouseover="showTip(event, 'fs49', 96)" class="id">forceModifier</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs37', 97)" onmouseover="showTip(event, 'fs37', 97)" class="m">Parameters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs38', 98)" onmouseover="showTip(event, 'fs38', 98)" class="rt">ClustalParams</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs50', 99)" onmouseover="showTip(event, 'fs50', 99)" class="id">Miscallaneous</span> <span class="pn">[</span><span onmouseout="hideTip(event, 'fs37', 100)" onmouseover="showTip(event, 'fs37', 100)" class="m">Parameters</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs51', 101)" onmouseover="showTip(event, 'fs51', 101)" class="rt">MiscallaneousCustom</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs52', 102)" onmouseover="showTip(event, 'fs52', 102)" class="id">Force</span><span class="pn">]</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs34', 74)" onmouseover="showTip(event, 'fs34', 74)" class="id">forceModifier</span> <span class="o">=</span> <span class="id">Parameters</span><span class="pn">.</span><span class="id">ClustalParams</span><span class="pn">.</span><span class="id">Miscallaneous</span> <span class="pn">[</span><span class="id">Parameters</span><span class="pn">.</span><span class="id">MiscallaneousCustom</span><span class="pn">.</span><span class="id">Force</span><span class="pn">]</span>
 </code></pre>
 <pre class="fssnip highlighted"><code lang="fsharp"><span class="c">//Perform alignment</span>
-<span onmouseout="hideTip(event, 'fs30', 103)" onmouseover="showTip(event, 'fs30', 103)" class="id">cw</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs53', 104)" onmouseover="showTip(event, 'fs53', 104)" class="id">AlignFromFile</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs32', 105)" onmouseover="showTip(event, 'fs32', 105)" class="id">inputPath</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs35', 106)" onmouseover="showTip(event, 'fs35', 106)" class="id">outputPath</span><span class="pn">,</span><span class="pn">[</span><span onmouseout="hideTip(event, 'fs36', 107)" onmouseover="showTip(event, 'fs36', 107)" class="id">inputModifier</span><span class="pn">;</span><span onmouseout="hideTip(event, 'fs44', 108)" onmouseover="showTip(event, 'fs44', 108)" class="id">outputModifier</span><span class="pn">;</span><span onmouseout="hideTip(event, 'fs49', 109)" onmouseover="showTip(event, 'fs49', 109)" class="id">forceModifier</span><span class="pn">]</span><span class="pn">)</span>
+<span onmouseout="hideTip(event, 'fs29', 75)" onmouseover="showTip(event, 'fs29', 75)" class="id">cw</span><span class="pn">.</span><span class="id">AlignFromFile</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs30', 76)" onmouseover="showTip(event, 'fs30', 76)" class="id">inputPath</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs31', 77)" onmouseover="showTip(event, 'fs31', 77)" class="id">outputPath</span><span class="pn">,</span><span class="pn">[</span><span onmouseout="hideTip(event, 'fs32', 78)" onmouseover="showTip(event, 'fs32', 78)" class="id">inputModifier</span><span class="pn">;</span><span onmouseout="hideTip(event, 'fs33', 79)" onmouseover="showTip(event, 'fs33', 79)" class="id">outputModifier</span><span class="pn">;</span><span onmouseout="hideTip(event, 'fs34', 80)" onmouseover="showTip(event, 'fs34', 80)" class="id">forceModifier</span><span class="pn">]</span><span class="pn">)</span>
 </code></pre>
 <h2><a name="Aligning-sequences-directly-in-F-Interactive" class="anchor" href="#Aligning-sequences-directly-in-F-Interactive">Aligning sequences directly in F# Interactive</a></h2>
 <p>With the <code>AlignSequences</code> method, one can also directly align sequences with the clustal tool and also directly receive the alignment directly in F#.</p>
 <p>As input, it takes a collection of <code>TaggedSequence</code>s, and again a set of parameters. The default options can be used by not using any additional parameters.</p>
-<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs54', 110)" onmouseover="showTip(event, 'fs54', 110)" class="id">sequences</span> <span class="o">=</span> <span class="pn">[</span>
-    <span onmouseout="hideTip(event, 'fs55', 111)" onmouseover="showTip(event, 'fs55', 111)" class="rt">TaggedSequence</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs56', 112)" onmouseover="showTip(event, 'fs56', 112)" class="id">create</span> <span class="s">&quot;pep1&quot;</span> <span class="pn">(</span><span class="s">&quot;AAGECGEK&quot;</span><span class="pn">)</span>
-    <span onmouseout="hideTip(event, 'fs55', 113)" onmouseover="showTip(event, 'fs55', 113)" class="rt">TaggedSequence</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs56', 114)" onmouseover="showTip(event, 'fs56', 114)" class="id">create</span> <span class="s">&quot;pep2&quot;</span> <span class="pn">(</span><span class="s">&quot;AAGEGEK&quot;</span><span class="pn">)</span>
-    <span onmouseout="hideTip(event, 'fs55', 115)" onmouseover="showTip(event, 'fs55', 115)" class="rt">TaggedSequence</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs56', 116)" onmouseover="showTip(event, 'fs56', 116)" class="id">create</span> <span class="s">&quot;pep3&quot;</span> <span class="pn">(</span><span class="s">&quot;AAAGECGEK&quot;</span><span class="pn">)</span>
-    <span onmouseout="hideTip(event, 'fs55', 117)" onmouseover="showTip(event, 'fs55', 117)" class="rt">TaggedSequence</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs56', 118)" onmouseover="showTip(event, 'fs56', 118)" class="id">create</span> <span class="s">&quot;pep4&quot;</span> <span class="pn">(</span><span class="s">&quot;AAGECGEL&quot;</span><span class="pn">)</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs35', 81)" onmouseover="showTip(event, 'fs35', 81)" class="id">sequences</span> <span class="o">=</span> <span class="pn">[</span>
+    <span onmouseout="hideTip(event, 'fs36', 82)" onmouseover="showTip(event, 'fs36', 82)" class="rt">TaggedSequence</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs37', 83)" onmouseover="showTip(event, 'fs37', 83)" class="id">create</span> <span class="s">&quot;pep1&quot;</span> <span class="pn">(</span><span class="s">&quot;AAGECGEK&quot;</span><span class="pn">)</span>
+    <span onmouseout="hideTip(event, 'fs36', 84)" onmouseover="showTip(event, 'fs36', 84)" class="rt">TaggedSequence</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs37', 85)" onmouseover="showTip(event, 'fs37', 85)" class="id">create</span> <span class="s">&quot;pep2&quot;</span> <span class="pn">(</span><span class="s">&quot;AAGEGEK&quot;</span><span class="pn">)</span>
+    <span onmouseout="hideTip(event, 'fs36', 86)" onmouseover="showTip(event, 'fs36', 86)" class="rt">TaggedSequence</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs37', 87)" onmouseover="showTip(event, 'fs37', 87)" class="id">create</span> <span class="s">&quot;pep3&quot;</span> <span class="pn">(</span><span class="s">&quot;AAAGECGEK&quot;</span><span class="pn">)</span>
+    <span onmouseout="hideTip(event, 'fs36', 88)" onmouseover="showTip(event, 'fs36', 88)" class="rt">TaggedSequence</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs37', 89)" onmouseover="showTip(event, 'fs37', 89)" class="id">create</span> <span class="s">&quot;pep4&quot;</span> <span class="pn">(</span><span class="s">&quot;AAGECGEL&quot;</span><span class="pn">)</span>
 <span class="pn">]</span>
 </code></pre>
-<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs30', 119)" onmouseover="showTip(event, 'fs30', 119)" class="id">cw</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs57', 120)" onmouseover="showTip(event, 'fs57', 120)" class="id">AlignSequences</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs54', 121)" onmouseover="showTip(event, 'fs54', 121)" class="id">sequences</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs58', 122)" onmouseover="showTip(event, 'fs58', 122)" class="m">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs59', 123)" onmouseover="showTip(event, 'fs59', 123)" class="id">empty</span><span class="pn">)</span>
+<pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs29', 90)" onmouseover="showTip(event, 'fs29', 90)" class="id">cw</span><span class="pn">.</span><span class="id">AlignSequences</span><span class="pn">(</span><span onmouseout="hideTip(event, 'fs35', 91)" onmouseover="showTip(event, 'fs35', 91)" class="id">sequences</span><span class="pn">,</span><span onmouseout="hideTip(event, 'fs38', 92)" onmouseover="showTip(event, 'fs38', 92)" class="id">Seq</span><span class="pn">.</span><span onmouseout="hideTip(event, 'fs39', 93)" onmouseover="showTip(event, 'fs39', 93)" class="id">empty</span><span class="pn">)</span>
 </code></pre>
 <table class="pre"><tr><td class="snippet"><pre class="fssnip"><code lang="text">{ MetaData = { Header = seq ['C'; 'L'; 'U'; 'S'; ...]
 ConservationInfo = seq [' '; '*'; '*'; '*'; ...] }
@@ -449,6 +449,7 @@ creates a scoring function for amino acids out of a scoring matrix
   | PAM30
   | PAM70
   | PAM250
+  member Equals: ScoringMatrixAminoAcid * IEqualityComparer -&gt; bool
   static member toFileName: (ScoringMatrixAminoAcid -&gt; string)<br /><em>&lt;summary&gt;
 Union case of implemented amino acid scoring matrices with the given reference to its place in the library. Use the &quot;getScoringMatrixAminoAcid&quot; function to obtain a simple mapping function for every amino acid pair
 &lt;/summary&gt;</em></div>
@@ -460,6 +461,7 @@ creates a scoring function for nucleotides out of a scoring matrix
 <div class="fsdocs-tip" id="fs11">type ScoringMatrixNucleotide =
   | EDNA
   | Default
+  member Equals: ScoringMatrixNucleotide * IEqualityComparer -&gt; bool
   static member toFileName: (ScoringMatrixNucleotide -&gt; string)<br /><em>&lt;summary&gt;
 Union case of implemented nucleotide scoring matrices with the given reference to its place in the library. Use the &quot;getScoringMatrixNucleotide&quot; function to obtain a simple mapping function for every nucleotide pair
 &lt;/summary&gt;</em></div>
@@ -490,127 +492,29 @@ This module contains the BioArray type and its according functions. The BioArray
 <div class="fsdocs-tip" id="fs26">val intSeq1: int array</div>
 <div class="fsdocs-tip" id="fs27">val intSeq2: int array</div>
 <div class="fsdocs-tip" id="fs28">namespace BioFSharp.IO</div>
-<div class="fsdocs-tip" id="fs29">module ClustalOWrapper
-
-from BioFSharp.IO<br /><em>&lt;summary&gt;
-Wrapper and its helpers for Clustal Omega multiple alignment tools
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs30">val cw: ClustalOWrapper</div>
-<div class="fsdocs-tip" id="fs31">Multiple items<br />module ClustalOWrapper
-
-from BioFSharp.IO<br /><em>&lt;summary&gt;
-Wrapper and its helpers for Clustal Omega multiple alignment tools
-&lt;/summary&gt;</em><br /><br />--------------------<br />type ClustalOWrapper =
-  new: ?rootPath: string -&gt; ClustalOWrapper
-  member AlignFromFile: inputPath: Input * outputPath: string * parameters: ClustalParams seq * ?name: string -&gt; unit
-  member AlignSequences: input: TaggedSequence&lt;string,char&gt; seq * parameters: ClustalParams seq * ?name: string -&gt; Alignment&lt;TaggedSequence&lt;string,char&gt;,AlignmentInfo&gt;<br /><em>&lt;summary&gt;
- A wrapper to perform Clustal Omega alignment tasks    
-&lt;/summary&gt;</em><br /><br />--------------------<br />new: ?rootPath: string -&gt; ClustalOWrapper</div>
-<div class="fsdocs-tip" id="fs32">val inputPath: Input</div>
-<div class="fsdocs-tip" id="fs33">type Input =
-  | SequenceFile of string
-  | TwoProfiles of string * string
-  | SequenceFileAndProfile of string * string
-  | SequenceFileAndHMM of string * string<br /><em>&lt;summary&gt;
-Specify the type of input and assign file path
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs34">union case Input.SequenceFile: string -&gt; Input<br /><em>&lt;summary&gt;
-Use this option to make a multiple alignment from a set of sequences. A sequence file must contain more than one sequence (at least two sequences).
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs35">val outputPath: string</div>
-<div class="fsdocs-tip" id="fs36">val inputModifier: Parameters.ClustalParams</div>
-<div class="fsdocs-tip" id="fs37">module Parameters
-
-from BioFSharp.IO.ClustalOWrapper<br /><em>&lt;summary&gt;
-Contains modifier parameter type for Clustal Omega wrapper
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs38">type ClustalParams =
-  | Input of InputCustom seq
-  | Output of OutputCustom seq
-  | Clustering of ClusteringCustom seq
-  | Iteration of IterationCustom seq
-  | Limits of LimitsCustom seq
-  | Miscallaneous of MiscallaneousCustom seq<br /><em>&lt;summary&gt;
-Collection of parameters for specifying clustalo alignment
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs39">union case Parameters.ClustalParams.Input: Parameters.InputCustom seq -&gt; Parameters.ClustalParams<br /><em>&lt;summary&gt;
- Specify input parameters
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs40">type InputCustom =
-  | Format of FileFormat
-  | Dealign
-  | IsProfile
-  | SeqType of SeqType<br /><em>&lt;summary&gt;
-Optional modifiers for input
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs41">union case Parameters.InputCustom.Format: Parameters.FileFormat -&gt; Parameters.InputCustom<br /><em>&lt;summary&gt;
-Forced sequence input file format (default: auto)
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs42">type FileFormat =
-  | FastA
-  | Clustal
-  | MSF
-  | Phylip
-  | Selex
-  | Stockholm
-  | Vienna<br /><em>&lt;summary&gt;
-Input file format
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs43">union case Parameters.FileFormat.FastA: Parameters.FileFormat<br /><em>&lt;summary&gt;
-FastA file format
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs44">val outputModifier: Parameters.ClustalParams</div>
-<div class="fsdocs-tip" id="fs45">union case Parameters.ClustalParams.Output: Parameters.OutputCustom seq -&gt; Parameters.ClustalParams<br /><em>&lt;summary&gt;
- Specify output parameters
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs46">type OutputCustom =
-  | Format of FileFormat
-  | ResidueNumber
-  | Wrap of int
-  | OutputOrderAsTree<br /><em>&lt;summary&gt;
-Optional modifiers for input
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs47">union case Parameters.OutputCustom.Format: Parameters.FileFormat -&gt; Parameters.OutputCustom<br /><em>&lt;summary&gt;
-	MSA output file format (default: fasta)
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs48">union case Parameters.FileFormat.Clustal: Parameters.FileFormat<br /><em>&lt;summary&gt;
-Clustal file format
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs49">val forceModifier: Parameters.ClustalParams</div>
-<div class="fsdocs-tip" id="fs50">union case Parameters.ClustalParams.Miscallaneous: Parameters.MiscallaneousCustom seq -&gt; Parameters.ClustalParams<br /><em>&lt;summary&gt;
- Specify miscallaneous parameters
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs51">type MiscallaneousCustom =
-  | Auto
-  | Threads of int
-  | Log of string
-  | VerboseLevel of int
-  | Version
-  | LongVersion
-  | Force<br /><em>&lt;summary&gt;
-Optional, miscallaneous modifiers 
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs52">union case Parameters.MiscallaneousCustom.Force: Parameters.MiscallaneousCustom<br /><em>&lt;summary&gt;
- Force file overwriting
-&lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs53">member ClustalOWrapper.AlignFromFile: inputPath: Input * outputPath: string * parameters: Parameters.ClustalParams seq * ?name: string -&gt; unit</div>
-<div class="fsdocs-tip" id="fs54">val sequences: TaggedSequence&lt;string,char&gt; list</div>
-<div class="fsdocs-tip" id="fs55">type TaggedSequence&lt;&#39;T,&#39;S&gt; =
+<div class="fsdocs-tip" id="fs29">val cw: obj</div>
+<div class="fsdocs-tip" id="fs30">val inputPath: obj</div>
+<div class="fsdocs-tip" id="fs31">val outputPath: string</div>
+<div class="fsdocs-tip" id="fs32">val inputModifier: obj</div>
+<div class="fsdocs-tip" id="fs33">val outputModifier: obj</div>
+<div class="fsdocs-tip" id="fs34">val forceModifier: obj</div>
+<div class="fsdocs-tip" id="fs35">val sequences: TaggedSequence&lt;string,char&gt; list</div>
+<div class="fsdocs-tip" id="fs36">type TaggedSequence&lt;&#39;T,&#39;S&gt; =
   {
     Tag: &#39;T
     Sequence: &#39;S seq
   }
+  member Equals: TaggedSequence&lt;&#39;T,&#39;S&gt; * IEqualityComparer -&gt; bool
   static member create: tag: &#39;T -&gt; sequence: &#39;S seq -&gt; TaggedSequence&lt;&#39;T,&#39;S&gt;
   static member mapSequence: mapping: (&#39;S seq -&gt; &#39;M seq) -&gt; ts: TaggedSequence&lt;&#39;T,&#39;S&gt; -&gt; TaggedSequence&lt;&#39;T,&#39;M&gt;
   static member mapTag: mapping: (&#39;T -&gt; &#39;U) -&gt; ts: TaggedSequence&lt;&#39;T,&#39;S&gt; -&gt; TaggedSequence&lt;&#39;U,&#39;S&gt;<br /><em>&lt;summary&gt;
  Record of a sequence and its tag
 &lt;/summary&gt;</em></div>
-<div class="fsdocs-tip" id="fs56">static member TaggedSequence.create: tag: &#39;T -&gt; sequence: &#39;S seq -&gt; TaggedSequence&lt;&#39;T,&#39;S&gt;</div>
-<div class="fsdocs-tip" id="fs57">member ClustalOWrapper.AlignSequences: input: TaggedSequence&lt;string,char&gt; seq * parameters: Parameters.ClustalParams seq * ?name: string -&gt; Alignment.Alignment&lt;TaggedSequence&lt;string,char&gt;,Clustal.AlignmentInfo&gt;</div>
-<div class="fsdocs-tip" id="fs58">module Seq
+<div class="fsdocs-tip" id="fs37">static member TaggedSequence.create: tag: &#39;T -&gt; sequence: &#39;S seq -&gt; TaggedSequence&lt;&#39;T,&#39;S&gt;</div>
+<div class="fsdocs-tip" id="fs38">module Seq
 
 from Microsoft.FSharp.Collections</div>
-<div class="fsdocs-tip" id="fs59">val empty&lt;&#39;T&gt; : &#39;T seq</div>
+<div class="fsdocs-tip" id="fs39">val empty&lt;&#39;T&gt; : &#39;T seq</div>
 
     </div>
 </main>

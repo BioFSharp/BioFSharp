@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, Benedikt Venn, F# open source contributors" name="author">
+    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" name="author">
     <!-- Opengraph properties (https://ogp.me/) -->
     <meta property="og:site_name" content="BioFSharp">
-    <meta property="og:title" content="FastQ (BioFSharp)" />
+    <meta property="og:title" content="Fastq (BioFSharp)" />
     <meta property="og:url" content="https://csbiology.github.io/BioFSharp/{{fsdocs-source-basename}}.html">
     <meta property="og:type" content="website" />
     <!-- Twitter cards (https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image) -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="https://csbiology.github.io/BioFSharp/">
-    <meta name="twitter:title" content="FastQ (BioFSharp)">
+    <meta name="twitter:title" content="Fastq (BioFSharp)">
     
-    <title>FastQ (BioFSharp) | BioFSharp</title>
+    <title>Fastq (BioFSharp) | BioFSharp</title>
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
@@ -264,7 +264,7 @@
     <div id="content">
         <div>
   <h2>
-    FastQ Module
+    Fastq Module
   </h2>
   <dl class="fsdocs-metadata">
     <dt>
@@ -274,61 +274,15 @@
       </a>
     </dt>
     <dt>
-      Assembly: BioFSharp.IO.dll
+      Assembly: BioFSharp.dll
     </dt>
   </dl>
   <div class="fsdocs-xmldoc">
     <div>
       <p class="fsdocs-summary">
-        
+         Functions to read and write fastq formatted files
       </p>
     </div>
-  </div>
-  <div>
-    <h3>
-      Types
-    </h3>
-    <table class="table outer-list fsdocs-entity-list">
-      <thead>
-        <tr>
-          <td>
-            Type
-          </td>
-          <td>
-            Description
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="fsdocs-entity-name">
-            <p>
-              <a name="FastqItem<'a, 'b>">
-                <a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">
-                  FastqItem<'a, 'b>
-                </a>
-              </a>
-            </p>
-          </td>
-          <td class="fsdocs-entity-xmldoc">
-            <div>
-              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('``cref:T:BioFSharp.IO.FastQ.FastqItem`2``')">
-                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
-              </div>
-              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.IO.FastQ.FastqItem`2\'/>')">
-                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
-              </div>
-              <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/FastQ.fs#L10-10" class="fsdocs-source-link" title="Source on GitHub">
-                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
-              </a>
-              <p class="fsdocs-summary">
-                 FastqItem record contains header, sequence, qualityheader, qualitysequence of one entry
-              </p>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
   <div>
     <h3>
@@ -349,146 +303,19 @@
         <tr>
           <td class="fsdocs-member-usage">
             <div>
-              <code onmouseout="hideTip(event, '658', 658)" onmouseover="showTip(event, '658', 658)">
+              <code onmouseout="hideTip(event, '567', 567)" onmouseover="showTip(event, '567', 567)">
                 <p>
-                  <a id="createFastqItem">
-                    <a href="#createFastqItem">
-                      <code><span>createFastqItem&#32;<span>header&#32;sequence&#32;qualityHeader&#32;qualitySequence</span></span></code>
+                  <a id="read">
+                    <a href="#read">
+                      <code><span>read&#32;<span>converter&#32;qualityConverter&#32;filePath</span></span></code>
                     </a>
                   </a>
                 </p>
               </code>
-              <div class="fsdocs-tip" id="658">
+              <div class="fsdocs-tip" id="567">
                 <div class="member-tooltip">
                   Full Usage: 
-                  <code><span>createFastqItem&#32;<span>header&#32;sequence&#32;qualityHeader&#32;qualitySequence</span></span></code>
-                  <br/>
-                  <br/>
-                  Parameters: 
-                  <ul>
-                    <span>
-                      <b>
-                        header
-                      </b>
-                      :
-                      <code>string</code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        sequence
-                      </b>
-                      :
-                      <code>'a</code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        qualityHeader
-                      </b>
-                      :
-                      <code>string</code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        qualitySequence
-                      </b>
-                      :
-                      <code>'b</code>
-                    </span>
-                    <br/>
-                  </ul>
-                  <br/>
-                  <span>
-                    Returns: 
-                    <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'a,&#32;'b</span>&gt;</span></code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <details>
-              <summary>
-                <div class="fsdocs-summary">
-                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:BioFSharp.IO.FastQ.createFastqItem``2```')">
-                    <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
-                  </div>
-                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.FastQ.createFastqItem``2\'/>')">
-                    <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
-                  </div>
-                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/FastQ.fs#L18-18" class="fsdocs-source-link" title="Source on GitHub">
-                    <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
-                  </a>
-                  <p class="fsdocs-summary">
-                     Creates FastqItem with header line, sequence, qualityHeader and qualitySequence
-                  </p>
-                </div>
-              </summary>
-              <dl class="fsdocs-params">
-                <dt class="fsdocs-param">
-                  <span class="fsdocs-param-name">
-                    header
-                  </span>
-                  :
-                  <code>string</code>
-                </dt>
-                <dd class="fsdocs-param-docs"></dd>
-                <dt class="fsdocs-param">
-                  <span class="fsdocs-param-name">
-                    sequence
-                  </span>
-                  :
-                  <code>'a</code>
-                </dt>
-                <dd class="fsdocs-param-docs"></dd>
-                <dt class="fsdocs-param">
-                  <span class="fsdocs-param-name">
-                    qualityHeader
-                  </span>
-                  :
-                  <code>string</code>
-                </dt>
-                <dd class="fsdocs-param-docs"></dd>
-                <dt class="fsdocs-param">
-                  <span class="fsdocs-param-name">
-                    qualitySequence
-                  </span>
-                  :
-                  <code>'b</code>
-                </dt>
-                <dd class="fsdocs-param-docs"></dd>
-              </dl>
-              <dl class="fsdocs-returns">
-                <dt>
-                  <span class="fsdocs-return-name">
-                    Returns: 
-                  </span>
-                  <code><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'a,&#32;'b</span>&gt;</span></code>
-                </dt>
-                <dd class="fsdocs-return-docs"></dd>
-              </dl>
-            </details>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '659', 659)" onmouseover="showTip(event, '659', 659)">
-                <p>
-                  <a id="fromFile">
-                    <a href="#fromFile">
-                      <code><span>fromFile&#32;<span>converter&#32;qualityConverter&#32;filePath</span></span></code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="659">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code><span>fromFile&#32;<span>converter&#32;qualityConverter&#32;filePath</span></span></code>
+                  <code><span>read&#32;<span>converter&#32;qualityConverter&#32;filePath</span></span></code>
                   <br/>
                   <br/>
                   Parameters: 
@@ -498,7 +325,7 @@
                         converter
                       </b>
                       :
-                      <code><span>string&#32;->&#32;'a</span></code>
+                      <code><span><span>char&#32;seq</span>&#32;->&#32;'a</span></code>
                     </span>
                     <br/>
                     <span>
@@ -506,7 +333,7 @@
                         qualityConverter
                       </b>
                       :
-                      <code><span>string&#32;->&#32;'b</span></code>
+                      <code><span><span>char&#32;seq</span>&#32;->&#32;'c</span></code>
                     </span>
                     <br/>
                     <span>
@@ -521,7 +348,7 @@
                   <br/>
                   <span>
                     Returns: 
-                    <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'a,&#32;'b</span>&gt;</span>&#32;seq</span></code>
+                    <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'b,&#32;'d</span>&gt;</span>&#32;seq</span></code>
                   </span>
                   <br/>
                 </div>
@@ -532,13 +359,13 @@
             <details>
               <summary>
                 <div class="fsdocs-summary">
-                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:BioFSharp.IO.FastQ.fromFile``2```')">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:BioFSharp.IO.Fastq.read``4```')">
                     <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
                   </div>
-                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.FastQ.fromFile``2\'/>')">
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.Fastq.read``4\'/>')">
                     <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
                   </div>
-                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/FastQ.fs#L46-46" class="fsdocs-source-link" title="Source on GitHub">
+                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/IO/Fastq.fs#L40-40" class="fsdocs-source-link" title="Source on GitHub">
                     <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
                   </a>
                   <p class="fsdocs-summary">
@@ -552,7 +379,7 @@
                     converter
                   </span>
                   :
-                  <code><span>string&#32;->&#32;'a</span></code>
+                  <code><span><span>char&#32;seq</span>&#32;->&#32;'a</span></code>
                 </dt>
                 <dd class="fsdocs-param-docs"></dd>
                 <dt class="fsdocs-param">
@@ -560,7 +387,7 @@
                     qualityConverter
                   </span>
                   :
-                  <code><span>string&#32;->&#32;'b</span></code>
+                  <code><span><span>char&#32;seq</span>&#32;->&#32;'c</span></code>
                 </dt>
                 <dd class="fsdocs-param-docs"></dd>
                 <dt class="fsdocs-param">
@@ -577,7 +404,7 @@
                   <span class="fsdocs-return-name">
                     Returns: 
                   </span>
-                  <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'a,&#32;'b</span>&gt;</span>&#32;seq</span></code>
+                  <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'b,&#32;'d</span>&gt;</span>&#32;seq</span></code>
                 </dt>
                 <dd class="fsdocs-return-docs"></dd>
               </dl>
@@ -587,19 +414,19 @@
         <tr>
           <td class="fsdocs-member-usage">
             <div>
-              <code onmouseout="hideTip(event, '660', 660)" onmouseover="showTip(event, '660', 660)">
+              <code onmouseout="hideTip(event, '568', 568)" onmouseover="showTip(event, '568', 568)">
                 <p>
-                  <a id="fromFileEnumerator">
-                    <a href="#fromFileEnumerator">
-                      <code><span>fromFileEnumerator&#32;<span>converter&#32;qualityConverter&#32;fileEnumerator</span></span></code>
+                  <a id="readGZip">
+                    <a href="#readGZip">
+                      <code><span>readGZip&#32;<span>converter&#32;qualityConverter&#32;filePath</span></span></code>
                     </a>
                   </a>
                 </p>
               </code>
-              <div class="fsdocs-tip" id="660">
+              <div class="fsdocs-tip" id="568">
                 <div class="member-tooltip">
                   Full Usage: 
-                  <code><span>fromFileEnumerator&#32;<span>converter&#32;qualityConverter&#32;fileEnumerator</span></span></code>
+                  <code><span>readGZip&#32;<span>converter&#32;qualityConverter&#32;filePath</span></span></code>
                   <br/>
                   <br/>
                   Parameters: 
@@ -609,7 +436,7 @@
                         converter
                       </b>
                       :
-                      <code><span>string&#32;->&#32;'a</span></code>
+                      <code><span><span>char&#32;seq</span>&#32;->&#32;'a</span></code>
                     </span>
                     <br/>
                     <span>
@@ -617,118 +444,7 @@
                         qualityConverter
                       </b>
                       :
-                      <code><span>string&#32;->&#32;'b</span></code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        fileEnumerator
-                      </b>
-                      :
-                      <code><span>string&#32;seq</span></code>
-                    </span>
-                    <br/>
-                  </ul>
-                  <br/>
-                  <span>
-                    Returns: 
-                    <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'a,&#32;'b</span>&gt;</span>&#32;seq</span></code>
-                  </span>
-                  <br/>
-                </div>
-              </div>
-            </div>
-          </td>
-          <td class="fsdocs-member-xmldoc">
-            <details>
-              <summary>
-                <div class="fsdocs-summary">
-                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:BioFSharp.IO.FastQ.fromFileEnumerator``2```')">
-                    <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
-                  </div>
-                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.FastQ.fromFileEnumerator``2\'/>')">
-                    <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
-                  </div>
-                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/FastQ.fs#L22-22" class="fsdocs-source-link" title="Source on GitHub">
-                    <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
-                  </a>
-                  <p class="fsdocs-summary">
-                     Maps each lines from an entry to FastqItem
-                  </p>
-                </div>
-              </summary>
-              <dl class="fsdocs-params">
-                <dt class="fsdocs-param">
-                  <span class="fsdocs-param-name">
-                    converter
-                  </span>
-                  :
-                  <code><span>string&#32;->&#32;'a</span></code>
-                </dt>
-                <dd class="fsdocs-param-docs"></dd>
-                <dt class="fsdocs-param">
-                  <span class="fsdocs-param-name">
-                    qualityConverter
-                  </span>
-                  :
-                  <code><span>string&#32;->&#32;'b</span></code>
-                </dt>
-                <dd class="fsdocs-param-docs"></dd>
-                <dt class="fsdocs-param">
-                  <span class="fsdocs-param-name">
-                    fileEnumerator
-                  </span>
-                  :
-                  <code><span>string&#32;seq</span></code>
-                </dt>
-                <dd class="fsdocs-param-docs"></dd>
-              </dl>
-              <dl class="fsdocs-returns">
-                <dt>
-                  <span class="fsdocs-return-name">
-                    Returns: 
-                  </span>
-                  <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'a,&#32;'b</span>&gt;</span>&#32;seq</span></code>
-                </dt>
-                <dd class="fsdocs-return-docs"></dd>
-              </dl>
-            </details>
-          </td>
-        </tr>
-        <tr>
-          <td class="fsdocs-member-usage">
-            <div>
-              <code onmouseout="hideTip(event, '661', 661)" onmouseover="showTip(event, '661', 661)">
-                <p>
-                  <a id="fromGzipFile">
-                    <a href="#fromGzipFile">
-                      <code><span>fromGzipFile&#32;<span>converter&#32;qualityConverter&#32;filePath</span></span></code>
-                    </a>
-                  </a>
-                </p>
-              </code>
-              <div class="fsdocs-tip" id="661">
-                <div class="member-tooltip">
-                  Full Usage: 
-                  <code><span>fromGzipFile&#32;<span>converter&#32;qualityConverter&#32;filePath</span></span></code>
-                  <br/>
-                  <br/>
-                  Parameters: 
-                  <ul>
-                    <span>
-                      <b>
-                        converter
-                      </b>
-                      :
-                      <code><span>string&#32;->&#32;'a</span></code>
-                    </span>
-                    <br/>
-                    <span>
-                      <b>
-                        qualityConverter
-                      </b>
-                      :
-                      <code><span>string&#32;->&#32;'b</span></code>
+                      <code><span><span>char&#32;seq</span>&#32;->&#32;'c</span></code>
                     </span>
                     <br/>
                     <span>
@@ -743,7 +459,7 @@
                   <br/>
                   <span>
                     Returns: 
-                    <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'a,&#32;'b</span>&gt;</span>&#32;seq</span></code>
+                    <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'b,&#32;'d</span>&gt;</span>&#32;seq</span></code>
                   </span>
                   <br/>
                 </div>
@@ -754,13 +470,13 @@
             <details>
               <summary>
                 <div class="fsdocs-summary">
-                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:BioFSharp.IO.FastQ.fromGzipFile``2```')">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:BioFSharp.IO.Fastq.readGZip``4```')">
                     <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
                   </div>
-                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.FastQ.fromGzipFile``2\'/>')">
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.Fastq.readGZip``4\'/>')">
                     <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
                   </div>
-                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp.IO/FastQ.fs#L51-51" class="fsdocs-source-link" title="Source on GitHub">
+                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/IO/Fastq.fs#L45-45" class="fsdocs-source-link" title="Source on GitHub">
                     <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
                   </a>
                   <p class="fsdocs-summary">
@@ -774,7 +490,7 @@
                     converter
                   </span>
                   :
-                  <code><span>string&#32;->&#32;'a</span></code>
+                  <code><span><span>char&#32;seq</span>&#32;->&#32;'a</span></code>
                 </dt>
                 <dd class="fsdocs-param-docs"></dd>
                 <dt class="fsdocs-param">
@@ -782,7 +498,7 @@
                     qualityConverter
                   </span>
                   :
-                  <code><span>string&#32;->&#32;'b</span></code>
+                  <code><span><span>char&#32;seq</span>&#32;->&#32;'c</span></code>
                 </dt>
                 <dd class="fsdocs-param-docs"></dd>
                 <dt class="fsdocs-param">
@@ -799,7 +515,118 @@
                   <span class="fsdocs-return-name">
                     Returns: 
                   </span>
-                  <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-io-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'a,&#32;'b</span>&gt;</span>&#32;seq</span></code>
+                  <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'b,&#32;'d</span>&gt;</span>&#32;seq</span></code>
+                </dt>
+                <dd class="fsdocs-return-docs"></dd>
+              </dl>
+            </details>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '569', 569)" onmouseover="showTip(event, '569', 569)">
+                <p>
+                  <a id="readLines">
+                    <a href="#readLines">
+                      <code><span>readLines&#32;<span>sequenceConverter&#32;qualitySequenceConverter&#32;lines</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="569">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>readLines&#32;<span>sequenceConverter&#32;qualitySequenceConverter&#32;lines</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        sequenceConverter
+                      </b>
+                      :
+                      <code><span><span>char&#32;seq</span>&#32;->&#32;'a</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        qualitySequenceConverter
+                      </b>
+                      :
+                      <code><span><span>char&#32;seq</span>&#32;->&#32;'b</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        lines
+                      </b>
+                      :
+                      <code><span>string&#32;seq</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'SequenceItem,&#32;'QualitySequenceItem</span>&gt;</span>&#32;seq</span></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <details>
+              <summary>
+                <div class="fsdocs-summary">
+                  <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('```cref:M:BioFSharp.IO.Fastq.readLines``4```')">
+                    <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+                  </div>
+                  <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'M:BioFSharp.IO.Fastq.readLines``4\'/>')">
+                    <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+                  </div>
+                  <a href="https://github.com/CSBiology/BioFSharp/tree/master/src/BioFSharp/IO/Fastq.fs#L14-14" class="fsdocs-source-link" title="Source on GitHub">
+                    <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+                  </a>
+                  <p class="fsdocs-summary">
+                     Maps each lines from an entry to FastqItem
+                  </p>
+                </div>
+              </summary>
+              <dl class="fsdocs-params">
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    sequenceConverter
+                  </span>
+                  :
+                  <code><span><span>char&#32;seq</span>&#32;->&#32;'a</span></code>
+                </dt>
+                <dd class="fsdocs-param-docs"></dd>
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    qualitySequenceConverter
+                  </span>
+                  :
+                  <code><span><span>char&#32;seq</span>&#32;->&#32;'b</span></code>
+                </dt>
+                <dd class="fsdocs-param-docs"></dd>
+                <dt class="fsdocs-param">
+                  <span class="fsdocs-param-name">
+                    lines
+                  </span>
+                  :
+                  <code><span>string&#32;seq</span></code>
+                </dt>
+                <dd class="fsdocs-param-docs"></dd>
+              </dl>
+              <dl class="fsdocs-returns">
+                <dt>
+                  <span class="fsdocs-return-name">
+                    Returns: 
+                  </span>
+                  <code><span><span><a href="https://csbiology.github.io/BioFSharp/reference/biofsharp-fileformats-fastq-fastqitem-2.html">FastqItem</a>&lt;<span>'SequenceItem,&#32;'QualitySequenceItem</span>&gt;</span>&#32;seq</span></code>
                 </dt>
                 <dd class="fsdocs-return-docs"></dd>
               </dl>
