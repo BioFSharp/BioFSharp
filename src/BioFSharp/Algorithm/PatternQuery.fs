@@ -1,5 +1,43 @@
 namespace BioFSharp.Algorithm
 
+open BioFSharp
+
+module PatternQuery =
+
+    type FuzzyMatching() =
+        
+        static member inline search<^a when ^a :> IBioItem and ^a : equality and ^a : (static member op_Explicit: ^a -> int)> 
+            (maxErrors: int) (query: BioArray.BioArray<^a>) (source: BioArray.BioArray<^a>) : int list = 
+    
+            let m = query.Length
+            //if m > 256 then failwith "Query must not exceed a length og 256"
+            let n = source.Length
+
+            // Preprocess the pattern using Horspool algorithm
+            let shiftTable = Array.create (256) m
+            for i in 0 .. m - 2 do
+                shiftTable.[int query.[i]] <- m - i - 1
+        
+            // Algorithm with Boyer–Moore–Horspool optimization
+            let rec loop (matches:int list) (j:int) =
+                if j <= n-m then
+                    let mutable i = m - 1
+                    let mutable errors = 0
+                    while i >= 0 && (errors <= maxErrors) do
+                        if query.[i] <> source.[j + i] then
+                            errors <- errors + 1
+                        if errors <= maxErrors then
+                            i <- i - 1
+                    if i < 0 && errors <= maxErrors then
+                        loop (j :: matches) (j + shiftTable.[int source.[j + m - 1]])
+                    else
+                        loop matches (j + shiftTable.[int source.[j + m - 1]])
+                else
+                    matches
+        
+            loop [] 0
+
+
 ///A collection of different string matching algorithms
 module StringMatching =
     

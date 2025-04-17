@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="resources\GCA_000019425.1_first230000_genomic.fna" />
     <EmbeddedResource Include="resources\ATOMSequence.txt" />
     <EmbeddedResource Include="resources\Glucagon.txt" />
     <EmbeddedResource Include="resources\HasA.txt" />
@@ -20,6 +21,7 @@
     <Compile Include="BioFSharp.IO\PDB.fs" />
     <Compile Include="BioFSharp.IO\Stride.fs" />
     <Compile Include="BioFSharp\PairwiseAlignmentTests.fs" />
+    <Compile Include="BioFSharp\PatternQueryTests.fs" />
     <Compile Include="BioFSharp\AminoAcidTests.fs" />
     <Compile Include="BioFSharp\DigestionTests.fs" />
     <Compile Include="BioFSharp\NucleotideTests.fs" />
@@ -28,6 +30,8 @@
     <Compile Include="BioFSharp\PhylTreeTests.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="altcover" Version="9.0.1" />
