@@ -10,7 +10,7 @@ type Blast (rootPath:string) =
     ///Creates a BLAST database from given source/s
     member this.makeblastdb (parameters:MakeBlastDbParams list) =
         this.printArgs "makeblastdb" MakeBlastDbParams.toCLIArgs parameters
-        this.createProcess(
+        this.runProcess(
             name = "makeblastdb",
             exec = "/makeblastdb.exe",
             argConverter = MakeBlastDbParams.toCLIArgs,
@@ -20,7 +20,7 @@ type Blast (rootPath:string) =
     ///Compares a nucleotide query to a nucleotide database
     member this.blastN (parameters: BlastN.BlastNParams list)=
         this.printArgs "blastn" BlastN.BlastNParams.toCLIArgs parameters
-        this.createProcess(
+        this.runProcess(
             name = "blastn",
             exec = "/blastn.exe",
             argConverter = BlastN.BlastNParams.toCLIArgs,
@@ -30,7 +30,7 @@ type Blast (rootPath:string) =
 
     member this.megablast (parameters: BlastN.MegablastParameters list)=
         this.printArgs "makeblastdb" BlastN.MegablastParameters.toCLIArgs parameters
-        this.createProcess(
+        this.runProcess(
             name = "megablast",
             exec = "/blastn.exe",
             argConverter = BlastN.MegablastParameters.toCLIArgs,
@@ -40,7 +40,7 @@ type Blast (rootPath:string) =
 
     member this.``dc-megablast`` (parameters: BlastN.DCMegablastParameters list)=
         this.printArgs "DC-Megablast" BlastN.DCMegablastParameters.toCLIArgs parameters
-        this.createProcess(
+        this.runProcess(
             name = "dc-megablast",
             exec = "/blastn.exe",
             argConverter = BlastN.DCMegablastParameters.toCLIArgs,
@@ -50,7 +50,7 @@ type Blast (rootPath:string) =
 
     member this.``blastn-short`` (parameters: BlastN.BlastNShortParameters list)=
         this.printArgs "blastn-short" BlastN.BlastNShortParameters.toCLIArgs parameters
-        this.createProcess(
+        this.runProcess(
             name = "blastn-short",
             exec = "/blastn.exe",
             argConverter = BlastN.BlastNShortParameters.toCLIArgs,
@@ -60,7 +60,7 @@ type Blast (rootPath:string) =
 
     member this.blastp (parameters: BlastP.BlastPParameters list)=
         this.printArgs "blastp" BlastP.BlastPParameters.toCLIArgs parameters
-        this.createProcess(
+        this.runProcess(
             name = "blastp",
             exec = "/blastp.exe",
             argConverter = BlastP.BlastPParameters.toCLIArgs,
@@ -70,7 +70,7 @@ type Blast (rootPath:string) =
 
     member this.``blastp-short`` (parameters: BlastP.BlastPShortParameters list)=
         this.printArgs "blastp-short" BlastP.BlastPShortParameters.toCLIArgs parameters
-        this.createProcess(
+        this.runProcess(
             name = "blastp",
             exec = "/blastp.exe",
             argConverter = BlastP.BlastPShortParameters.toCLIArgs,
@@ -80,7 +80,7 @@ type Blast (rootPath:string) =
 
     member this.``blastp-fast`` (parameters: BlastP.BlastPFastParameters list)=
         this.printArgs "blastp-fast" BlastP.BlastPFastParameters.toCLIArgs parameters
-        this.createProcess(
+        this.runProcess(
             name = "blastp-fast",
             exec = "/blastp.exe",
             argConverter = BlastP.BlastPFastParameters.toCLIArgs,

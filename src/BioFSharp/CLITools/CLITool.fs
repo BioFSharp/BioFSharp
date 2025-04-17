@@ -42,4 +42,3 @@ type CLITool(rootPath:string) =
         p.WaitForExit()
         printfn "%s done." name
         printfn "Elapsed time: %A" (DateTime.UtcNow.Subtract(beginTime))
-        p
