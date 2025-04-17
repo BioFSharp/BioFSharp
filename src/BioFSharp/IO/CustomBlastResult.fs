@@ -1,7 +1,7 @@
 ﻿namespace BioFSharp.IO
 
 open BioFSharp.FileFormats
-open BioFSharp.CLITools.Blast
+open BioFSharp.CLIArgs.Blast
 open FSharpAux.IO
 
 module CustomBlastResult =
