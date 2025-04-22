@@ -35,7 +35,6 @@ module BioItem =
     let inline symbol (bItem:#IBioItem) =
         bItem.Symbol
 
-
     /// Returns the formula of the bio item
     let inline formula  (bItem:#IBioItem) =
         bItem.Formula

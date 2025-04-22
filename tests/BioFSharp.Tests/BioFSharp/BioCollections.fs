@@ -6,7 +6,7 @@ open BioFSharp
 open AminoAcids
     
 let aminoAcidSetArray : BioArray.BioArray<AminoAcid> = 
-    [|Ala;Cys;Asp;Glu;Phe;Gly;His;Ile;Lys;Leu;Met;Asn;Pyl;Pro;Gln;Arg;Ser;Thr;Sel;Val;Trp;Tyr;Xaa;Xle;Glx;Asx;Gap;Ter|]
+    [|Ala;Cys;Asp;Glu;Phe;Gly;His;Ile;Lys;Leu;Met;Asn;Pyl;Pro;Gln;Arg;Ser;Thr;Sec;Val;Trp;Tyr;Xaa;Xle;Glx;Asx;Gap;Ter|]
 
 let aminoAcidSymbolSetArray : BioArray.BioArray<AminoAcidSymbols.AminoAcidSymbol> = 
     aminoAcidSetArray |> Array.map AminoAcidSymbols.aminoAcidSymbol
@@ -128,10 +128,9 @@ let bioCollectionsTests  =
             )
 
             testCase "isEqual" (fun () ->
-                Expect.equal
-                    (testTranscript |> BioArray.isEqual testTranscript)
-                    0
-                    "BioArray.isEqual did not return correct integer when transcripts were equal."
+                Expect.isTrue
+                    (testTranscript |> BioArray.equal testTranscript)
+                    "BioArray.isEqual did not return correct result when transcripts were equal."
             )
 
             testCase "toString" (fun () ->
@@ -278,11 +277,10 @@ let bioCollectionsTests  =
             )
 
             testCase "isEqual" (fun () ->
-                Expect.equal
+                Expect.isTrue
                     (testTranscript |> List.ofArray
                     |> BioList.isEqual (testTranscript |> List.ofArray))
-                    0
-                    "BioList.isEqual did not return correct integer when transcripts were equal."
+                    "BioList.isEqual did not return correct result when transcripts were equal."
             )
 
             testCase "toString" (fun () ->
@@ -429,11 +427,10 @@ let bioCollectionsTests  =
                 )
 
                 testCase "isEqual" (fun () ->
-                    Expect.equal
+                    Expect.isTrue
                         (testTranscript |> Seq.ofArray
-                        |> BioSeq.isEqual (testTranscript |> Seq.ofArray))
-                        0
-                        "BioSeq.isEqual did not return correct integer when transcripts were equal."
+                        |> BioSeq.equal (testTranscript |> Seq.ofArray))
+                        "BioSeq.isEqual did not return correct result when transcripts were equal."
                 )
 
                 testCase "toString" (fun () ->

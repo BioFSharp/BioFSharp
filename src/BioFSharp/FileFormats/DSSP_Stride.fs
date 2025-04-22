@@ -2,45 +2,8 @@
 
 open System
 open BioFSharp
+open BioFSharp.BioItemConverters
 open System.IO
-
-//TO-DO refactor into core
-module internal AminoAcids =
-
-    open AminoAcids
-
-    type AminoAcid with
-        static member internal ofThreeLetterCode (letters: string) = 
-            match letters with
-            | "Ala" | "ALA" -> Ala
-            | "Cys" | "CYS" -> Cys
-            | "Asp" | "ASP" -> Asp
-            | "Glu" | "GLU" -> Glu
-            | "Phe" | "PHE" -> Phe
-            | "Gly" | "GLY" -> Gly
-            | "His" | "HIS" -> His
-            | "Ile" | "ILE" -> Ile
-            | "Lys" | "LYS" -> Lys
-            | "Leu" | "LEU" -> Leu
-            | "Met" | "MET" -> Met
-            | "Asn" | "ASN" -> Asn
-            | "Pyl" | "PYL" -> Pyl
-            | "Pro" | "PRO" -> Pro
-            | "Gln" | "GLN" -> Gln
-            | "Arg" | "ARG" -> Arg
-            | "Ser" | "SER" -> Ser
-            | "Thr" | "THR" -> Thr
-            | "Sec" | "SEC" -> Sec
-            | "Val" | "VAL" -> Val
-            | "Trp" | "TRP" -> Trp
-            | "Tyr" | "TYR" -> Tyr
-            | "Xaa" | "XAA" -> Xaa
-            | "Xle" | "XLE" -> Xle
-            | "Glx" | "GLX" -> Glx
-            | "Asx" | "ASX" -> Asx
-            | "Gap" | "GAP"| "-" -> Gap
-            | "Ter" | "TER"| "*" -> Ter
-            | _ -> failwith $"{letters} is not a valid three letter code for an amino acid."
 
 //TO-DO refactor into FSharpAux
 module internal Seq =
@@ -182,7 +145,7 @@ module Stride =
             let ordinalresidueindex             = line.[16..19]     |> tryParseColumnBy (fun c -> c.Trim() |> int )
             let residuename                     = line.[5..7]       |> tryParseColumnBy (fun c -> c.Trim())
             let chainid                         = line.[10..10]     |> tryParseColumnBy (fun c -> c.Trim())
-            let aminoacid                       = line.[5..7]       |> tryParseColumnBy (fun c -> c.Trim() |> AminoAcid.ofThreeLetterCode)
+            let aminoacid                       = line.[5..7]       |> tryParseColumnBy (fun c -> c.Trim().ToCharArray() |> AminoAcids.threeLettersToOption |> Option.get)
             let secondarystructure              = line.[24..38]     |> tryParseColumnBy (SecondaryStructure.ofString StructureFormat.Stride)
             let accessiblesurface               = line.[64..68]     |> tryParseColumnBy (fun c -> c.Trim() |> float)
             let phi                             = line.[42..48]     |> tryParseColumnBy (fun c -> c.Trim() |> float)
@@ -410,7 +373,7 @@ module DSSP =
 
     let toAASequence (dssp:seq<DSSPLine>) =
         dssp
-        |> Seq.choose (fun x -> x.AminoAcid |> char |> BioItemsConverter.OptionConverter.charToOptionAminoAcid)
+        |> Seq.choose (fun x -> x.AminoAcid |> char |> AminoAcids.oneLetterToOption)
         |> Array.ofSeq
 
     let toStructureSequence (dssp:seq<DSSPLine>) =

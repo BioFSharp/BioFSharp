@@ -84,12 +84,6 @@ module AminoAcids =
         ///
         /// Essential for humans, Thr behaves similarly to serine.
         | Thr
-        /// 'U' - Sel - Selenocysteine
-        ///
-        /// The selenium analog of cysteine, in which selenium replaces the sulfur atom.
-        /// Warning: 'Sel' is not the official UPAC abbreviation. 
-        /// This case will be removed in favor of 'Sec' in the next major release
-        | [<Obsolete("This case has a typo and will be removed in the next major release. use AminoAcid.Sec instead.")>] Sel 
         /// 'U' - Sec - Selenocysteine
         ///
         /// The selenium analog of cysteine, in which selenium replaces the sulfur atom.
@@ -156,7 +150,7 @@ module AminoAcids =
                             | AminoAcid.Arg -> 'R'
                             | AminoAcid.Ser -> 'S'
                             | AminoAcid.Thr -> 'T'
-                            | AminoAcid.Sel | AminoAcid.Sec -> 'U'
+                            | AminoAcid.Sec -> 'U'
                             | AminoAcid.Val -> 'V'
                             | AminoAcid.Trp -> 'W'
                             | AminoAcid.Tyr -> 'Y'
@@ -193,7 +187,7 @@ module AminoAcids =
                             | AminoAcid.Arg -> Formula.Table.Arg 
                             | AminoAcid.Ser -> Formula.Table.Ser 
                             | AminoAcid.Thr -> Formula.Table.Thr 
-                            | AminoAcid.Sel | AminoAcid.Sec -> Formula.Table.Sel // Selenocysteine
+                            | AminoAcid.Sec -> Formula.Table.Sec // Selenocysteine
                             | AminoAcid.Val -> Formula.Table.Val 
                             | AminoAcid.Trp -> Formula.Table.Trp 
                             | AminoAcid.Tyr -> Formula.Table.Tyr 
@@ -249,7 +243,7 @@ module AminoAcids =
                             | AminoAcid.Arg -> "Arginine"       
                             | AminoAcid.Ser -> "Serine"         
                             | AminoAcid.Thr -> "Threonine"      
-                            | AminoAcid.Sel | AminoAcid.Sec -> "Selenocysteine" 
+                            | AminoAcid.Sec -> "Selenocysteine" 
                             | AminoAcid.Val -> "Valine"         
                             | AminoAcid.Trp -> "Tryptophan"     
                             | AminoAcid.Tyr -> "Tyrosine"       
@@ -322,14 +316,15 @@ module AminoAcids =
 
     ///Lexer tags for parsing AminoAcids
     type ParsedAminoAcidChar = 
-        | StandardCodes  of AminoAcid
-        | AmbiguityCodes of AminoAcid
-        | GapTer         of AminoAcid
-        | NoAAChar       of char
+        | StandardCodes             of AminoAcid
+        | AmbiguityCodes            of AminoAcid
+        | GapTer                    of AminoAcid
+        | NoMatchingOneLetterCode   of char
+        | NoMatchingThreeLetterCode of char array
 
     ///Simple Lexer for parsing AminoAcids from chars. The full parser is located in the BioItemsConverter-module
-    let charToParsedAminoAcidChar (c:char) =
-        match System.Char.ToUpper c with                                    
+    let parseOneLetterCode (letter: char) =
+        match System.Char.ToUpper letter with                                    
         | 'A' ->  StandardCodes AminoAcid.Ala            
         | 'C' ->  StandardCodes AminoAcid.Cys
         | 'D' ->  StandardCodes AminoAcid.Asp
@@ -352,9 +347,8 @@ module AminoAcids =
         | 'Y' ->  StandardCodes AminoAcid.Tyr
         // special amino acids
         | 'O' ->  StandardCodes AminoAcid.Pyl
-        | 'U' ->  StandardCodes AminoAcid.Sel 
-        //| 'U' ->  StandardCodes AminoAcid.Sec 
-        // ambiguous amino acids
+        | 'U' ->  StandardCodes AminoAcid.Sec
+        // ambiguous amino acid codes
         | 'X' ->  AmbiguityCodes AminoAcid.Xaa            
         | 'Z' ->  AmbiguityCodes AminoAcid.Glx
         | 'B' ->  AmbiguityCodes AminoAcid.Asx
@@ -363,38 +357,45 @@ module AminoAcids =
         | '-' ->  GapTer AminoAcid.Gap
         | '*' ->  GapTer AminoAcid.Ter            
         // no amino acid character
-        | ch -> NoAAChar ch
+        | ch -> NoMatchingOneLetterCode ch
 
-    ///Set of the 20 standard amino acids
-    [<Obsolete("use aminoAcidSetStandard instead, or aminoAcidSetProteinogenic for all 22 AAs")>]
-    let AminoAcidSetStandard = set [
-        AminoAcid.Ala
-        AminoAcid.Cys
-        AminoAcid.Asp
-        AminoAcid.Glu
-        AminoAcid.Phe
-        AminoAcid.Gly
-        AminoAcid.His
-        AminoAcid.Ile
-        AminoAcid.Lys
-        AminoAcid.Leu
-        AminoAcid.Met
-        AminoAcid.Asn
-        AminoAcid.Pyl
-        AminoAcid.Pro
-        AminoAcid.Gln
-        AminoAcid.Arg
-        AminoAcid.Ser
-        AminoAcid.Thr
-        AminoAcid.Sel
-        AminoAcid.Sec
-        AminoAcid.Val
-        AminoAcid.Trp
-        AminoAcid.Tyr 
-    ]  
+    let parseThreeLetterCode (letters : #seq<char>) = 
+        match letters |> Array.ofSeq |> Array.map System.Char.ToUpper with
+        |  [|'A';'L';'A'|] -> StandardCodes Ala
+        |  [|'C';'Y';'S'|] -> StandardCodes Cys
+        |  [|'A';'S';'P'|] -> StandardCodes Asp
+        |  [|'G';'L';'U'|] -> StandardCodes Glu
+        |  [|'P';'H';'E'|] -> StandardCodes Phe
+        |  [|'G';'L';'Y'|] -> StandardCodes Gly
+        |  [|'H';'I';'S'|] -> StandardCodes His
+        |  [|'I';'L';'E'|] -> StandardCodes Ile
+        |  [|'L';'Y';'S'|] -> StandardCodes Lys
+        |  [|'L';'E';'U'|] -> StandardCodes Leu
+        |  [|'M';'E';'T'|] -> StandardCodes Met
+        |  [|'A';'S';'N'|] -> StandardCodes Asn
+        |  [|'P';'R';'O'|] -> StandardCodes Pro
+        |  [|'G';'L';'N'|] -> StandardCodes Gln
+        |  [|'A';'R';'G'|] -> StandardCodes Arg
+        |  [|'S';'E';'R'|] -> StandardCodes Ser
+        |  [|'T';'H';'R'|] -> StandardCodes Thr
+        |  [|'V';'A';'L'|] -> StandardCodes Val
+        |  [|'T';'R';'P'|] -> StandardCodes Trp
+        |  [|'T';'Y';'R'|] -> StandardCodes Tyr
+        // special amino acids
+        |  [|'P';'Y';'L'|] -> StandardCodes Pyl
+        |  [|'S';'E';'C'|] -> StandardCodes Sec
+        // ambiguous amino acid codes
+        |  [|'X';'A';'A'|] -> AmbiguityCodes Xaa
+        |  [|'G';'L';'X'|] -> AmbiguityCodes Glx
+        |  [|'A';'S';'X'|] -> AmbiguityCodes Asx
+        |  [|'X';'L';'E'|] -> AmbiguityCodes Xle
+        // termination and gap
+        |  [|'G';'A';'P'|] -> GapTer AminoAcid.Gap
+        |  [|'T';'E';'R'|] -> GapTer AminoAcid.Ter
+        | chars -> NoMatchingThreeLetterCode chars
 
     ///Set of the 20 standard amino acids of the genetic code
-    let aminoAcidSetStandard = set [
+    let standardSet = set [
         AminoAcid.Ala
         AminoAcid.Cys
         AminoAcid.Asp
@@ -418,7 +419,7 @@ module AminoAcids =
     ]
 
     ///Set of all 22 proteinogenic amino acids (20 standard + Selenocysteine + Pyrrolysine)
-    let aminoAcidSetProteinogenic = set [
+    let proteinogenicSet = set [
         AminoAcid.Ala
         AminoAcid.Cys
         AminoAcid.Asp
@@ -439,13 +440,13 @@ module AminoAcids =
         AminoAcid.Val
         AminoAcid.Trp
         AminoAcid.Tyr 
-        AminoAcid.Sel 
+        AminoAcid.Sec 
         AminoAcid.Sec
         AminoAcid.Pyl
     ]
 
     ///Set of all 21 proteinogenic amino acids in eucaryotes (20 standard + Selenocysteine)
-    let aminoAcidSetProteinogenicEucaryotes = set [
+    let proteinogenicInEucariotesSet = set [
         AminoAcid.Ala
         AminoAcid.Cys
         AminoAcid.Asp
@@ -466,106 +467,47 @@ module AminoAcids =
         AminoAcid.Val
         AminoAcid.Trp
         AminoAcid.Tyr 
-        AminoAcid.Sel 
+        AminoAcid.Sec
         AminoAcid.Sec
     ]
     
-    [<Obsolete("use aminoAcidSetAmbiguity instead")>]
     ///Set of all ambiguous codes
-    let AminoAcidSetAmbiguity = set [
-        AminoAcid.Xaa
-        AminoAcid.Xle
-        AminoAcid.Glx
-        AminoAcid.Asx 
-    ]      
-    
-    ///Set of all ambiguous codes
-    let aminoAcidSetAmbiguity = set [
+    let ambiguousSet = set [
         AminoAcid.Xaa
         AminoAcid.Xle
         AminoAcid.Glx
         AminoAcid.Asx 
     ]  
-    
-    [<Obsolete("use aminoAcidSetGapTer instead")>]
+
     ///Set containing the Gap and the Terminator AminoAcid
-    let AminoAcidSetGapTer = set [
-        AminoAcid.Gap
-        AminoAcid.Ter 
-    ]    
-    
-    ///Set containing the Gap and the Terminator AminoAcid
-    let aminoAcidSetGapTer = set [
+    let gapTerSet = set [
         AminoAcid.Gap
         AminoAcid.Ter 
     ]
 
-    [<Obsolete("use aminoAcidSetPosCharged instead")>]
     ///Set of all AminoAcids with basic (positively charged) sidechain
-    let AminoAcidSetPosCharged = set [
-        AminoAcid.Arg
-        AminoAcid.Lys
-        AminoAcid.His 
-    ]    
-    
-    ///Set of all AminoAcids with basic (positively charged) sidechain
-    let aminoAcidSetPosCharged = set [
+    let positivelyChargedSet = set [
         AminoAcid.Arg
         AminoAcid.Lys
         AminoAcid.His 
     ]
 
-    [<Obsolete("use aminoAcidSetNegCharged instead. Warning: this set also contains Cysteine and Tyrosine, which are not generally considered as neg charged under phisiological (pH 7.4) conditions. aminoAcidSetNegCharged will not contain them.")>]
-    ///Set of all AminoAcids with acidic sidechain (+ Cys/Tyr)
-    let AminoAcidSetNegCharged = set [
+    ///Set of all AminoAcids with acidic sidechain
+    let negativelyChargedSet = set [
         AminoAcid.Asp
         AminoAcid.Glu
-        AminoAcid.Cys
-        AminoAcid.Tyr 
-    ]    
-    
-    ///Set of all AminoAcids with acidic sidechain
-    let aminoAcidSetNegCharged = set [
-            AminoAcid.Asp
-            AminoAcid.Glu
     ]
 
-    [<Obsolete("use aminoAcidSetPolarUncharged instead. Warning: this set also contains Trp, His, Tyr, and Cys, which aminoAcidSetPolarUncharged will not")>]
-    ///Set of all AminoAcids with polar sidechain
-    let AminoAcidSetPolar = set [
-        AminoAcid.Gln
-        AminoAcid.Asn
-        AminoAcid.His
-        AminoAcid.Ser
-        AminoAcid.Thr
-        AminoAcid.Tyr
-        AminoAcid.Cys
-        AminoAcid.Trp 
-    ]    
-                
     ///Set of all AminoAcids with uncharged polar sidechain
-    let aminoAcidSetPolarUncharged = set [
+    let polarUnchargedSet = set [
         AminoAcid.Gln
         AminoAcid.Asn
         AminoAcid.Ser
         AminoAcid.Thr
     ]
 
-    [<Obsolete("use aminoAcidSetHydrophobic instead. Warning: aminoAcidSetHydrophobic will not contain Pro/Gly, but additionally Trp/Tyr")>]
     ///Set of all AminoAcids with hydrophobic sidechain
-    let AminoAcidSetHydrophobic = set [
-        AminoAcid.Ala
-        AminoAcid.Ile
-        AminoAcid.Leu
-        AminoAcid.Met
-        AminoAcid.Phe
-        AminoAcid.Val
-        AminoAcid.Gly 
-        AminoAcid.Pro
-    ]    
-    
-    ///Set of all AminoAcids with hydrophobic sidechain
-    let aminoAcidSetHydrophobic = set [
+    let hydrophobicSet = set [
         AminoAcid.Ala
         AminoAcid.Ile
         AminoAcid.Leu
@@ -576,9 +518,9 @@ module AminoAcids =
         AminoAcid.Val
     ]
 
-    let aminoAcidSetSpecialCases = set [
+    let specialCasesSet = set [
         AminoAcid.Cys
-        AminoAcid.Sel
+        AminoAcid.Sec
         AminoAcid.Sec
         AminoAcid.Gly
         AminoAcid.Pro
@@ -622,28 +564,23 @@ module AminoAcids =
     
     /// Returns true, if the AminoAcid has a basic or acidic side chain
     let isCharged (aa:AminoAcid) =
-        AminoAcidSetPosCharged.Contains aa || AminoAcidSetNegCharged.Contains aa 
+        positivelyChargedSet.Contains aa || negativelyChargedSet.Contains aa 
 
     /// Returns true, if the AminoAcid has a basic side chain
     let isPosCharged (aa:AminoAcid) =
-        AminoAcidSetPosCharged.Contains aa
+        positivelyChargedSet.Contains aa
 
     /// Returns true, if the AminoAcid has an acidic side chain
     let isNegCharged (aa:AminoAcid) =
-        AminoAcidSetNegCharged.Contains aa 
+        negativelyChargedSet.Contains aa 
 
-    [<Obsolete("use isPolarUncharged instead")>]
-    /// Returns true, if the AminoAcid has a polar side chain
-    let isPolar (aa:AminoAcid) = 
-        AminoAcidSetPolar.Contains aa    
-        
     /// Returns true, if the AminoAcid has a polar, uncharged side chain
     let isPolarUncharged (aa:AminoAcid) = 
-        aminoAcidSetPolarUncharged.Contains aa
+        polarUnchargedSet.Contains aa
 
     /// Returns true, if the AminoAcid has a hydrophobic side chain
     let isHydrophobic (aa:AminoAcid) = 
-        AminoAcidSetHydrophobic.Contains aa    
+        hydrophobicSet.Contains aa    
 
     /// Returns true if AminoAcid contains a modification
     let isModified (aa:AminoAcid) =

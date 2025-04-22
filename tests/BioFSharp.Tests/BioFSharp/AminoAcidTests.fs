@@ -4,14 +4,14 @@ open BioFSharp
 open AminoAcids
 open Expecto
 
-let allSymbols = ['A';'C';'D';'E';'F';'G';'H';'I';'K';'L';'M';'N';'O';'P';'Q';'R';'S';'T';'U';'U';'V';'W';'Y';'X';'J';'Z';'B';'-';'*']
+let allSymbols = ['A';'C';'D';'E';'F';'G';'H';'I';'K';'L';'M';'N';'O';'P';'Q';'R';'S';'T';'U';'V';'W';'Y';'X';'J';'Z';'B';'-';'*']
 
 let allNames = [
     "Alanine"                 ; "Cysteine"                 ; "Aspartic Acid"  ; "Glutamic Acid"     
     "Phenylalanine"           ; "Glycine"                  ; "Histidine"      ; "Isoleucine"        
     "Lysine"                  ; "Leucine"                  ; "Methionine"     ; "Asparagine"        
     "Pyrrolysine"             ; "Proline"                  ; "Glutamine"      ; "Arginine"          
-    "Serine"                  ; "Threonine"                ; "Selenocysteine" ; "Selenocysteine" ; "Valine"            
+    "Serine"                  ; "Threonine"                ; "Selenocysteine" ; "Valine"            
     "Tryptophan"              ; "Tyrosine"                 ; "Unspecified"    ; "Leucine/Isoleucine"
     "Glutamine/glutamic acid" ; "Asparagine/aspartic acid" ; "Gap"            ; "Ter"               
 ]
@@ -21,7 +21,7 @@ let allFormulas = [
     Formula.Table.Phe ; Formula.Table.Gly ; Formula.Table.His    ; Formula.Table.Ile
     Formula.Table.Lys ; Formula.Table.Leu ; Formula.Table.Met    ; Formula.Table.Asn
     Formula.Table.Pyl ; Formula.Table.Pro ; Formula.Table.Gln    ; Formula.Table.Arg
-    Formula.Table.Ser ; Formula.Table.Thr ; Formula.Table.Sel    ; Formula.Table.Sec; Formula.Table.Val
+    Formula.Table.Ser ; Formula.Table.Thr ; Formula.Table.Sec    ; Formula.Table.Val
     Formula.Table.Trp ; Formula.Table.Tyr ; Formula.Table.Xaa    ; Formula.Table.Xle
     Formula.Table.Glx ; Formula.Table.Asx ; Formula.emptyFormula ; Formula.emptyFormula
 ]
@@ -33,7 +33,7 @@ let allAAs = [
     AminoAcid.Phe; AminoAcid.Gly; AminoAcid.His; AminoAcid.Ile
     AminoAcid.Lys; AminoAcid.Leu; AminoAcid.Met; AminoAcid.Asn
     AminoAcid.Pyl; AminoAcid.Pro; AminoAcid.Gln; AminoAcid.Arg
-    AminoAcid.Ser; AminoAcid.Thr; AminoAcid.Sel; AminoAcid.Sec; AminoAcid.Val
+    AminoAcid.Ser; AminoAcid.Thr; AminoAcid.Sec; AminoAcid.Val
     AminoAcid.Trp; AminoAcid.Tyr; AminoAcid.Xaa; AminoAcid.Xle
     AminoAcid.Glx; AminoAcid.Asx; AminoAcid.Gap; AminoAcid.Ter
 ]
@@ -45,10 +45,10 @@ let allParsedAAs = [
     StandardCodes AminoAcid.Leu; StandardCodes AminoAcid.Met; StandardCodes AminoAcid.Asn
     StandardCodes AminoAcid.Pyl; StandardCodes AminoAcid.Pro; StandardCodes AminoAcid.Gln
     StandardCodes AminoAcid.Arg; StandardCodes AminoAcid.Ser; StandardCodes AminoAcid.Thr
-    StandardCodes AminoAcid.Sel; StandardCodes AminoAcid.Sel; StandardCodes AminoAcid.Val
+    StandardCodes AminoAcid.Sec; StandardCodes AminoAcid.Val
     StandardCodes AminoAcid.Trp; StandardCodes AminoAcid.Tyr; AmbiguityCodes AminoAcid.Xaa
     AmbiguityCodes AminoAcid.Xle; AmbiguityCodes AminoAcid.Glx; AmbiguityCodes AminoAcid.Asx
-    GapTer AminoAcid.Gap; GapTer AminoAcid.Ter; NoAAChar '!'
+    GapTer AminoAcid.Gap; GapTer AminoAcid.Ter; NoMatchingOneLetterCode '!'
 ]
 
 let allModFormulas = (allFormulas |> List.map(fun f -> Formula.replaceElement f Elements.Table.N Elements.Table.Heavy.N15))
@@ -123,7 +123,7 @@ let aminoAcidTests =
                 "AminoAcids.setModifications did not return the correct Modifications for all AminoAcids"
         )
         testCase "getModifications" (fun () ->
-            let allMods = [for i in 1 .. 29 -> [ModificationInfo.Table.N15]]
+            let allMods = [for i in 1 .. 28 -> [ModificationInfo.Table.N15]]
             Expect.equal
                 (allSingleModAAs |> List.map (fun aa -> AminoAcids.getModifications aa))
                 allMods
@@ -131,7 +131,7 @@ let aminoAcidTests =
         )
 
         testCase "getModifications_withUnmodAAs" (fun () ->
-            let allEmptyLists = [for i in 1 .. 29 -> []]
+            let allEmptyLists = [for i in 1 .. 28 -> []]
             Expect.equal
                 (allAAs |> List.map (fun aa -> AminoAcids.getModifications aa))
                 allEmptyLists
@@ -144,7 +144,7 @@ let aminoAcidTests =
                 "AminoAcids.getAminoAcidWithoutMod did not return correct AminoAcid for all AminoAcids"
         )
         testCase "tryGetModifications" (fun () ->
-            let allMods = [for i in 1 .. 29 -> Some [ModificationInfo.Table.N15]]
+            let allMods = [for i in 1 .. 28 -> Some [ModificationInfo.Table.N15]]
             Expect.equal
                 (allSingleModAAs |> List.map (fun aa -> AminoAcids.tryGetModifications aa))
                 allMods
@@ -153,7 +153,7 @@ let aminoAcidTests =
         testCase "tryGetModifications_withNone" (fun () ->
             Expect.equal
                 (allAAs |> List.map (fun aa -> AminoAcids.tryGetModifications aa))
-                [for i in 1 .. 29 -> None]
+                [for i in 1 .. 28 -> None]
                 "AminoAcids.tryGetModifications did not return correct Modifications for all unmodified AminoAcids"
         )
         testCase "isotopicLabelFunc" (fun () ->
@@ -171,7 +171,7 @@ let aminoAcidTests =
         testCase "charToParsedAminoAcidChar" (fun () -> // This function currently matches to Sel, not Sec. Will eventually need chane
             let testParsedSymbols = List.append allSymbols ['!']
             Expect.equal
-                (List.map (fun c -> AminoAcids.charToParsedAminoAcidChar c) testParsedSymbols)
+                (List.map (fun c -> AminoAcids.parseOneLetterCode c) testParsedSymbols)
                 allParsedAAs
                 "AminoAcids.charToParsedAminoAcidChar did not return correct AminoAcid from all AminoAcid chars"
         )
@@ -184,7 +184,7 @@ let aminoAcidTests =
                 AminoAcid.Thr; AminoAcid.Val; AminoAcid.Trp; AminoAcid.Tyr
             ]
             Expect.equal
-                AminoAcids.aminoAcidSetStandard
+                AminoAcids.standardSet
                 testAASetStandard
                 "AminoAcids.aminoAcidSetStandard did not return correct standard set of AminoAcids"
         )
@@ -195,10 +195,10 @@ let aminoAcidTests =
                 AminoAcid.Lys; AminoAcid.Leu; AminoAcid.Met; AminoAcid.Asn
                 AminoAcid.Pro; AminoAcid.Gln; AminoAcid.Arg; AminoAcid.Ser
                 AminoAcid.Thr; AminoAcid.Val; AminoAcid.Trp; AminoAcid.Tyr
-                AminoAcid.Sel; AminoAcid.Sec; AminoAcid.Pyl
+                AminoAcid.Sec; AminoAcid.Sec; AminoAcid.Pyl
             ]
             Expect.equal
-                AminoAcids.aminoAcidSetProteinogenic
+                AminoAcids.proteinogenicSet
                 testAASetProteinogenic
                 "AminoAcids.aminoAcidSetProteinogenic did not return correct set of AminoAcids"
         )
@@ -209,10 +209,10 @@ let aminoAcidTests =
                 AminoAcid.Lys; AminoAcid.Leu; AminoAcid.Met; AminoAcid.Asn
                 AminoAcid.Pro; AminoAcid.Gln; AminoAcid.Arg; AminoAcid.Ser
                 AminoAcid.Thr; AminoAcid.Val; AminoAcid.Trp; AminoAcid.Tyr
-                AminoAcid.Sel; AminoAcid.Sec;
+                AminoAcid.Sec; AminoAcid.Sec;
             ]
             Expect.equal
-                AminoAcids.aminoAcidSetProteinogenicEucaryotes
+                AminoAcids.proteinogenicInEucariotesSet
                 testAASetProteinogenicEucaryotes
                 "AminoAcids.aminoAcidSetProteinogenicEucaryotes did not return correct set of AminoAcids"
         )
@@ -221,21 +221,21 @@ let aminoAcidTests =
                 AminoAcid.Xaa; AminoAcid.Xle; AminoAcid.Glx; AminoAcid.Asx
             ]
             Expect.equal
-                AminoAcids.aminoAcidSetAmbiguity
+                AminoAcids.ambiguousSet
                 testAASetAmbiguity
                 "AminoAcids.aminoAcidSetAmbiguity did not return the correct set of AminoAcids"
         )
         testCase "aminoAcidSetGapTer" (fun () ->
             let testAASetGapTer = set [AminoAcid.Gap; AminoAcid.Ter]
             Expect.equal
-                AminoAcids.aminoAcidSetGapTer
+                AminoAcids.gapTerSet
                 testAASetGapTer
                 "AminoAcids.aminoAcidSetGapTer did not return the correct set of AminoAcids"
         )
         testCase "aminoAcidSetPosCharged" (fun () ->
             let testAAPosCharged = set [AminoAcid.Arg; AminoAcid.Lys; AminoAcid.His]
             Expect.equal
-                AminoAcids.aminoAcidSetPosCharged
+                AminoAcids.positivelyChargedSet
                 testAAPosCharged
                 "AminoAcids.aminoAcidSetPosCharged did not return the correct set of AminoAcids"
         )
@@ -244,7 +244,7 @@ let aminoAcidTests =
                 AminoAcid.Asp; AminoAcid.Glu
             ]
             Expect.equal
-                AminoAcids.aminoAcidSetNegCharged
+                AminoAcids.negativelyChargedSet
                 testAANegCharged
                 "AminoAcids.aminoAcidSetNegCharged did not return the correct set of AminoAcids"
         )
@@ -253,7 +253,7 @@ let aminoAcidTests =
                 AminoAcid.Gln; AminoAcid.Asn; AminoAcid.Ser; AminoAcid.Thr
             ]
             Expect.equal
-                AminoAcids.aminoAcidSetPolarUncharged
+                AminoAcids.polarUnchargedSet
                 testAASetPolarUncharged
                 "AminoAcids.aminoAcidSetPolarUncharged did not return the correct set of AminoAcids"
         )
@@ -263,17 +263,17 @@ let aminoAcidTests =
                 AminoAcid.Phe; AminoAcid.Trp; AminoAcid.Tyr; AminoAcid.Val
             ]
             Expect.equal
-                AminoAcids.aminoAcidSetHydrophobic
+                AminoAcids.hydrophobicSet
                 testAASetHydrophobic
                 "AminoAcids.aminoAcidSetHydrophobic did not return the correct set of AminoAcids"
         )
         testCase "aminoAcidSetSpecialCases" (fun () ->
             let testAASetSpecialCases = set [
-                AminoAcid.Cys; AminoAcid.Sel; AminoAcid.Sec; AminoAcid.Gly
+                AminoAcid.Cys; AminoAcid.Sec; AminoAcid.Sec; AminoAcid.Gly
                 AminoAcid.Pro
             ]
             Expect.equal
-                AminoAcids.aminoAcidSetSpecialCases
+                AminoAcids.specialCasesSet
                 testAASetSpecialCases
                 "AminoAcids.aminoAcidSetSpecialCases did not return the correct set of AminoAcids"
         )
@@ -283,7 +283,7 @@ let aminoAcidTests =
                 false; false; false; false
                 false; false; false; true
                 false; false; true;  false
-                true;  true;  false; false; false
+                true;  true;  false; false
                 false; false; false; false
                 false; false; false; false
             ]
@@ -293,14 +293,14 @@ let aminoAcidTests =
                 "AminoAcids.isPolarUncharged did not return correct boolean for each AminoAcid"
         )
         testCase "isModified_withUnmodAAs" (fun () ->
-            let testIsModifiedFalse = [for i in 1 .. 29 -> false]
+            let testIsModifiedFalse = [for i in 1 .. 28 -> false]
             Expect.equal
                 (allAAs |> List.map (fun aa -> AminoAcids.isModified aa))
                 testIsModifiedFalse
                 "AminoAcids.isModified did not return correct boolean for each unmodified AminoAcid"
         )
         testCase "isModified_withModAAs" (fun () ->
-            let testIsModifiedTrue = [for i in 1 .. 29 -> true]
+            let testIsModifiedTrue = [for i in 1 .. 28 -> true]
             Expect.equal
                 (allSingleModAAs |> List.map (fun aa -> AminoAcids.isModified aa))
                 testIsModifiedTrue

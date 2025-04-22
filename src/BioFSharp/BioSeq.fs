@@ -4,20 +4,24 @@
 module BioSeq =
 
     open FSharpAux
-    open BioFSharp.BioItemsConverter
+    open BioFSharp.BioItemConverters
 
     ///Sequence of objects using the IBioItem interface
-    type BioSeq<[<EqualityConditionalOn; ComparisonConditionalOn >]'a when 'a :> IBioItem> = seq<'a>
+    type BioSeq<[<EqualityConditionalOn; ComparisonConditionalOn >] 'TBioItem when 'TBioItem :> IBioItem> = seq<'TBioItem>
 
     /// Generates AminoAcid sequence of one-letter-code string using given OptionConverter
-    let ofAminoAcidStringWithOptionConverter (converter:OptionConverter.AminoAcidOptionConverter) (s:#seq<char>) : BioSeq<_> =          
-        s
-        |> Seq.choose converter
+    let ofAminoAcidStringWithOptionConverter (converter: char -> AminoAcids.AminoAcid option) (s:#seq<char>) : BioSeq<AminoAcids.AminoAcid> =
+        s |> Seq.choose converter
 
     /// Generates AminoAcid sequence of one-letter-code raw string
-    let ofAminoAcidString (s:#seq<char>) : BioSeq<_> =          
-        s
-        |> Seq.choose OptionConverter.charToOptionAminoAcid
+    let ofAminoAcidString (s:#seq<char>) : BioSeq<AminoAcids.AminoAcid> =          
+        s |> ofAminoAcidStringWithOptionConverter AminoAcids.oneLetterToOption
+
+    /// Generates AminoAcid sequence of one-letter-code raw string
+    let ofThreeLetterAminoAcidString (s:#seq<char>) : BioSeq<AminoAcids.AminoAcid> =          
+        s 
+        |> Seq.chunkBySize 3
+        |> Seq.choose AminoAcids.threeLettersToOption
 
     /// Generates AminoAcidSymbol sequence of one-letter-code raw string
     let ofAminoAcidSymbolString (s:#seq<char>) : BioSeq<_> =          
@@ -25,90 +29,93 @@ module BioSeq =
         |> Seq.choose (AminoAcidSymbols.parseChar >> snd)
 
     /// Generates nucleotide sequence of one-letter-code string using given OptionConverter
-    let ofNucleotideStringWithOptionConverter (converter:OptionConverter.NucleotideOptionConverter) (s:#seq<char>) : BioSeq<_> =             
-        s
-        |> Seq.choose converter
+    let ofNucleotideStringWithOptionConverter (converter: char -> Nucleotides.Nucleotide option) (s:#seq<char>) : BioSeq<Nucleotides.Nucleotide> =
+        s |> Seq.choose converter
         
     /// Generates nucleotide sequence of one-letter-code raw string
-    let ofNucleotideString (s:#seq<char>) : BioSeq<_> =             
-        s
-        |> Seq.choose OptionConverter.charToOptionNucleotid           
+    let ofNucleotideString (s:#seq<char>) : BioSeq<Nucleotides.Nucleotide>  =             
+        s |> ofNucleotideStringWithOptionConverter Nucleotides.oneLetterToOption
 
     ///Active pattern which returns a base triplet
     let private (|Triplet|_|) (en:System.Collections.Generic.IEnumerator<_>) = 
         if en.MoveNext () then                
-                    let n1 = en.Current
-                    if en.MoveNext () then
-                        let n2 = en.Current
-                        if en.MoveNext () then
-                            Some((n1,n2,en.Current))
-                        else
-                            None
-                    else
-                        None
+            let n1 = en.Current
+            if en.MoveNext () then
+                let n2 = en.Current
+                if en.MoveNext () then
+                    Some((n1,n2,en.Current))
+                else
+                    None
+            else
+                None
         else
             None
 
-    /// Builts a new collection whose elements are the result of applying
-    /// the given function to each triplet of the collection. 
+    /// <summary>
+    /// Builds a new collection whose elements are the result of applying
+    /// the given function to each triplet of the collection.
+    ///
+    /// If the input sequence is not divisible into triplets, the last elements are ignored, and the result is built from the truncated sequence ending with the last valid triplet.
+    /// </summary>
+    /// <param name="mapping">The function to apply on each triplet</param>
+    /// <param name="input">The input sequence</param>
     let mapInTriplets f (input:seq<'a>) =
         let sourceIsEmpty = ref false    
-        seq {   use en = input.GetEnumerator()
-                while not(!sourceIsEmpty) do                
-                match en with
-                | Triplet t -> yield (f t)                                                              
-                | _         -> sourceIsEmpty := true                               
+        seq {   
+            use en = input.GetEnumerator()
+            while not(sourceIsEmpty.Value) do                
+            match en with
+            | Triplet t -> yield (f t)                                                              
+            | _         -> sourceIsEmpty.Value <- true                               
         }
 
     /// Create the reverse DNA or RNA strand. For example, the sequence "ATGC" is converted to "CGTA"
-    let reverse (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<_> = 
+    let reverse (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<Nucleotides.Nucleotide> = 
         nucs |> Seq.rev
 
     /// Create the complement DNA or cDNA (from RNA) strand. For example, the sequence "ATGC" is converted to "TACG"
-    let complement (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<_> = 
+    let complement (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<Nucleotides.Nucleotide> = 
         nucs |> Seq.map Nucleotides.complement
 
     /// Create the reverse complement strand meaning antiparallel DNA strand or the cDNA (from RNA) respectivly. For example, the sequence "ATGC" is converted to "GCAT". "Antiparallel" combines the two functions "Complement" and "Inverse".
-    let reverseComplement (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<_> = 
+    let reverseComplement (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<Nucleotides.Nucleotide> = 
         nucs |> Seq.map Nucleotides.complement |> Seq.rev
 
     //  Replace T by U
     /// Transcribe a given DNA coding strand (5'-----3')
-    let transcribeCodingStrand (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<_> = 
+    let transcribeCodingStrand (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<Nucleotides.Nucleotide> = 
         nucs |> Seq.map (fun nuc -> Nucleotides.replaceTbyU nuc)
         
     /// Transcribe a given DNA template strand (3'-----5')
-    let transcribeTemplateStrand (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<_> = 
+    let transcribeTemplateStrand (nucs:seq<Nucleotides.Nucleotide>) : BioSeq<Nucleotides.Nucleotide> = 
         nucs |> Seq.map (fun nuc -> Nucleotides.replaceTbyU (Nucleotides.complement nuc))
 
     /// translates nucleotide sequence to aminoacid sequence    
-    let translate (nucleotideOffset:int) (rnaSeq:seq<Nucleotides.Nucleotide>) : BioSeq<_> =         
+    let translate (nucleotideOffset:int) (rnaSeq:seq<Nucleotides.Nucleotide>) : BioSeq<AminoAcids.AminoAcid> =         
         if (nucleotideOffset < 0) then
-                raise (System.ArgumentException(sprintf "Input error: nucleotide offset of %i is invalid" nucleotideOffset))                
+            raise (System.ArgumentException(sprintf "Nucleotide offset %i < 0 is invalid" nucleotideOffset))                
         rnaSeq
         |> Seq.skip nucleotideOffset
         |> mapInTriplets Nucleotides.lookupBytes
 
     /// Compares the elemens of two sequence
-    let isEqual a b =
-        Seq.compareWith 
+    let equal (a: BioSeq<'TBioItem>) (b: BioSeq<'TBioItem>) =
+        0 = Seq.compareWith 
             (fun elem1 elem2 ->
                 if elem1 = elem2 then 0    
-                else 1)  a b 
+                else 1) a b 
 
     /// Returns string of one-letter-code
     let toString (bs:seq<#IBioItem>) =
-        new string [|for c in bs  -> BioItem.symbol c|]         
+        new string [|for c in bs -> BioItem.symbol c|]         
 
     /// Returns formula
     let toFormula (bs:seq<#IBioItem>) =
-        bs |> Seq.fold (fun acc item -> Formula.add acc  (BioItem.formula item)) Formula.emptyFormula
-        
+        bs |> Seq.fold (fun acc item -> Formula.add acc (BioItem.formula item)) Formula.emptyFormula
 
     /// Returns monoisotopic mass of the given sequence
     let toMonoisotopicMass (bs:seq<#IBioItem>) =
         bs |> Seq.sumBy BioItem.monoisoMass
-
 
     /// Returns average mass of the given sequence
     let toAverageMass (bs:seq<#IBioItem>) =
@@ -117,7 +124,6 @@ module BioSeq =
     /// Returns monoisotopic mass of the given sequence and initial value (e.g. H2O) 
     let toMonoisotopicMassWith (state) (bs:seq<#IBioItem>) =
         bs |> Seq.fold (fun massAcc item -> massAcc + BioItem.monoisoMass item) state
-
 
     /// Returns average mass of the given sequence and initial value (e.g. H2O) 
     let toAverageMassWith (state) (bs:seq<#IBioItem>) =
@@ -161,33 +167,3 @@ module BioSeq =
                             let index = (int (BioItem.symbol a)) - 65
                             compVec.[index] <- compVec.[index] + 1)
         compVec   
-
-
-
-
-
-
-
-//    /// Returns monoisotopic mass of the given sequence including water (+H20)
-//    let toMonoisotopicMassWithWater<'a when 'a :> IBioItem> : (seq<'a> -> float) =
-//        let water = Formula.Table.H2O |> Formula.averageMass
-//        let monoMass' = (BioItem.formula >> Formula.monoisoMass)
-//        let memMonoisoMass =
-//            Memoization.memoizeP monoMass'
-//        (fun bs -> 
-//            bs 
-//            |> Seq.sumBy memMonoisoMass
-//            |> (+) water )
-//
-//
-//    /// Returns average mass of the given sequence including water (+H20)
-//    let toAverageMassWithWater<'a when 'a :> IBioItem> : (seq<'a> -> float) =
-//        let water = Formula.Table.H2O |> Formula.averageMass        
-//        let averageMass' = (BioItem.formula >> Formula.averageMass)
-//        let memAverageMass =
-//            Memoization.memoizeP averageMass'
-//        (fun bs -> 
-//            bs 
-//            |> Seq.sumBy memAverageMass
-//            |> (+) water )
-

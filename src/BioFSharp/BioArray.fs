@@ -5,86 +5,83 @@ module BioArray =
     
     open System
     open FSharpAux
-    open BioItemsConverter
+    open BioItemConverters
 
     ///Array of objects using the IBioItem interface
-    type BioArray<[<EqualityConditionalOn; ComparisonConditionalOn >]'a when 'a :> IBioItem> = array<'a>
+    type BioArray<[<EqualityConditionalOn; ComparisonConditionalOn >] 'TBioItem when 'TBioItem :> IBioItem> = array<'TBioItem>
 
     /// Generates amino acid sequence of one-letter-code string using given OptionConverter
-    let ofAminoAcidStringWithOptionConverter (converter:OptionConverter.AminoAcidOptionConverter) (s:#seq<char>) : BioArray<_> =          
+    let ofAminoAcidStringWithOptionConverter (converter: char -> AminoAcids.AminoAcid option) (s:#seq<char>) : BioArray<AminoAcids.AminoAcid> =          
         s
         |> Seq.choose converter
         |> Seq.toArray
 
     /// Generates amino acid sequence of one-letter-code raw string
-    let ofAminoAcidString (s:#seq<char>) : BioArray<_> =          
-        s
-        |> Seq.choose OptionConverter.charToOptionAminoAcid
-        |> Seq.toArray
+    let ofAminoAcidString (s:#seq<char>) : BioArray<AminoAcids.AminoAcid> =          
+        s |> ofAminoAcidStringWithOptionConverter AminoAcids.oneLetterToOption
     
     /// Generates amino acid symbol sequence of one-letter-code raw string
-    let ofAminoAcidSymbolString (s:#seq<char>) : BioArray<_> =          
+    let ofAminoAcidSymbolString (s:#seq<char>) : BioArray<AminoAcidSymbols.AminoAcidSymbol> =          
         s
         |> Seq.choose (AminoAcidSymbols.parseChar >> snd)
         |> Seq.toArray
 
     /// Generates nucleotide sequence of one-letter-code string using given OptionConverter
-    let ofNucleotideStringWithOptionConverter (converter:OptionConverter.NucleotideOptionConverter) (s:#seq<char>) : BioArray<_> =             
+    let ofNucleotideStringWithOptionConverter (converter: char -> Nucleotides.Nucleotide option) (s:#seq<char>) : BioArray<Nucleotides.Nucleotide> =             
         s
         |> Seq.choose converter
         |> Seq.toArray
 
     /// Generates nucleotide sequence of one-letter-code raw string
-    let ofNucleotideString (s:#seq<char>) : BioArray<_> =             
+    let ofNucleotideString (s:#seq<char>) : BioArray<Nucleotides.Nucleotide> =             
         s
-        |> Seq.choose OptionConverter.charToOptionNucleotid    
-        |> Seq.toArray
+        |> ofNucleotideStringWithOptionConverter Nucleotides.oneLetterToOption
 
     /// Create the reverse DNA or RNA strand. For example, the sequence "ATGC" is converted to "CGTA"
-    let reverse (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<_> = 
+    let reverse (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<Nucleotides.Nucleotide> = 
         nucs |> Array.rev
 
     /// Create the complement DNA or cDNA (from RNA) strand. For example, the sequence "ATGC" is converted to "TACG"
-    let complement (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<_>= 
+    let complement (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<Nucleotides.Nucleotide> = 
         nucs |> Array.map Nucleotides.complement
 
     /// Create the reverse complement strand meaning antiparallel DNA strand or the cDNA (from RNA) respectivly. For example, the sequence "ATGC" is converted to "GCAT". "Antiparallel" combines the two functions "Complement" and "Inverse".
-    let reverseComplement (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<_>= 
+    let reverseComplement (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<Nucleotides.Nucleotide> = 
         nucs |> Array.map Nucleotides.complement |> Array.rev
 
-    /// Builts a new collection whose elements are the result of applying
-    /// the given function to each triplet of the collection. 
-    let mapInTriplets mapping (input:BioArray<'a>) =        
+    /// <summary>
+    /// Builds a new collection whose elements are the result of applying
+    /// the given function to each triplet of the collection.
+    ///
+    /// If the input sequence is not divisible into triplets, the last elements are ignored, and the result is built from the truncated sequence ending with the last valid triplet.
+    /// </summary>
+    /// <param name="mapping">The function to apply on each triplet</param>
+    /// <param name="input">The input sequence</param>
+    let mapInTriplets (mapping: ('TBioItem * 'TBioItem * 'TBioItem) -> 'U) (input:BioArray<'TBioItem>) : 'U array=
         Array.init (input.Length / 3) (fun i -> mapping (input.[i * 3],input.[(i*3)+1],input.[(i*3)+2]) )
 
-    //  Replace T by U
     /// Transcribe a given DNA coding strand (5'-----3')
-    [<Obsolete("This function name contained a typo and will be removed in the next major release. Use transcribeCodingStrand instead.")>]
-    let transcribeCodeingStrand (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<_> = 
-        nucs |> Array.map (fun nuc -> Nucleotides.replaceTbyU nuc)
-        
-    /// Transcribe a given DNA coding strand (5'-----3')
-    let transcribeCodingStrand (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<_> = 
+    let transcribeCodingStrand (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<Nucleotides.Nucleotide> = 
         nucs |> Array.map (fun nuc -> Nucleotides.replaceTbyU nuc)
         
     /// Transcribe a given DNA template strand (3'-----5')
-    let transcribeTemplateStrand (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<_> =
+    let transcribeTemplateStrand (nucs:BioArray<Nucleotides.Nucleotide>) : BioArray<Nucleotides.Nucleotide> =
         nucs |> Array.map (fun nuc -> Nucleotides.replaceTbyU (Nucleotides.complement nuc))
 
     /// translates nucleotide sequence to aminoacid sequence    
-    let translate (nucleotideOffset:int) (rnaSeq:BioArray<Nucleotides.Nucleotide>) : BioArray<_> =         
+    let translate (nucleotideOffset:int) (rnaSeq:BioArray<Nucleotides.Nucleotide>) : BioArray<AminoAcids.AminoAcid> =         
         if (nucleotideOffset < 0) then
-                raise (System.ArgumentException(sprintf "Input error: nucleotide offset of %i is invalid" nucleotideOffset))                
+                raise (System.ArgumentException(sprintf "Nucleotide offset %i < 0 is invalid" nucleotideOffset))                
         rnaSeq
         |> Array.skip nucleotideOffset
         |> mapInTriplets Nucleotides.lookupBytes
 
     /// Compares the elemens of two biosequence
-    let isEqual a b =
-        Array.compareWith
+    let equal (a: BioArray<'TBioItem>) (b: BioArray<'TBioItem>) =
+        0 = Array.compareWith
             (fun elem1 elem2 ->
                 if elem1 = elem2 then 0    
-                else 1)  a b 
+                else 1) a b 
         
     /// Returns string of one-letter-code
     let toString (bs:BioArray<#IBioItem>) =

@@ -5,89 +5,89 @@ module BioList =
 
     open System
     open FSharpAux
-    open BioFSharp.BioItemsConverter
+    open BioFSharp.BioItemConverters
     open AminoAcids
     open ModificationInfo
     open GlobalModificationInfo
 
     ///List of objects using the IBioItem interface
-    type BioList<[<EqualityConditionalOn; ComparisonConditionalOn >]'a when 'a :> IBioItem> = list<'a>
+    type BioList<[<EqualityConditionalOn; ComparisonConditionalOn >] 'TBioItem when 'TBioItem :> IBioItem> = list<'TBioItem>
 
     /// Generates amino acid sequence of one-letter-code string using given OptionConverter
-    let ofAminoAcidStringWithOptionConverter (converter:OptionConverter.AminoAcidOptionConverter) (s:#seq<char>) : BioList<_> =          
+    let ofAminoAcidStringWithOptionConverter (converter: char -> AminoAcids.AminoAcid option) (s:#seq<char>) : BioList<AminoAcids.AminoAcid> =          
         s
         |> Seq.choose converter
         |> Seq.toList
         
     /// Generates amino acid sequence of one-letter-code raw string
-    let ofAminoAcidString (s:#seq<char>) : BioList<_> =          
+    let ofAminoAcidString (s:#seq<char>) : BioList<AminoAcids.AminoAcid> =          
         s
-        |> Seq.choose OptionConverter.charToOptionAminoAcid
+        |> Seq.choose AminoAcids.oneLetterToOption
         |> Seq.toList
 
     /// Generates AminoAcidSymbol sequence of one-letter-code raw string
-    let ofAminoAcidSymbolString (s:#seq<char>) : BioList<_> =          
+    let ofAminoAcidSymbolString (s:#seq<char>) : BioList<AminoAcidSymbols.AminoAcidSymbol> =          
         s
         |> Seq.choose (AminoAcidSymbols.parseChar >> snd)
         |> Seq.toList
 
     /// Generates nucleotide sequence of one-letter-code string using given OptionConverter
-    let ofNucleotideStringWithOptionConverter (converter:OptionConverter.NucleotideOptionConverter) (s:#seq<char>) : BioList<_> =             
+    let ofNucleotideStringWithOptionConverter (converter: char -> Nucleotides.Nucleotide option) (s:#seq<char>) : BioList<Nucleotides.Nucleotide> =             
         s
         |> Seq.choose converter
         |> Seq.toList
 
     /// Generates nucleotide sequence of one-letter-code raw string
-    let ofNucleotideString (s:#seq<char>) : BioList<_> =             
+    let ofNucleotideString (s:#seq<char>) : BioList<Nucleotides.Nucleotide> =             
         s
-        |> Seq.choose OptionConverter.charToOptionNucleotid           
+        |> Seq.choose Nucleotides.oneLetterToOption  
         |> Seq.toList
 
     /// Create the reverse DNA or RNA strand. For example, the sequence "ATGC" is converted to "CGTA"
-    let reverse (nucs:BioList<Nucleotides.Nucleotide>) : BioList<_> = 
+    let reverse (nucs:BioList<Nucleotides.Nucleotide>) : BioList<Nucleotides.Nucleotide> = 
         nucs |> List.rev
 
     /// Create the complement DNA or cDNA (from RNA) strand. For example, the sequence "ATGC" is converted to "TACG"
-    let complement (nucs:BioList<Nucleotides.Nucleotide>) : BioList<_> = 
+    let complement (nucs:BioList<Nucleotides.Nucleotide>) : BioList<Nucleotides.Nucleotide> = 
         nucs |> List.map Nucleotides.complement
 
     /// Create the reverse complement strand meaning antiparallel DNA strand or the cDNA (from RNA) respectivly. For example, the sequence "ATGC" is converted to "GCAT". "Antiparallel" combines the two functions "Complement" and "Inverse".
-    let reverseComplement (nucs:BioList<Nucleotides.Nucleotide>) : BioList<_> = 
+    let reverseComplement (nucs:BioList<Nucleotides.Nucleotide>) : BioList<Nucleotides.Nucleotide> = 
         nucs |> List.map Nucleotides.complement |> List.rev
    
-    /// Builts a new collection whose elements are the result of applying
-    /// the given function to each triplet of the collection. 
-    let mapInTriplets mapping (input:BioList<'a>) =        
+    /// <summary>
+    /// Builds a new collection whose elements are the result of applying
+    /// the given function to each triplet of the collection.
+    ///
+    /// If the input sequence is not divisible into triplets, the last elements are ignored, and the result is built from the truncated sequence ending with the last valid triplet.
+    /// </summary>
+    /// <param name="mapping">The function to apply on each triplet</param>
+    /// <param name="input">The input sequence</param>
+    let mapInTriplets (mapping: ('TBioItem * 'TBioItem * 'TBioItem) -> 'U) (input:BioList<'TBioItem>) : 'U list=
         List.init (input.Length / 3) (fun i -> mapping (input.[i * 3],input.[(i*3)+1],input.[(i*3)+2]) )
 
-    //  Replace T by U
     /// Transcribe a given DNA coding strand (5'-----3')
-    [<Obsolete("This function name contained a typo and will be removed in the next major release. Use transcribeCodingStrand instead.")>]
-    let transcribeCodeingStrand (nucs:BioList<Nucleotides.Nucleotide>) : BioList<_> = 
-        nucs |> List.map (fun nuc -> Nucleotides.replaceTbyU nuc)    
-        
-    /// Transcribe a given DNA coding strand (5'-----3')
-    let transcribeCodingStrand (nucs:BioList<Nucleotides.Nucleotide>) : BioList<_> = 
+    let transcribeCodingStrand (nucs:BioList<Nucleotides.Nucleotide>) : BioList<Nucleotides.Nucleotide> = 
         nucs |> List.map (fun nuc -> Nucleotides.replaceTbyU nuc)
         
     /// Transcribe a given DNA template strand (3'-----5')
-    let transcribeTemplateStrand (nucs:BioList<Nucleotides.Nucleotide>) : BioList<_> = 
+    let transcribeTemplateStrand (nucs:BioList<Nucleotides.Nucleotide>) : BioList<Nucleotides.Nucleotide> = 
         nucs |> List.map (fun nuc -> Nucleotides.replaceTbyU (Nucleotides.complement nuc))
 
     /// translates nucleotide sequence to aminoacid sequence    
-    let translate (nucleotideOffset:int) (rnaSeq:BioList<Nucleotides.Nucleotide>) : BioList<_> =         
+    let translate (nucleotideOffset:int) (rnaSeq:BioList<Nucleotides.Nucleotide>) : BioList<AminoAcids.AminoAcid> =         
         if (nucleotideOffset < 0) then
-                raise (System.ArgumentException(sprintf "Input error: nucleotide offset of %i is invalid" nucleotideOffset))                
+                raise (System.ArgumentException(sprintf "Nucleotide offset %i < 0 is invalid" nucleotideOffset))                
         rnaSeq
         |> List.skip nucleotideOffset
         |> mapInTriplets Nucleotides.lookupBytes
 
     /// Compares the elemens of two sequence
     let isEqual a b =
-        List.compareWith 
+        0 = List.compareWith 
             (fun elem1 elem2 ->
                 if elem1 = elem2 then 0    
-                else 1)  a b 
+                else 1) a b 
         
     /// Returns string of one-letter-code
     let toString (bs:BioList<_>) =

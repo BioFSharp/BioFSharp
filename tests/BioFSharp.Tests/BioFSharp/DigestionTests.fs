@@ -34,7 +34,7 @@ let sndTestPeptide : BioArray.BioArray<AminoAcid> =
     [|Leu;Met;Asn;Pyl;Pro;Gln;Arg;|]
 
 let trdTestSequence : BioArray.BioArray<AminoAcid> =
-    [|Ser;Thr;Sel;Val;Trp;Tyr;Xaa;Xle;Glx;Asx;|]
+    [|Ser;Thr;Sec;Val;Trp;Tyr;Xaa;Xle;Glx;Asx;|]
 
 let testSequence = 
     Array.concat [|fstTestPeptide;sndTestPeptide;trdTestSequence|]

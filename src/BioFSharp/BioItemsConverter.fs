@@ -1,60 +1,86 @@
 ﻿namespace BioFSharp
 
-///Contains Functionalities for parsing Bioitems
-module BioItemsConverter =
-    
-    
-    open FSharpAux
+/// Conversion functions to and from BioItems
+module BioItemConverters =
 
-    ///Contains Functionalities for trying to parse Bioitems
-    module OptionConverter =  
-        
-        /// Type abbreviation for converting char to optional Nucleotide
-        type NucleotideOptionConverter = char -> Nucleotides.Nucleotide option
-        /// Type abbreviation for converting char to optional AminoAcid
-        type AminoAcidOptionConverter = char -> AminoAcids.AminoAcid option
+    module AminoAcids =
 
-        /// Converters char to AminoAcid option by ignoring bad character
-        let charToOptionAminoAcid (aac:char) =
-            let pac = AminoAcids.charToParsedAminoAcidChar aac
+        /// <summary>
+        /// Converter function to return Some AminoAcid if the input character is a valid one-letter code.
+        /// Returns None if the input is not a valid one-letter code.
+        /// </summary>
+        /// <param name="character">The input character to convert</param>
+        /// <returns>Some AminoAcid for valid AA codes, None otherwise</returns>
+        let oneLetterToOption (character:char) =
+            let pac = AminoAcids.parseOneLetterCode character
             match pac with
-            | AminoAcids.ParsedAminoAcidChar.StandardCodes  (aa) -> Some aa
+            | AminoAcids.ParsedAminoAcidChar.StandardCodes  (aa)         -> Some aa
+            | AminoAcids.ParsedAminoAcidChar.AmbiguityCodes (aa)         -> Some aa 
+            | AminoAcids.ParsedAminoAcidChar.GapTer         (aa)         -> Some aa 
+            | _ -> None
+
+        /// <summary>
+        /// Converter function to return Some AminoAcid if the input characters are a valid three-letter code.
+        /// Returns None if the input is not a valid one-letter code.
+        /// </summary>
+        /// <param name="character">The input characters to convert</param>
+        /// <returns>Some AminoAcid for valid AA codes, None otherwise</returns>
+        let threeLettersToOption (characters:#seq<char>) =
+            let pac = AminoAcids.parseThreeLetterCode characters
+            match pac with
+            | AminoAcids.ParsedAminoAcidChar.StandardCodes  (aa)         -> Some aa
+            | AminoAcids.ParsedAminoAcidChar.AmbiguityCodes (aa)         -> Some aa 
+            | AminoAcids.ParsedAminoAcidChar.GapTer         (aa)         -> Some aa 
+            | _ -> None
+
+        /// <summary>
+        /// Converter function to return Some AminoAcid if the input character is a valid one-letter code for standard or ambiguous amino acids, but no Gap or tertminator.
+        /// Returns None if the input is a Gap, a Terminator, or not a valid one-letter code.
+        /// </summary>
+        /// <param name="character">The input character to convert</param>
+        /// <returns>Some AminoAcid for valid AA codes, None otherwise</returns>
+        let oneLetterToOptionWithoutGapTer (character:char) =
+            let pac = AminoAcids.parseOneLetterCode character
+            match pac with
+            | AminoAcids.ParsedAminoAcidChar.StandardCodes  (aa)
             | AminoAcids.ParsedAminoAcidChar.AmbiguityCodes (aa) -> Some aa 
-            | AminoAcids.ParsedAminoAcidChar.GapTer         (aa) -> Some aa 
-            | AminoAcids.ParsedAminoAcidChar.NoAAChar (_)        -> None                
+            | _  -> None
 
-        /// Converters char to AminoAcid option by ignoring bad character
-        /// Ignores Gap and Ter
-        let charToOptionAminoAcidWithoutGapTer (aac:char) =
-            let pac = AminoAcids.charToParsedAminoAcidChar aac
+        /// <summary>
+        /// Converter function to return Some AminoAcid if the input character is a valid one-letter code for standard amino acids.
+        /// Returns None if the input an ambiguous code (e.g., 'X', 'Z', 'B', 'J'), or not a valid one-letter code.
+        /// </summary>
+        /// <param name="character">The input character to convert</param>
+        /// <returns>Some AminoAcid for valid AA codes, None otherwise</returns>
+        let oneLetterToOptionStandard (character:char) =
+            let pac = AminoAcids.parseOneLetterCode character
             match pac with
-            | AminoAcids.ParsedAminoAcidChar.StandardCodes  (aa) -> Some aa
-            | AminoAcids.ParsedAminoAcidChar.AmbiguityCodes (aa) -> Some aa 
-            | AminoAcids.ParsedAminoAcidChar.GapTer         (_)  -> None
-            | AminoAcids.ParsedAminoAcidChar.NoAAChar (_)        -> None
-        
-        /// Converters char to AminoAcid option by ignoring bad character and ambiguis code        
-        let charToOptionStandardAminoAcid (aac:char) =
-            let pac = AminoAcids.charToParsedAminoAcidChar aac
-            match pac with
-            | AminoAcids.ParsedAminoAcidChar.StandardCodes  (aa) -> Some aa
-            | AminoAcids.ParsedAminoAcidChar.GapTer         (aa) -> Some aa 
-            | AminoAcids.ParsedAminoAcidChar.AmbiguityCodes (_)  -> None
-            | AminoAcids.ParsedAminoAcidChar.NoAAChar (_)        -> None
+            | AminoAcids.ParsedAminoAcidChar.StandardCodes  (aa)         -> Some aa
+            | AminoAcids.ParsedAminoAcidChar.GapTer         (aa)         -> Some aa 
+            | _ -> None
 
-        /// Converters char to AminoAcid option by ignoring bad character and ambiguis code
-        /// Ignores Gap and Ter
-        let charToOptionStandardAminoAcidWithoutGapTer (aac:char) =
-            let pac = AminoAcids.charToParsedAminoAcidChar aac
+        /// <summary>
+        /// Converter function to return Some AminoAcid if the input character is a valid one-letter code for standard amino acids, but no Gap or tertminator.
+        /// Returns None if the input an ambiguous code (e.g., 'X', 'Z', 'B', 'J'), a Gap, a Terminator, or not a valid one-letter code.
+        /// </summary>
+        /// <param name="character">The input character to convert</param>
+        /// <returns>Some AminoAcid for valid AA codes, None otherwise</returns>
+        let oneLetterToOptionStandardWithoutGapTer (character:char) =
+            let pac = AminoAcids.parseOneLetterCode character
             match pac with
-            | AminoAcids.ParsedAminoAcidChar.StandardCodes  (aa) -> Some aa
-            | AminoAcids.ParsedAminoAcidChar.GapTer         (_)  -> None 
-            | AminoAcids.ParsedAminoAcidChar.AmbiguityCodes (_)  -> None
-            | AminoAcids.ParsedAminoAcidChar.NoAAChar (_)        -> None
+            | AminoAcids.ParsedAminoAcidChar.StandardCodes (aa) -> Some aa
+            | _  -> None
 
-        /// Converters char to AminoAcid option by ignoring bad character
-        let charToOptionNucleotid (nuc:char) =
-            let pnc = Nucleotides.charToParsedNucleotideChar nuc
+    module Nucleotides =
+
+        /// <summary>
+        /// Converter function to return Some Nucleotide if the input character is a valid one-letter code.
+        /// Returns None if the input is not a valid one-letter code.
+        /// </summary>
+        /// <param name="character">The input character to convert</param>
+        /// <returns>Some Nucleotide for valid nucleotide codes, None otherwise</returns>
+        let oneLetterToOption (character:char) =
+            let pnc = Nucleotides.charToParsedNucleotideChar character
             match pnc with
             | Nucleotides.ParsedNucleotideChar.StandardCodes    (n) -> Some n
             | Nucleotides.ParsedNucleotideChar.Standard_DNAonly (n) -> Some n
@@ -63,14 +89,17 @@ module BioItemsConverter =
             | Nucleotides.ParsedNucleotideChar.GapTer           (n) -> Some n 
             | Nucleotides.ParsedNucleotideChar.NoNucChar (_)        -> None              
 
-
-        /// Converters char to AminoAcid option by ignoring bad character
-        let charToOptionStandardNucleotid (nuc:char) =
-            let pnc = Nucleotides.charToParsedNucleotideChar nuc
+        /// <summary>
+        /// Converter function to return Some Nucleotide if the input character is a valid one-letter code for standard nucleotides.
+        /// Returns None if the input an ambiguous code (e.g.,'R','Y','K','M','S','W','B','D','H','V','N'), or not a valid one-letter code.
+        /// </summary>
+        /// <param name="character">The input character to convert</param>
+        /// <returns>Some Nucleotide for valid nucleotide codes, None otherwise</returns>
+        let oneLetterToOptionStandard (character:char) =
+            let pnc = Nucleotides.charToParsedNucleotideChar character
             match pnc with
             | Nucleotides.ParsedNucleotideChar.StandardCodes    (n) -> Some n
             | Nucleotides.ParsedNucleotideChar.Standard_DNAonly (n) -> Some n
             | Nucleotides.ParsedNucleotideChar.Standard_RNAonly (n) -> Some n
-            | Nucleotides.ParsedNucleotideChar.AmbiguityCodes   (_) -> None
             | Nucleotides.ParsedNucleotideChar.GapTer           (n) -> Some n
-            | Nucleotides.ParsedNucleotideChar.NoNucChar (_)        -> None  
+            | _ -> None

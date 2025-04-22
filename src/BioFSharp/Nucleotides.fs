@@ -8,7 +8,7 @@ module Nucleotides =
 
     /// Nucleotide Codes
     type Nucleotide =
-    // ´Standard Nucleotide Codes
+    // Standard Nucleotide Codes
     /// A : Adenine
     | A
     /// T : Thymidine (only DNA)
@@ -26,7 +26,7 @@ module Nucleotides =
     /// * : Terminator
     | Ter
         
-    // 'Ambiguous Nucleotide Codes: double base codes
+    // Ambiguous Nucleotide Codes: double base codes
     /// R : G or A = puRine
     | R
     /// Y : U/T or C = pYrimidine
@@ -40,7 +40,7 @@ module Nucleotides =
     /// W : A or U = Weak base pair 
     | W
         
-    // 'Ambiguous Nucleotide Codes: triple base codes
+    // Ambiguous Nucleotide Codes: triple base codes
     /// B : G or U or C = not A
     | B
     /// D : G or A or U = not C
@@ -50,7 +50,7 @@ module Nucleotides =
     /// V : G or C or A = not T/U
     | V
 
-    // 'Ambiguous Nucleotide Codes
+    // Ambiguous Nucleotide Codes
     /// N : A or G or U or C.
     | N
 
