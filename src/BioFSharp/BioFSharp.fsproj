@@ -46,6 +46,7 @@
     <Compile Include="Mass.fs" />
     <Compile Include="IBioItem.fs" />
     <Compile Include="TaggedSequence.fs" />
+    <Compile Include="SecondaryStructure.fs" />
     <Compile Include="SequenceFeature.fs" />
     <Compile Include="AnnotatedSequence.fs" />
     <Compile Include="IsotopicDistribution.fs" />
@@ -73,7 +74,8 @@
     <Compile Include="FileFormats\BlastQueries.fs" />
     <Compile Include="FileFormats\CustomBlastResult.fs" />
     <Compile Include="FileFormats\Clustal.fs" />
-    <Compile Include="FileFormats\DSSP_Stride.fs" />
+    <Compile Include="FileFormats\DSSP.fs" />
+    <Compile Include="FileFormats\Stride.fs" />
     <Compile Include="FileFormats\GAF.fs" />
     <Compile Include="FileFormats\GenBank.fs" />
     <Compile Include="FileFormats\GFF3.fs" />
@@ -92,6 +94,8 @@
     <Compile Include="IO\BlastQueries.fs" />
     <Compile Include="IO\CustomBlastResult.fs" />
     <Compile Include="IO\Clustal.fs" />
+    <Compile Include="IO\DSSP.fs" />
+    <Compile Include="IO\Stride.fs" />
     <Compile Include="CLITools\CLITool.fs" />
     <Compile Include="CLITools\Blast.fs" />
     <Compile Include="CLITools\ClustalO.fs" />
