@@ -9,15 +9,15 @@ type CompositionVector =
     /// Computes the absolute frequency of specified bioitems within a sequence.
     /// </summary>
     /// <param name="letter">Array of bioitems (e.g., amino acids or nucleotides) whose frequency should be computed.</param>
-    /// <param name="sequence">Sequence of bioitems to analyze.</param>
+    /// <param name="compVector">Composition vector as an int array</param>
     /// <returns>
     /// A map from each bioitem to its absolute count within the sequence.
     /// </returns>
-    static member inline bioItemFrequency<^a when ^a :> IBioItem and ^a : (static member  op_Explicit : ^a -> int) and ^a : comparison> (letter:array<^a>) (sequence: array<^a>) =
-        let cvec = BioArray.toCompositionVector sequence
+    static member inline bioItemFrequency<^a when ^a :> IBioItem and ^a : (static member  op_Explicit : ^a -> int) and ^a : comparison> 
+            (letter:array<^a>) (compVector: array<int>) =
         letter
-        |> Seq.map (fun l -> l,cvec.[(int l) - 65])
-        |> Map.ofSeq
+        |> Array.map (fun l -> l,compVector.[(int l) - 65])
+        |> Map.ofArray
 
 
     /// <summary>
@@ -28,11 +28,12 @@ type CompositionVector =
     /// <returns>
     /// A map from each bioitem to its relative frequency (probability) within the sequence.
     /// </returns>
-    static member inline bioItemProbability<^a when ^a :> IBioItem and ^a : (static member  op_Explicit : ^a -> int) and ^a : comparison> (letter:array<^a>) (sequence: array<^a>) =
-        let cvec = BioArray.toRelCompositionVector sequence
+    static member inline bioItemProbability<^a when ^a :> IBioItem and ^a : (static member  op_Explicit : ^a -> int) and ^a : comparison> 
+            (letter:array<^a>) (compVector: array<int>) =
+        let sum  = compVector |> Array.sum  |> float 
         letter
-        |> Seq.map (fun l -> l,cvec.[(int l) - 65])
-        |> Map.ofSeq
+        |> Array.map (fun l -> l,float compVector.[(int l) - 65] / sum)
+        |> Map.ofArray
 
 
     /// <summary>
