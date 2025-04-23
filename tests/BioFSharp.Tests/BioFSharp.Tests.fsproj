@@ -12,9 +12,21 @@
     <EmbeddedResource Include="resources\HasA.txt" />
     <EmbeddedResource Include="resources\HETATMSequence.txt" />
     <None Include="fixtures/**" CopyToOutputDirectory="Always" />
+    <Compile Include="ReferenceObjects\Fasta.fs" />
+    <Compile Include="ReferenceObjects\Fastq.fs" />
     <Compile Include="FileFormats\Fasta.fs" />
     <Compile Include="FileFormats\Fastq.fs" />
     <Compile Include="FileFormats\Main.fs" />
+    <Compile Include="IO\Fasta.fs" />
+    <Compile Include="IO\Fastq.fs" />
+    <Compile Include="IO\AgilentRaw.fs" />
+    <Compile Include="IO\BlastQueries.fs" />
+    <Compile Include="IO\CustomBlastResult.fs" />
+    <Compile Include="IO\Clustal.fs" />
+    <Compile Include="IO\DSSP.fs" />
+    <Compile Include="IO\Stride.fs" />
+    <Compile Include="IO\GAF.fs" />
+    <Compile Include="IO\Main.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="BioFSharp.IO\DSSP.fs" />
     <Compile Include="BioFSharp.IO\PDB.fs" />

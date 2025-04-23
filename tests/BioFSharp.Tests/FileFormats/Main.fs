@@ -1,11 +1,12 @@
-﻿module FileFormatTests
+﻿namespace BioFSharp.Tests.FileFormats
 
-open Expecto
+module All =
 
-[<Tests>]
-let main = 
-    testList "FileFormats and IO" [
-        // Fasta
-        FastaTests.fastaTests
-        FastqTests.fastqTests
-    ]
+    open Expecto
+
+    [<Tests>]
+    let main = 
+        testList "FileFormat models" [
+            FastaTests.fileFormatTests
+            FastqTests.fileFormatTests
+        ]
