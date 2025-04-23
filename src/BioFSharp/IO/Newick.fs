@@ -4,10 +4,9 @@ open System.IO
 open System.Text
 open BioFSharp
 
-///Contains functions for parsing phylogenetic trees in the Newick format
+///Contains functions for parsing phylogenetic trees from the Newick format
 module Newick = 
     
-
     ///Read file as sequence of characters
     let private readFile (file:string) =   
         seq {
@@ -116,8 +115,8 @@ module Newick =
                     loop()
         fst (loop())
 
-    ///Returns a PhylTree of file. Converter is used to create a distancevalue of a string
-    let ofFile (converter : string -> 'Distance) (path: string) : PhylogeneticTree<string*'Distance> =
+    ///Returns a PhylTree of file. Converter is used to create a distancevalue from a string
+    let read (converter : string -> 'Distance) (path: string) : PhylogeneticTree<string*'Distance> =
         path
         |> readFile
         |> tokenizer
@@ -126,7 +125,7 @@ module Newick =
      //---Writer---//
 
     ///Creates a NewickTree file of PhylTree. nodeConverter is used to split the distanceInfo and the name of a node, because they are parsed separately. First result of the tuple is name, second is distance.
-    let toFile (nodeConverter: 'T -> string * string) (path:string) (tree: PhylogeneticTree<'T>) = 
+    let write (nodeConverter: 'T -> string * string) (path:string) (tree: PhylogeneticTree<'T>) = 
         let rec loop tree =
             seq {
                 match tree with

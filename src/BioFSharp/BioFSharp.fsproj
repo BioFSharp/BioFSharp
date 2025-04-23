@@ -79,8 +79,7 @@
     <Compile Include="FileFormats\GAF.fs" />
     <Compile Include="FileFormats\GenBank.fs" />
     <Compile Include="FileFormats\GFF3.fs" />
-    <Compile Include="FileFormats\Mgf.fs" />
-    <Compile Include="FileFormats\Newick.fs" />
+    <Compile Include="FileFormats\MGF.fs" />
     <Compile Include="FileFormats\Obo.fs" />
     <Compile Include="FileFormats\OrthoMCL.fs" />
     <Compile Include="FileFormats\PDB.fs" />
@@ -97,6 +96,8 @@
     <Compile Include="IO\DSSP.fs" />
     <Compile Include="IO\Stride.fs" />
     <Compile Include="IO\GAF.fs" />
+    <Compile Include="IO\MGF.fs" />
+    <Compile Include="IO\Newick.fs" />
     <Compile Include="CLITools\CLITool.fs" />
     <Compile Include="CLITools\Blast.fs" />
     <Compile Include="CLITools\ClustalO.fs" />
