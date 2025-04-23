@@ -96,6 +96,7 @@
     <Compile Include="IO\Clustal.fs" />
     <Compile Include="IO\DSSP.fs" />
     <Compile Include="IO\Stride.fs" />
+    <Compile Include="IO\GAF.fs" />
     <Compile Include="CLITools\CLITool.fs" />
     <Compile Include="CLITools\Blast.fs" />
     <Compile Include="CLITools\ClustalO.fs" />

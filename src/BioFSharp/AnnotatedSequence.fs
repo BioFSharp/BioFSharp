@@ -38,7 +38,7 @@ module AnnotatedSequence =
             loop features
         )
         if hasInvalidFeatures then
-            failwith $"""At least one  sequence feature annotation collection contains overlapping annotations. This is not supported. Please annotate them as separate feature lists.
+            failwith $"""At least one sequence feature annotation collection contains overlapping annotations. This is not supported. Please annotate them as separate feature lists.
 Offending annotations: 
 {invalidFeatures}
 """         
