@@ -98,6 +98,7 @@
     <Compile Include="IO\GAF.fs" />
     <Compile Include="IO\MGF.fs" />
     <Compile Include="IO\Newick.fs" />
+    <Compile Include="IO\Obo.fs" />
     <Compile Include="CLITools\CLITool.fs" />
     <Compile Include="CLITools\Blast.fs" />
     <Compile Include="CLITools\ClustalO.fs" />

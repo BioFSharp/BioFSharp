@@ -26,6 +26,7 @@
     <Compile Include="IO\DSSP.fs" />
     <Compile Include="IO\Stride.fs" />
     <Compile Include="IO\GAF.fs" />
+    <Compile Include="IO\Obo.fs" />
     <Compile Include="IO\Main.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="BioFSharp.IO\DSSP.fs" />

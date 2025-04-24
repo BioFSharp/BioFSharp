@@ -1,59 +1,48 @@
 ﻿namespace BioFSharp.FileFormats
 
 
-/// Functions for par
+/// Functions for parsing OBO terms from an OBO formatted file
 module Obo =
     open System
-    open FSharpAux
-    open FSharpAux.IO
 
-    //Dbxref definitions take the following form:
-
-    //<dbxref name> {optional-trailing-modifier}
-
-    //or
-
-    //<dbxref name> "<dbxref description>" {optional-trailing-modifier}
-
-    //The dbxref is a colon separated key-value pair. The key should be taken from GO.xrf_abbs but this is not a requirement. 
-    //If provided, the dbxref description is a string of zero or more characters describing the dbxref. 
-    //DBXref descriptions are rarely used and as of obof1.4 are discouraged.
-
-    //Dbxref lists are used when a tag value must contain several dbxrefs. Dbxref lists take the following form:
-
-    //[<dbxref definition>, <dbxref definition>, ...]
-
-    //The brackets may contain zero or more comma separated dbxref definitions. An example of a dbxref list can be seen in the GO def for "ribonuclease MRP complex":
-
-    //def: "A ribonucleoprotein complex that contains an RNA molecule of the snoRNA family, and cleaves the rRNA precursor as part of rRNA transcript processing. It also has other roles: In S. cerevisiae it is involved in cell cycle-regulated degradation of daughter cell-specific mRNAs, while in mammalian cells it also enters the mitochondria and processes RNAs to create RNA primers for DNA replication." [GOC:sgd_curators, PMID:10690410, Add to Citavi project by Pubmed ID PMID:14729943, Add to Citavi project by Pubmed ID PMID:7510714] Add to Citavi project by Pubmed ID
-
-    //Note that the trailing modifiers (like all trailing modifiers) do not need to be decoded or round-tripped by parsers; trailing modifiers can always be optionally ignored. However, all parsers must be able to gracefully ignore trailing modifiers. It is important to recognize that lines which accept a dbxref list may have a trailing modifier for each dbxref in the list, and another trailing modifier for the line itself.
+    ///Dbxref definitions take the following form:
+    ///
+    ///<dbxref name> {optional-trailing-modifier}
+    //
+    ///or
+    ///
+    ///<dbxref name> "<dbxref description>" {optional-trailing-modifier}
+    ///
+    ///The dbxref is a colon separated key-value pair. The key should be taken from GO.xrf_abbs but this is not a requirement. 
+    ///If provided, the dbxref description is a string of zero or more characters describing the dbxref. 
+    ///DBXref descriptions are rarely used and as of obof1.4 are discouraged.
+    ///
+    ///Dbxref lists are used when a tag value must contain several dbxrefs. Dbxref lists take the following form:
+    ///
+    ///[<dbxref definition>, <dbxref definition>, ...]
+    ///
+    ///The brackets may contain zero or more comma separated dbxref definitions. An example of a dbxref list can be seen in the GO def for "ribonuclease MRP complex":
+    ///
+    ///def: "A ribonucleoprotein complex that contains an RNA molecule of the snoRNA family, and cleaves the rRNA precursor as part of rRNA transcript processing. It also has other roles: In S. cerevisiae it is involved in cell cycle-regulated degradation of daughter cell-specific mRNAs, while in mammalian cells it also enters the mitochondria and processes RNAs to create RNA primers for DNA replication." [GOC:sgd_curators, PMID:10690410, Add to Citavi project by Pubmed ID PMID:14729943, Add to Citavi project by Pubmed ID PMID:7510714] Add to Citavi project by Pubmed ID
+    ///
+    ///Note that the trailing modifiers (like all trailing modifiers) do not need to be decoded or round-tripped by parsers; trailing modifiers can always be optionally ignored. However, all parsers must be able to gracefully ignore trailing modifiers. It is important to recognize that lines which accept a dbxref list may have a trailing modifier for each dbxref in the list, and another trailing modifier for the line itself.
     type DBXref = {
         Name        : string
         Description : string
         Modifiers   : string
-    }
+    } with
+        static member create name description modifiers =
+            {Name = name; Description = description; Modifiers = modifiers}
 
-    let private xrefRegex = 
-        System.Text.RegularExpressions.Regex("""(?<xrefName>^([^"{])*)(\s?)(?<xrefDescription>\"(.*?)\")?(\s?)(?<xrefModifiers>\{(.*?)}$)?""")
 
-    let parseDBXref (v:string) =
-        let matches = xrefRegex.Match(v.Trim()).Groups
-
-        {
-            Name = matches.Item("xrefName").Value
-            Description = matches.Item("xrefDescription").Value
-            Modifiers = matches.Item("xrefModifiers").Value
-        }
-
-    //The value consists of a quote enclosed synonym text, a scope identifier, an optional synonym type name, and an optional dbxref list, like this:
-    //synonym: "The other white meat" EXACT MARKETING_SLOGAN [MEAT:00324, BACONBASE:03021]
-
-    //The synonym scope may be one of four values: EXACT, BROAD, NARROW, RELATED. If the first form is used to specify a synonym, the scope is assumed to be RELATED.
-
-    //The synonym type must be the id of a synonym type defined by a synonymtypedef line in the header. If the synonym type has a default scope, that scope is used regardless of any scope declaration given by a synonym tag.
-
-    //The dbxref list is formatted as specified in dbxref formatting. A term may have any number of synonyms.
+    ///The value consists of a quote enclosed synonym text, a scope identifier, an optional synonym type name, and an optional dbxref list, like this:
+    ///synonym: "The other white meat" EXACT MARKETING_SLOGAN [MEAT:00324, BACONBASE:03021]
+    ///
+    ///The synonym scope may be one of four values: EXACT, BROAD, NARROW, RELATED. If the first form is used to specify a synonym, the scope is assumed to be RELATED.
+    ///
+    ///The synonym type must be the id of a synonym type defined by a synonymtypedef line in the header. If the synonym type has a default scope, that scope is used regardless of any scope declaration given by a synonym tag.
+    ///
+    ///The dbxref list is formatted as specified in dbxref formatting. A term may have any number of synonyms.
     type TermSynonymScope =
         | Exact   
         | Broad   
@@ -69,36 +58,15 @@ module Obo =
             | _         ->  printfn "[WARNING@L %i]unable to recognize %s as synonym scope" line s
                             Related
 
-    let private synonymRegex = 
-        System.Text.RegularExpressions.Regex("""(?<synonymText>^\"(.*?)\"){1}(\s?)(?<synonymScope>(EXACT|BROAD|NARROW|RELATED))?(\s?)(?<synonymDescription>\w*)(\s?)(?<dbxreflist>\[(.*?)\])?""")
-
-
     type TermSynonym = {
         Text        : string
         Scope       : TermSynonymScope
         TypeName    : string
         DBXrefs     : DBXref list
-    }
+    } with
+        static member create text scope typeName dbxrefs =
+            {Text = text; Scope = scope; TypeName = typeName; DBXrefs = dbxrefs}
 
-    let parseSynonym (scopeFromDeprecatedTag:TermSynonymScope option) (line:int) (v:string) =
-        let matches = synonymRegex.Match(v.Trim()).Groups
-        {
-            Text = matches.Item("synonymText").Value
-            Scope =
-                match scopeFromDeprecatedTag with
-                |Some scope -> scope
-                |_ ->   matches.Item("synonymScope").Value
-                        |> TermSynonymScope.ofString line
-            TypeName = matches.Item("synonymDescription").Value
-            DBXrefs =
-                let tmp = matches.Item("dbxreflist").Value
-                match tmp.Replace("[","").Replace("]","") with
-                | "" -> []
-                | dbxrefs ->
-                    dbxrefs.Split(',')
-                    |> Array.map parseDBXref
-                    |> Array.toList
-        }
     /// obo term record type
     type OboTerm = {
         ///The unique id of the current term. 
@@ -268,410 +236,41 @@ module Obo =
         //Note that although this tag is defined in obof1.4, it can be used in obof1.2 harmlessly
         CreationDate : string
 
-    }
-
-    /// Creates an obo term record
-    let createOboTerm id name isAnonymous altIds definition comment subsets synonyms xrefs isA         
-        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider propertyValues builtIn    
-        createdBy creationDate = {  
-
-        Id              = id          
-        Name            = name        
-        IsAnonymous     = isAnonymous 
-        AltIds          = altIds      
-        Definition      = definition  
-        Comment         = comment     
-        Subsets         = subsets     
-        Synonyms        = synonyms    
-        Xrefs           = xrefs     
-        IsA             = isA         
-        IntersectionOf  = intersectionOf
-        UnionOf         = unionOf       
-        DisjointFrom    = disjointFrom  
-        Relationships   = relationships  
-        IsObsolete      = isObsolete    
-        Replacedby      = replacedby    
-        Consider        = consider      
-        PropertyValues  = propertyValues
-        BuiltIn         = builtIn       
-        CreatedBy       = createdBy     
-        CreationDate    = creationDate  
-        
-    }
+    } with
+        /// Creates an obo term record
+        static member create id name isAnonymous altIds definition comment subsets synonyms xrefs isA         
+            intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider propertyValues builtIn    
+            createdBy creationDate = 
+            
+                {  
+                    Id              = id          
+                    Name            = name        
+                    IsAnonymous     = isAnonymous 
+                    AltIds          = altIds      
+                    Definition      = definition  
+                    Comment         = comment     
+                    Subsets         = subsets     
+                    Synonyms        = synonyms    
+                    Xrefs           = xrefs     
+                    IsA             = isA         
+                    IntersectionOf  = intersectionOf
+                    UnionOf         = unionOf       
+                    DisjointFrom    = disjointFrom  
+                    Relationships   = relationships  
+                    IsObsolete      = isObsolete    
+                    Replacedby      = replacedby    
+                    Consider        = consider      
+                    PropertyValues  = propertyValues
+                    BuiltIn         = builtIn       
+                    CreatedBy       = createdBy     
+                    CreationDate    = creationDate  
+                }
 
     type OboTermDef = {
         Id           : string
         Name         : string
         IsTransitive : string
         IsCyclic     : string
-    }
-
-    let createOboTermDef id name  isTransitive isCyclic =
-        {Id = id; Name = name; IsTransitive = isTransitive; IsCyclic = isCyclic}
-
-    /// Parse Obo Terms [Term] from seq<string>
-    let parseOboTerms verbose (input:seq<string>)  =         
-        /// Parses a [term] item in a recusive function
-        let rec parseSingleOboTerm (en:Collections.Generic.IEnumerator<string>) lineNumber 
-            id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-            intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-            propertyValues builtIn createdBy creationDate =   
-
-            if en.MoveNext() then                
-                let split = en.Current.Split([|": "|], System.StringSplitOptions.None)
-                match split.[0] with
-                | "id"              -> 
-                    let v = split.[1..] |> String.concat ": "
-                    parseSingleOboTerm en (lineNumber + 1)
-                        v name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate            
-        
-                | "name"            -> 
-                    let v = split.[1..] |> String.concat ": "
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id v isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "is_anonymous"    ->
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name true altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "alt_id"              -> 
-                    let v = split.[1..] |> String.concat ": "
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous (v::altIds) definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "def"              -> 
-                    let v = split.[1..] |> String.concat ": "
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds v comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "comment"             -> 
-                    let v = split.[1..] |> String.concat ": "
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition v subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "subset"              -> 
-                    let v = split.[1..] |> String.concat ": "
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment (v::subsets) synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | synonymTag when synonymTag.Contains("synonym")              -> 
-                    let scope =
-                        match synonymTag with
-                        | "exact_synonym"   -> Some Exact
-                        | "narrow_synonym"  -> Some Narrow
-                        | "broad_synonym"   -> Some Broad
-                        | _                 -> None
-                    let v = parseSynonym scope lineNumber (split.[1..] |> String.concat ": ")
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets (v::synonyms) xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "xref" | "xref_analog" | "xref_unk" -> 
-                    let v = (split.[1..] |> String.concat ": ") |> parseDBXref
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms (v::xrefs) isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "is_a"              -> 
-                    let v = (split.[1..] |> String.concat ": ")
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs (v::isA)
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "intersection_of"              -> 
-                    let v = (split.[1..] |> String.concat ": ")
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        (v::intersectionOf) unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "union_of"              -> 
-                    let v = (split.[1..] |> String.concat ": ")
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf (v::unionOf) disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-                    
-                | "disjoint_from"              -> 
-                    let v = (split.[1..] |> String.concat ": ")
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf (v::disjointFrom) relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-                    
-                | "relationship"              -> 
-                    let v = (split.[1..] |> String.concat ": ")
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom (v::relationships) isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-
-                | "is_obsolete"             -> 
-                    let v = ((split.[1..] |> String.concat ": ").Trim()) 
-                    let v' = v = "true"
-
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships v' replacedby consider 
-                        propertyValues builtIn createdBy creationDate            
-
-                | "replaced_by"             -> 
-                    let v = (split.[1..] |> String.concat ": ")
-
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete (v::replacedby) consider 
-                        propertyValues builtIn createdBy creationDate
-
-
-                | "consider" | "use_term"            -> 
-                    let v = (split.[1..] |> String.concat ": ")
-
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby (v::consider)
-                        propertyValues builtIn createdBy creationDate
-
-
-                | "builtin"             -> 
-                    let v = ((split.[1..] |> String.concat ": ").Trim()) 
-                    let v' = v = "true"
-
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues v' createdBy creationDate
-
-                | "property_value"             -> 
-                    let v = (split.[1..] |> String.concat ": ")
-
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        (v::propertyValues) builtIn createdBy creationDate
-
-                | "created_by"             -> 
-                    let v = (split.[1..] |> String.concat ": ")
-
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn v creationDate
-
-
-                | "creation_date"             -> 
-                    let v = (split.[1..] |> String.concat ": ")
-
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy v
-
-                | "" -> 
-                    lineNumber,
-                    createOboTerm id name isAnonymous 
-                        (altIds |> List.rev) 
-                        definition comment 
-                        (subsets        |> List.rev)
-                        (synonyms       |> List.rev)
-                        (xrefs          |> List.rev)
-                        (isA            |> List.rev)
-                        (intersectionOf |> List.rev)
-                        (unionOf        |> List.rev)
-                        (disjointFrom   |> List.rev)
-                        (relationships  |> List.rev)
-                        isObsolete 
-                        (replacedby     |> List.rev)
-                        (consider       |> List.rev)
-                        (propertyValues |> List.rev)
-                        builtIn 
-                        createdBy creationDate
-
-                | unknownTag -> 
-                    if verbose then printfn "[WARNING@L %i]: Found term tag <%s> that does not fit OBO flat file specifications 1.4. Skipping it..." lineNumber unknownTag
-                    parseSingleOboTerm en (lineNumber + 1)
-                        id name isAnonymous altIds definition comment subsets synonyms xrefs isA 
-                        intersectionOf unionOf disjointFrom relationships isObsolete replacedby consider 
-                        propertyValues builtIn createdBy creationDate
-                                   
-            else
-                // Maybe check if id is empty
-                lineNumber,
-                createOboTerm id name isAnonymous 
-                    (altIds |> List.rev) 
-                    definition comment 
-                    (subsets        |> List.rev)
-                    (synonyms       |> List.rev)
-                    (xrefs          |> List.rev)
-                    (isA            |> List.rev)
-                    (intersectionOf |> List.rev)
-                    (unionOf        |> List.rev)
-                    (disjointFrom   |> List.rev)
-                    (relationships  |> List.rev)
-                    isObsolete 
-                    (replacedby     |> List.rev)
-                    (consider       |> List.rev)
-                    (propertyValues |> List.rev)
-                    builtIn 
-                    createdBy creationDate
-                //failwithf "Unexcpected end of file."
-
-        //parseTermDef
-        let rec parseSingleTermDef (en:Collections.Generic.IEnumerator<string>) id name isTransitive isCyclic =     
-            if en.MoveNext() then                
-                let split = en.Current.Split([|": "|], System.StringSplitOptions.None)
-                match split.[0] with
-                | "id"            -> parseSingleTermDef en (split.[1..] |> String.concat ": ") name isTransitive isCyclic
-                | "name"          -> parseSingleTermDef en id (split.[1..] |> String.concat ": ") isTransitive isCyclic
-        
-        
-                | "is_transitive" -> parseSingleTermDef en id name (split.[1..] |> String.concat ": ") isCyclic
-                | "is_cyclic"     -> parseSingleTermDef en id name isTransitive (split.[1..] |> String.concat ": ")
-                | ""              -> createOboTermDef id name isTransitive isCyclic
-                      
-                | _               -> parseSingleTermDef en id name isTransitive isCyclic
-            else
-                // Maybe check if id is empty
-                createOboTermDef id name isTransitive isCyclic
-                //failwithf "Unexcpected end of file."
-
-        let en = input.GetEnumerator()
-        let rec loop (en:System.Collections.Generic.IEnumerator<string>) lineNumber =
-            seq {
-                match en.MoveNext() with
-                | true ->             
-                    match en.Current with
-                    | "[Term]"    -> let lineNumber,parsedTerm = (parseSingleOboTerm en lineNumber "" "" false [] "" "" [] [] [] [] [] [] [] [] false [] [] [] false "" "")
-                                     yield parsedTerm
-                                     yield! loop en lineNumber
-                    | _ -> yield! loop en (lineNumber+1)
-                | false -> ()
-            }
-        loop en 1
-
-
-//    //########################################
-//    // Definition of OboGraph
-//
-//
-//    module FastOboGraph =
-//
-//        /// Obo Term as node
-//        [<StructuredFormatDisplay("{PrettyString}")>]
-//        type OboNode = { 
-//            Id : int
-//            Name : string
-//            NameSpace : string
-//            OntologyId : string // GO:...
-//            }
-//            with
-//            member this.PrettyString = sprintf "%s:%07i | %s {%s}" this.OntologyId this.Id this.Name this.NameSpace
-//            interface INode<int>
-//                with member this.Id = this.Id                
-//
-//
-//        /// Creates OboNode
-//        let createOboNode id name nameSpace ontologyId =
-//            {Id = id; Name = name; NameSpace = nameSpace; OntologyId = ontologyId; }
-//
-//
-//
-//        type OboEdgeType =
-//            | Is_A
-//            | Part_Of
-//
-//        [<StructuredFormatDisplay("{PrettyString}")>]
-//        type OboEdge = { 
-//            Id : int
-//            SourceId :int
-//            TargetId :int } 
-//            with
-//            member this.PrettyString =  if this.Id = this.SourceId then
-//                                            sprintf "o---> %07i | (%i)" this.Id this.TargetId
-//                                        else 
-//                                            sprintf "%07i <---o | (%i)" this.Id this.TargetId
-//            interface IEdge<int> with
-//                member this.Id = this.Id
-//                member this.SourceId = this.SourceId
-//                member this.TargetId = this.TargetId
-//            
-//
-//        /// Creates OboEdge
-//        let createOboEdge id sourceId targetId =
-//            {Id = id; SourceId = sourceId; TargetId = targetId}
-//
-//
-//        type oboAdjacencyNode = AdjacencyNode<OboNode,OboEdge,int>
-//
-//
-//
-//        /// Splits String s at ":", returns sa.[1]
-//        let tryIdToInt str =
-//            match str with
-//            | Regex.RegexValue @"GO:(?<goId>[\d]+)" [ goId; ] -> Some( int goId )
-//            | _ -> None
-//
-//        let idToInt str =
-//            match tryIdToInt str with
-//            | Some v -> v
-//            | None   -> failwithf "%s invaild GO id" str
-//
-//        let private oboIdStringToInt s =
-//            let sa = String.split ':' s
-//            if sa.Length > 1 then
-//                sa.[1] |> int
-//            else
-//                -1
-//
-//        /// Creates fromOboTerm from oboTerm startIndex
-//        let fromOboTerm (obo: OboTerm) (startIndex: int) =
-//            let nodeId = oboIdStringToInt obo.Id
-//            let node   = createOboNode nodeId obo.Name obo.Namespace
-//            let edges = 
-//                obo.IsA
-//                |> List.mapi (fun i edId -> let edgeTargetId = oboIdStringToInt edId
-//                                            createOboEdge (i+startIndex) nodeId edgeTargetId
-//                              )
-//            (node,edges,(startIndex + obo.IsA.Length))
-//
-//
-//        /// Creates OboEnumerator from oboNode oboEdge
-//        let oboTermToOboGraph (input: seq<OboTerm>) = //: seq<oboAdjacencyNode> =
-//            let en = input.GetEnumerator()
-//            let rec loop (en:System.Collections.Generic.IEnumerator<OboTerm>) acc  =
-//                seq { 
-//                    match en.MoveNext() with
-//                    | true -> let cNode,cEdges,cIndex = fromOboTerm en.Current acc
-//                      
-//                              yield (cNode,cEdges)
-//                              yield! loop en cIndex
-//                    | false -> ()
-//                    }
-//            loop en 0
-//
-//
-//        /// Reads obo file 
-//        let readFile path =
-//            FileIO.readFile path
-//            |> parseOboTerms
-//            |> oboTermToOboGraph
-//            |> Seq.toList
-
-
+    } with
+        static member create id name isTransitive isCyclic =
+            {Id = id; Name = name; IsTransitive = isTransitive; IsCyclic = isCyclic}
