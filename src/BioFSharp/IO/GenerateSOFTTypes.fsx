@@ -1,6 +1,5 @@
-#I @"../../bin/BioFSharp.IO/net47/"
-#r "FSharpAux.IO.dll"
-#r "FSharpAux.dll"
+#r "nuget: FSharpAux.IO"
+#r "nuget: FSharpAux"
 
 open FSharpAux
 open FSharpAux.IO
