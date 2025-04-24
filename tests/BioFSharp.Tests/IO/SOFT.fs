@@ -1,6 +1,6 @@
 ﻿namespace BioFSharp.Tests.IO
 
-module BlastQueriesTests =
+module SOFTTests =
 
     open BioFSharp
     open BioFSharp.FileFormats
@@ -9,7 +9,7 @@ module BlastQueriesTests =
     open Expecto
 
     let IOTests =
-        testList "BlastQueries" [
+        testList "SOFT" [
             ptest "read" {
                 ()
             }

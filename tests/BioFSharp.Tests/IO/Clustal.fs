@@ -11,9 +11,9 @@ module ClustalTests =
     let IOTests =
         testList "Clustal" [
             ptest "read" {
-            
+                ()
             }
             ptest "write" {
-            
+                ()
             }
         ]

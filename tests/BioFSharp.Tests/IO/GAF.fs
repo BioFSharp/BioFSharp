@@ -11,9 +11,9 @@ module GAFTests =
     let IOTests =
         testList "GAF" [
             ptest "read" {
-            
+                ()
             }
             ptest "write" {
-            
+                ()
             }
         ]

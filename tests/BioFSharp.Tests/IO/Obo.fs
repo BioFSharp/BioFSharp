@@ -11,9 +11,9 @@ module OboTests =
     let IOTests =
         testList "Obo" [
             ptest "read" {
-            
+                ()
             }
             ptest "write" {
-            
+                ()
             }
         ]

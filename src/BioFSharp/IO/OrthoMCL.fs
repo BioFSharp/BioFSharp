@@ -3,7 +3,7 @@
 open BioFSharp.FileFormats
 open FSharpAux.IO
 
-module CustomBlastResult =
+module OrthoMCL =
 
     let read (filePath: string) =
         let csvReader = SchemaReader.Csv.CsvReader<OrthoMCL>(SchemaMode=SchemaReader.Csv.Exact)

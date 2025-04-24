@@ -11,9 +11,9 @@ module AgilentRawTests =
     let IOTests =
         testList "AgilentRaw" [
             ptest "read" {
-            
+                ()
             }
             ptest "write" {
-            
+                ()
             }
         ]

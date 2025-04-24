@@ -11,9 +11,9 @@ module CustomBlastResultTests =
     let IOTests =
         testList "CustomBlastResult" [
             ptest "read" {
-            
+                ()
             }
             ptest "write" {
-            
+                ()
             }
         ]

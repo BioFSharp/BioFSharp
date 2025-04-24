@@ -11,9 +11,9 @@ module DSSPTests =
     let IOTests =
         testList "DSSP" [
             ptest "read" {
-            
+                ()
             }
             ptest "write" {
-            
+                ()
             }
         ]

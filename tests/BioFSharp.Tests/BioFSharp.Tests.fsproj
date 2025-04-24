@@ -26,7 +26,14 @@
     <Compile Include="IO\DSSP.fs" />
     <Compile Include="IO\Stride.fs" />
     <Compile Include="IO\GAF.fs" />
+    <Compile Include="IO\GenBank.fs" />
+    <Compile Include="IO\GFF3.fs" />
+    <Compile Include="IO\MGF.fs" />
+    <Compile Include="IO\Newick.fs" />
     <Compile Include="IO\Obo.fs" />
+    <Compile Include="IO\OrthoMCL.fs" />
+    <Compile Include="IO\PDB.fs" />
+    <Compile Include="IO\SOFT.fs" />
     <Compile Include="IO\Main.fs" />
     <Compile Include="Utils.fs" />
     <Compile Include="BioFSharp.IO\DSSP.fs" />

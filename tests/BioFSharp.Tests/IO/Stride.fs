@@ -11,9 +11,9 @@ module StrideTests =
     let IOTests =
         testList "Stride" [
             ptest "read" {
-            
+                ()
             }
             ptest "write" {
-            
+                ()
             }
         ]

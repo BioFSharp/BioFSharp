@@ -40,6 +40,7 @@ module FastqTests =
                 Expect.sequenceEqual actual.Sequence expected.Sequence "Sequence was not equal"
             }
             ptest "write" {
+                ()
             }
             test "readLines (2 entries)" {
                 let actual = testString_two_entries.Split(System.Environment.NewLine) |> Fastq.readLines BioArray.ofNucleotideString charToPhred33
@@ -63,5 +64,6 @@ module FastqTests =
                 Expect.sequenceEqual item1.Sequence expected.Sequence "Sequence was not equal (entry 1)"
             }
             ptest "write (2 entries)" {
+                ()
             }
         ]
