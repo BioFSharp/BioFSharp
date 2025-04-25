@@ -125,8 +125,8 @@
     <!-- Playground -->
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FSharpAux" Version="2.0.0" />
-    <PackageReference Include="FSharpAux.IO" Version="2.0.0" />
+    <PackageReference Include="FSharpAux" Version="2.1.0" />
+    <PackageReference Include="FSharpAux.IO" Version="2.1.0" />
     <PackageReference Include="DynamicObj" Version="7.0.1" />
   </ItemGroup>
 </Project>

@@ -1,30 +1,10 @@
 ﻿namespace BioFSharp.FileFormats
 
+open FSharpAux
 open BioFSharp
 open BioFSharp.BioItemConverters
 
 module DSSP =
-
-    //TO-DO refactor into FSharpAux
-    module internal Seq =
-        let chunkBy (projection: 'T -> 'Key) (source: _ seq) = 
-            seq {
-                use e = source.GetEnumerator ()
-                if e.MoveNext () then
-                    let mutable g = projection e.Current
-                    let mutable members = ResizeArray ()
-                    members.Add e.Current
-                    while e.MoveNext () do
-                        let key = projection e.Current
-                        if g = key then 
-                            members.Add e.Current
-                        else
-                            yield g, members |> Seq.cast<'T>
-                            g <- key
-                            members <- ResizeArray ()
-                            members.Add e.Current
-                    yield g, members |> Seq.cast<'T>
-            }
 
     type DSSPLine = {
         ResidueIndex            : int
