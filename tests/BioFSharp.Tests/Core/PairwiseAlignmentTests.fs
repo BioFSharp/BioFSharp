@@ -1,79 +1,77 @@
-﻿module PairwiseAlignmentTests
+﻿namespace BioFSharp.Tests.Core
 
-open BioFSharp
-open BioFSharp.Algorithm
-open BioFSharp.Algorithm.PairwiseAlignment
-open Expecto 
+module PairwiseAlignmentTests =
 
-let aaScoring = ScoringMatrix.getScoringMatrixAminoAcid ScoringMatrix.ScoringMatrixAminoAcid.BLOSUM62
-let nucScoring = ScoringMatrix.getScoringMatrixNucleotide  ScoringMatrix.ScoringMatrixNucleotide.EDNA
+    open BioFSharp
+    open BioFSharp.Algorithm
+    open BioFSharp.Algorithm.PairwiseAlignment
+    open Expecto 
 
-//For aminoacids
-let costAA = {
-    Open = 5
-    Continuation = -1
-    Similarity = aaScoring 
-    }
+    let aaScoring = ScoringMatrix.getScoringMatrixAminoAcid ScoringMatrix.ScoringMatrixAminoAcid.BLOSUM62
+    let nucScoring = ScoringMatrix.getScoringMatrixNucleotide  ScoringMatrix.ScoringMatrixNucleotide.EDNA
 
-//For nucleotides
-let costN = {
-    Open = -5
-    Continuation = -1
-    Similarity = nucScoring 
-    }
+    //For aminoacids
+    let costAA = {
+        Open = 5
+        Continuation = -1
+        Similarity = aaScoring 
+        }
 
-let query1AA = "NLFVAAAAQTKNGQGWVPSNYITPVNSAAA" |> BioArray.ofAminoAcidSymbolString
-let query2AA = "NLFVALYDFVASGDNTLSITKGEKLRVLGYNHNGEWCEAQTKNGQGWVPSNYITPVNS" |> BioArray.ofAminoAcidSymbolString
+    //For nucleotides
+    let costN = {
+        Open = -5
+        Continuation = -1
+        Similarity = nucScoring 
+        }
 
-let localAA = 
-    PairwiseAlignment.Local.SmithWaterman.align(query1AA,query2AA,costAA)
+    let query1AA = "NLFVAAAAQTKNGQGWVPSNYITPVNSAAA" |> BioArray.ofAminoAcidSymbolString
+    let query2AA = "NLFVALYDFVASGDNTLSITKGEKLRVLGYNHNGEWCEAQTKNGQGWVPSNYITPVNS" |> BioArray.ofAminoAcidSymbolString
 
-let globalAA =
-    PairwiseAlignment.Global.NeedlemanWunsch.align(query1AA,query2AA,costAA)
+    let localAA = 
+        PairwiseAlignment.Local.SmithWaterman.align(query1AA,query2AA,costAA)
 
-let expectedLocalAA =
-    [
-        "AQTKNGQGWVPSNYITPVNS" |> BioList.ofAminoAcidSymbolString
-        "AQTKNGQGWVPSNYITPVNS" |> BioList.ofAminoAcidSymbolString
-    ]
+    let globalAA =
+        PairwiseAlignment.Global.NeedlemanWunsch.align(query1AA,query2AA,costAA)
 
-
-//reuslt of https://www.ebi.ac.uk/Tools/psa/emboss_needle/
-let expectedGlobalAA =
-    [
-        "--------------------------------NLFVAAAAQTKNGQGWVPSNYITPVNSAAA" |> BioList.ofAminoAcidSymbolString
-        "NLFVALYDFVASGDNTLSITKGEKLRVLGYNHN-GEWCEAQTKNGQGWVPSNYITPVNS---" |> BioList.ofAminoAcidSymbolString
-    ]
+    let expectedLocalAA =
+        [
+            "AQTKNGQGWVPSNYITPVNS" |> BioList.ofAminoAcidSymbolString
+            "AQTKNGQGWVPSNYITPVNS" |> BioList.ofAminoAcidSymbolString
+        ]
 
 
+    //reuslt of https://www.ebi.ac.uk/Tools/psa/emboss_needle/
+    let expectedGlobalAA =
+        [
+            "--------------------------------NLFVAAAAQTKNGQGWVPSNYITPVNSAAA" |> BioList.ofAminoAcidSymbolString
+            "NLFVALYDFVASGDNTLSITKGEKLRVLGYNHN-GEWCEAQTKNGQGWVPSNYITPVNS---" |> BioList.ofAminoAcidSymbolString
+        ]
 
-[<PTests>]
-let AlignmentTests =
-    testList "PairwiseAlignment" [
-        testList "AminoAcids" [
-            testCase "Local.FirstAlignment" (fun _ ->
+    let alignmentTests =
+        testList "PairwiseAlignment" [
+            ptestCase "Local - FirstAlignment" (fun _ ->
                 Expect.equal 
                     (localAA.Sequences |> Seq.item 0 |> BioSeq.toString) 
                     (expectedLocalAA[0] |> BioSeq.toString)
-                    ""
+                    "incorrect alignment"
             )
-            testCase "Local.SecondAlignment" (fun _ ->
+            ptestCase "Local - SecondAlignment" (fun _ ->
                 Expect.equal 
                     (localAA.Sequences |> Seq.item 1 |> BioSeq.toString) 
                     (expectedLocalAA[1] |> BioSeq.toString)
-                    ""
+                    "incorrect alignment"
             )
-            testCase "Global.FirstAlignment" (fun _ ->
+            ptestCase "Global - FirstAlignment" (fun _ ->
                 Expect.equal 
                     (globalAA.Sequences |> Seq.item 0 |> BioSeq.toString) 
                     (expectedGlobalAA[0] |> BioSeq.toString)
-                    ""
+                    "incorrect alignment"
             )
-            testCase "Global.SecondAlignment" (fun _ ->
+            ptestCase "Global - SecondAlignment" (fun _ ->
                 Expect.equal 
                     (globalAA.Sequences |> Seq.item 1 |> BioSeq.toString) 
                     (expectedGlobalAA[1] |> BioSeq.toString)
-                    ""
+                    "incorrect alignment"
             )
+            
         ]
-    ]

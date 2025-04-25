@@ -13,6 +13,7 @@
     <EmbeddedResource Include="resources\HETATMSequence.txt" />
     <None Include="fixtures/**" CopyToOutputDirectory="Always" />
     <Compile Include="Utils.fs" />
+    <Compile Include="ReferenceObjects\BioSeq.fs" />
     <Compile Include="ReferenceObjects\Fasta.fs" />
     <Compile Include="ReferenceObjects\Fastq.fs" />
     <Compile Include="ReferenceObjects\PDB.fs" />
@@ -20,9 +21,19 @@
     <Compile Include="Core\AminoAcidTests.fs" />
     <Compile Include="Core\DigestionTests.fs" />
     <Compile Include="Core\NucleotideTests.fs" />
-    <Compile Include="Core\BioCollections.fs" />
+    <Compile Include="Core\BioSeq.fs" />
+    <Compile Include="Core\BioArray.fs" />
+    <Compile Include="Core\BioList.fs" />
+    <Compile Include="Core\Isotopes.fs" />
+    <Compile Include="Core\Elements.fs" />
+    <Compile Include="Core\Formula.fs" />
+    <Compile Include="Core\Mass.fs" />
+    <Compile Include="Core\IBioItem.fs" />
+    <Compile Include="Core\TaggedSequence.fs" />
+    <Compile Include="Core\IsotopicDistribution.fs" />
     <Compile Include="Core\BioItemTests.fs" />
     <Compile Include="Core\PhylTreeTests.fs" />
+    <Compile Include="Core\Main.fs" />
     <Compile Include="FileFormats\Fasta.fs" />
     <Compile Include="FileFormats\Fastq.fs" />
     <Compile Include="FileFormats\Main.fs" />
