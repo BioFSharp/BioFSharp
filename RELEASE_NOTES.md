@@ -1,5 +1,13 @@
-#### 2.0.0 - tbd
-All packages now target netstandard2.0 as lowest common denominator.
+#### 2.0.0 (Released 2025-04-25)
+
+The new BioFSharp package now bundles the old BioFSharp and BioFSharp.IO packages.
+
+The whole package has undergone a major rework. it now contains the following modules:
+- `BioFSharp` - the core data model e.g. BioItems, Sequences, Alignments, etc.
+- `BioFSharp.FileFormats` - data models for and functions to work with biological file formats
+- `BioFSharp.CLIArgs` - DSLs for commonly used bioinformatic CLI tools such as BLAST or ClustalO. These DSLs are designed to be extended in the `BioFSharp.BioContainers` package to run the tools in containerized form.
+- `BioFSharp.IO` - Parsers and writers for the datatypes defined in `BioFSharp.FileFormats`
+- `BioFSharp.CLITools` - functions to execute CLITools using the DSLs defined in `BioFSharp.CLIArgs`
 
 **Additions:**
 
@@ -8,32 +16,6 @@ All packages now target netstandard2.0 as lowest common denominator.
    * [Breaking] [Tagged Sequence and Phylogenetic Tree have been reworked as top level types](https://github.com/CSBiology/BioFSharp/commit/aec8232dd7725cdbb99a038ebe0c99f26922f31a)
    * [Add functionality to construct phylogenetic trees from clustered data or raw sequence data](https://github.com/CSBiology/BioFSharp/commit/aec8232dd7725cdbb99a038ebe0c99f26922f31a)
 
- * **BioFSharp.BioContainers**
-   * BLAST biocontainer :
-     * full blastn, blastn-short, megablast, and dc-megablast DSLs
-     * [Breaking] full blastp, blastp-fast, and blastp-short DSLs
-   * TargetP BioContainer :
-     * Add functions to run the container with a mounted directory
-   * Add TargetP2 BioContainer API
-
- * **BioFSharp.IO**:
-   * OBO parser: Extended term parser for spec 1.4
-   * OBO parser: fix (#111)[https://github.com/CSBiology/BioFSharp/issues/111]
-   * SOFT parser now parses Data tables 
-   * OBO Parser: add verbosity settings ([#129](https://github.com/CSBiology/BioFSharp/pull/129))
-   * [ADD DSSP and Stride parsers](https://github.com/CSBiology/BioFSharp/commit/a1bc02c81d0bfba414313155cec93ef4b6951baa)
-   * [ADD PDB Parser (only some records supported)](https://github.com/CSBiology/BioFSharp/commit/426dee64f0d24b4c9976aac9400df3635d8aef1b))
-
-**Bugfixes:**
- * **BioFSharp**:
-   * Fix stack overflow on Phylogenetic tree construction based on hierarchical clusters
-
- * **BioFSharp.IO**:
-   * OBO parser now correctly parses lists of relationships
-   * [Breaking] FastA.writeToStream is now correctly typed and does not close the stream after writing
-   * SOFT parser now parses sample_label / sample_label_protocol correctly
-   * [Fix fasta writer using UTF8BOM encoding](https://github.com/CSBiology/BioFSharp/commit/beb4158e8e8d71e7c956347db1df2f2e99f8a5e4) ((#116)[https://github.com/CSBiology/BioFSharp/issues/116])
-   * Fix newick writer missing leaf case
 #### 1.2.0 - Monday, March 30
 
 **Additions:**
