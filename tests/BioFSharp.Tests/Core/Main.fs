@@ -15,4 +15,10 @@ module All =
             BioArrayTests.bioArrayTests
             BioListTests.bioListTests
             ElementsTests.elementsTests
+            FormulaTests.formulaTests
+            MassTests.massTests
+            IBioItem.iBioItemTests
+            TaggedSequenceTests.taggedSequencetests
+            IsotopicDistributionTests.isotopicDistributionTests
+            PhylogeneticTreeTests.phylogeneticTreeTests
         ]

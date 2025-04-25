@@ -1,4 +1,4 @@
-module PhylTreeTests
+module PhylogeneticTreeTests
 
 open BioFSharp
 open BioList
@@ -33,8 +33,8 @@ let testPhylTree_threeGens_BioList =
         ])
     ])
 
-[<Tests>]
-let phylTreeTestsBase =
+
+let phylogeneticTreeTests =
     testList "PhylogeneticTree" [
         testCase "base functions.map" (fun() ->
             Expect.equal

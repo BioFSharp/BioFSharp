@@ -31,7 +31,6 @@
     <Compile Include="Core\IBioItem.fs" />
     <Compile Include="Core\TaggedSequence.fs" />
     <Compile Include="Core\IsotopicDistribution.fs" />
-    <Compile Include="Core\BioItemTests.fs" />
     <Compile Include="Core\PhylTreeTests.fs" />
     <Compile Include="Core\Main.fs" />
     <Compile Include="FileFormats\Fasta.fs" />
