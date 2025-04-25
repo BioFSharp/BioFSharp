@@ -12,8 +12,17 @@
     <EmbeddedResource Include="resources\HasA.txt" />
     <EmbeddedResource Include="resources\HETATMSequence.txt" />
     <None Include="fixtures/**" CopyToOutputDirectory="Always" />
+    <Compile Include="Utils.fs" />
     <Compile Include="ReferenceObjects\Fasta.fs" />
     <Compile Include="ReferenceObjects\Fastq.fs" />
+    <Compile Include="ReferenceObjects\PDB.fs" />
+    <Compile Include="Core\PairwiseAlignmentTests.fs" />
+    <Compile Include="Core\AminoAcidTests.fs" />
+    <Compile Include="Core\DigestionTests.fs" />
+    <Compile Include="Core\NucleotideTests.fs" />
+    <Compile Include="Core\BioCollections.fs" />
+    <Compile Include="Core\BioItemTests.fs" />
+    <Compile Include="Core\PhylTreeTests.fs" />
     <Compile Include="FileFormats\Fasta.fs" />
     <Compile Include="FileFormats\Fastq.fs" />
     <Compile Include="FileFormats\Main.fs" />
@@ -35,17 +44,6 @@
     <Compile Include="IO\PDB.fs" />
     <Compile Include="IO\SOFT.fs" />
     <Compile Include="IO\Main.fs" />
-    <Compile Include="Utils.fs" />
-    <Compile Include="BioFSharp.IO\DSSP.fs" />
-    <Compile Include="BioFSharp.IO\PDB.fs" />
-    <Compile Include="BioFSharp.IO\Stride.fs" />
-    <Compile Include="BioFSharp\PairwiseAlignmentTests.fs" />
-    <Compile Include="BioFSharp\AminoAcidTests.fs" />
-    <Compile Include="BioFSharp\DigestionTests.fs" />
-    <Compile Include="BioFSharp\NucleotideTests.fs" />
-    <Compile Include="BioFSharp\BioCollections.fs" />
-    <Compile Include="BioFSharp\BioItemTests.fs" />
-    <Compile Include="BioFSharp\PhylTreeTests.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
 
