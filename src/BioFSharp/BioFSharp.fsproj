@@ -83,6 +83,7 @@
     <Compile Include="FileFormats\Obo.fs" />
     <Compile Include="FileFormats\OrthoMCL.fs" />
     <Compile Include="FileFormats\PDB.fs" />
+    <Compile Include="FileFormats\PDBParser.fs" />
     <Compile Include="FileFormats\SOFT.fs" />
     <Compile Include="CLIArgs\Blast.fs" />
     <Compile Include="CLIArgs\ClustalO.fs" />
