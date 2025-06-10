@@ -17,4 +17,5 @@ module All =
             StrideTests.IOTests
             GAFTests.IOTests
             PDBTests.IOTests
+            PDBParserTests.IOTests
         ]
