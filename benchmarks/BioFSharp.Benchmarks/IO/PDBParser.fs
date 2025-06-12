@@ -9,7 +9,7 @@ module PDBParserBenchmarks =
     let htq = "resources/htq.pdb"
 
     [<MemoryDiagnoser>]
-    type readPDBFileBenchmarks() =
+    type pdbParserBenchmarks() =
                
         [<Benchmark>]
         member this.ReadPDBFileNormal() =
@@ -21,19 +21,15 @@ module PDBParserBenchmarks =
             let lines = readPBDFile htq
             lines |> Seq.length
 
-    type readMetadataBenchmarks() =
-
-        [<Benchmark>]
-        member this.readMetadataNormal() =
-            let lines = readMetadata (readPBDFile testdata)
-            lines 
+         [<Benchmark>]
+            member this.readMetadataNormal() =
+                let lines = readMetadata (readPBDFile testdata)
+                lines 
 
         [<Benchmark>]
         member this.readMetadataExtreme() =
             let lines = readMetadata (readPBDFile htq)
             lines 
-
-    type readAtomBenchmarks() =
 
         [<Benchmark>]
         member this.readAtomNormal() =
@@ -45,7 +41,6 @@ module PDBParserBenchmarks =
             let lines = readAtom (readPBDFile htq)
             lines 
 
-    type readResidueBenchmarks() =
        
         [<Benchmark>]
         member this.readResidueNormal() =
@@ -57,8 +52,6 @@ module PDBParserBenchmarks =
             let lines = readResidues (readPBDFile htq)
             lines 
 
-    type readChainBenchmarks() =
-
         [<Benchmark>]
         member this.readChainNormal() =
             let lines = readChain (readPBDFile testdata)
@@ -68,8 +61,6 @@ module PDBParserBenchmarks =
         member this.readChainExtreme() =
             let lines = readChain (readPBDFile htq)
             lines 
-
-    type readLinkageBenchmarks() =
 
         [<Benchmark>]
         member this.readLinkageNormal() =
@@ -81,7 +72,6 @@ module PDBParserBenchmarks =
             let lines = readLinkages (readPBDFile htq)
             lines 
 
-    type readSiteBenchmarks() =
     
         [<Benchmark>]
         member this.readSiteNormal() =
@@ -93,8 +83,6 @@ module PDBParserBenchmarks =
             let lines = readSite (readPBDFile htq)
             lines 
 
-    type readModelsBenchmarks() =
-
         [<Benchmark>]
         member this.readModelNormal() =
             let lines = readModels (readPBDFile testdata)
@@ -105,8 +93,6 @@ module PDBParserBenchmarks =
             let lines = readModels (readPBDFile htq)
             lines
 
-    type readStructureBenchmarks() =
-
         [<Benchmark>]
         member this.readStructureNormal() =
             let lines = readStructure  testdata
@@ -116,3 +102,7 @@ module PDBParserBenchmarks =
         member this.readStructureHigh() =
             let lines = readStructure  htq
             lines 
+
+
+  
+
