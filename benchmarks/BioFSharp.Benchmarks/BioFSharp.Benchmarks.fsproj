@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+	<IsPackable>false</IsPackable>
+	<GenerateProgramFile>false</GenerateProgramFile>
+	<IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<Compile Include="config\config.fs" />
+	<None Include="resources\**\*.pdb" CopyToOutputDirectory="Always" />
+	<Compile Include="IO\PDBParser.fs" />  
+    <Compile Include="main.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.15.1" />
+	<ProjectReference Include="..\..\src\BioFSharp\BioFSharp.fsproj" />
+  </ItemGroup>
+	
+	
+
+</Project>
