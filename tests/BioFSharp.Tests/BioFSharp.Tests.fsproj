@@ -11,7 +11,7 @@
     <EmbeddedResource Include="resources\Glucagon.txt" />
     <EmbeddedResource Include="resources\HasA.txt" />
     <EmbeddedResource Include="resources\HETATMSequence.txt" />
-	<None Include="resources\**\*.pdb" CopyToOutputDirectory="Always"/>
+    <None Include="resources\**\*.pdb" CopyToOutputDirectory="Always" />
     <None Include="fixtures/**" CopyToOutputDirectory="Always" />
     <Compile Include="Utils.fs" />
     <Compile Include="ReferenceObjects\BioSeq.fs" />

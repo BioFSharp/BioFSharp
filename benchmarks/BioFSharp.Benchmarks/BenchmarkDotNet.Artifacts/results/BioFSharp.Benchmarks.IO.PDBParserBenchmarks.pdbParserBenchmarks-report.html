@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>BioFSharp.Benchmarks.IO.PDBParserBenchmarks.pdbParserBenchmarks-20250612-165904</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.15.1, Windows 11 (10.0.26100.4351/24H2/2024Update/HudsonValley)
+AMD Ryzen 5 5500U with Radeon Graphics 2.10GHz, 1 CPU, 12 logical and 6 physical cores
+.NET SDK 8.0.402
+  [Host]     : .NET 8.0.17 (8.0.1725.26602), X64 RyuJIT AVX2 DEBUG
+  DefaultJob : .NET 8.0.17 (8.0.1725.26602), X64 RyuJIT AVX2
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method       </th><th>Mean     </th><th>Error  </th><th>StdDev   </th><th>Median   </th><th>Gen0  </th><th>Gen1 </th><th>Gen2</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>ReadPDBFileNormal</td><td>280.8 &mu;s</td><td>3.48 &mu;s</td><td>6.79 &mu;s</td><td>279.4 &mu;s</td><td>239.7461</td><td>-</td><td>-</td><td>490.57 KB</td>
+</tr><tr><td>ReadPDBFileExtreme</td><td>107,597.3 &mu;s</td><td>1,661.49 &mu;s</td><td>1,554.16 &mu;s</td><td>107,117.1 &mu;s</td><td>86400.0000</td><td>-</td><td>-</td><td>176701.69 KB</td>
+</tr><tr><td>readMetadataNormal</td><td>516.1 &mu;s</td><td>10.18 &mu;s</td><td>13.23 &mu;s</td><td>513.9 &mu;s</td><td>705.0781</td><td>-</td><td>-</td><td>1441.47 KB</td>
+</tr><tr><td>readMetadataExtreme</td><td>156,497.7 &mu;s</td><td>3,059.48 &mu;s</td><td>3,004.82 &mu;s</td><td>156,586.7 &mu;s</td><td>259250.0000</td><td>-</td><td>-</td><td>529869.33 KB</td>
+</tr><tr><td>readAtomNormal</td><td>3,342.0 &mu;s</td><td>33.96 &mu;s</td><td>31.77 &mu;s</td><td>3,334.4 &mu;s</td><td>437.5000</td><td>355.4688</td><td>-</td><td>2156.45 KB</td>
+</tr><tr><td>readAtomExtreme</td><td>1,991,010.4 &mu;s</td><td>37,527.04 &mu;s</td><td>36,856.57 &mu;s</td><td>1,981,206.8 &mu;s</td><td>145000.0000</td><td>54000.0000</td><td>4000.0000</td><td>895598.09 KB</td>
+</tr><tr><td>readResidueNormal</td><td>10,187.3 &mu;s</td><td>113.96 &mu;s</td><td>106.59 &mu;s</td><td>10,191.8 &mu;s</td><td>1171.8750</td><td>546.8750</td><td>78.1250</td><td>4465.85 KB</td>
+</tr><tr><td>readResidueExtreme</td><td>4,491,751.6 &mu;s</td><td>81,810.53 &mu;s</td><td>63,872.28 &mu;s</td><td>4,485,640.4 &mu;s</td><td>377000.0000</td><td>66000.0000</td><td>6000.0000</td><td>1556135.55 KB</td>
+</tr><tr><td>readChainNormal</td><td>9,236.3 &mu;s</td><td>177.59 &mu;s</td><td>174.42 &mu;s</td><td>9,285.0 &mu;s</td><td>812.5000</td><td>515.6250</td><td>31.2500</td><td>3535.35 KB</td>
+</tr><tr><td>readChainExtreme</td><td>4,600,560.4 &mu;s</td><td>892,725.37 &mu;s</td><td>2,632,221.09 &mu;s</td><td>3,001,362.5 &mu;s</td><td>209000.0000</td><td>66000.0000</td><td>5000.0000</td><td>1266092.2 KB</td>
+</tr><tr><td>readLinkageNormal</td><td>11,483.6 &mu;s</td><td>229.33 &mu;s</td><td>407.64 &mu;s</td><td>11,459.7 &mu;s</td><td>1000.0000</td><td>500.0000</td><td>250.0000</td><td>4763.07 KB</td>
+</tr><tr><td>readLinkageExtreme</td><td>4,984,364.5 &mu;s</td><td>834,259.44 &mu;s</td><td>2,459,832.96 &mu;s</td><td>3,311,022.9 &mu;s</td><td>343000.0000</td><td>66000.0000</td><td>5000.0000</td><td>1559946.95 KB</td>
+</tr><tr><td>readSiteNormal</td><td>1,524.8 &mu;s</td><td>20.79 &mu;s</td><td>18.43 &mu;s</td><td>1,521.4 &mu;s</td><td>234.3750</td><td>-</td><td>-</td><td>493.66 KB</td>
+</tr><tr><td>readSiteExtreme</td><td>544,199.4 &mu;s</td><td>7,066.36 &mu;s</td><td>6,264.14 &mu;s</td><td>544,782.8 &mu;s</td><td>86000.0000</td><td>-</td><td>-</td><td>176955.04 KB</td>
+</tr><tr><td>readModelNormal</td><td>30,915.0 &mu;s</td><td>225.36 &mu;s</td><td>210.80 &mu;s</td><td>30,911.6 &mu;s</td><td>2250.0000</td><td>843.7500</td><td>718.7500</td><td>11738.01 KB</td>
+</tr><tr><td>readModel_extreme</td><td>13,431,869.3 &mu;s</td><td>889,246.40 &mu;s</td><td>2,621,963.25 &mu;s</td><td>13,283,403.4 &mu;s</td><td>888000.0000</td><td>185000.0000</td><td>6000.0000</td><td>4686268.03 KB</td>
+</tr><tr><td>readStructureNormal</td><td>33,582.2 &mu;s</td><td>668.64 &mu;s</td><td>915.25 &mu;s</td><td>33,523.5 &mu;s</td><td>2466.6667</td><td>1000.0000</td><td>533.3333</td><td>13176.96 KB</td>
+</tr><tr><td>readStructureHigh</td><td>15,760,640.8 &mu;s</td><td>537,465.08 &mu;s</td><td>1,434,603.20 &mu;s</td><td>16,174,109.0 &mu;s</td><td>1136000.0000</td><td>183000.0000</td><td>6000.0000</td><td>5216305.56 KB</td>
+</tr></tbody></table>
+</body>
+</html>
