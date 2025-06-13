@@ -23,10 +23,10 @@ module PDBParserBenchmarks =
 
     type readMetadataBenchmarks() =
 
-        [<Benchmark>]
-        member this.readMetadataNormal() =
-            let lines = readMetadata (readPBDFile testdata)
-            lines 
+         [<Benchmark>]
+            member this.readMetadataNormal() =
+                let lines = readMetadata (readPBDFile testdata)
+                lines 
 
         [<Benchmark>]
         member this.readMetadataExtreme() =
@@ -116,3 +116,7 @@ module PDBParserBenchmarks =
         member this.readStructureHigh() =
             let lines = readStructure  htq
             lines 
+
+
+  
+
