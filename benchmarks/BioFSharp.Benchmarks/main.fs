@@ -6,6 +6,11 @@ open BioFSharp.Benchmarks.IO
 
 [<EntryPoint>]
 let main argv =
-    BenchmarkRunner.Run<PDBParserBenchmarks.pdbParserBenchmarks>() |> ignore
-    0
+    let config = createConfig argv
+    BenchmarkSwitcher
+        .FromAssembly(Assembly.GetExecutingAssembly())
+        .Run(argv, config)
+        |> ignore
+
+    0 // return an integer exit code
     
