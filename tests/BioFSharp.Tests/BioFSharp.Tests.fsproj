@@ -12,6 +12,7 @@
     <EmbeddedResource Include="resources\HasA.txt" />
     <EmbeddedResource Include="resources\HETATMSequence.txt" />
     <None Include="resources\**\*.pdb" CopyToOutputDirectory="Always" />
+	<None Include="resources\**\*.csv" CopyToOutputDirectory="Always" />
     <None Include="fixtures/**" CopyToOutputDirectory="Always" />
     <Compile Include="Utils.fs" />
     <Compile Include="ReferenceObjects\BioSeq.fs" />
@@ -19,6 +20,7 @@
     <Compile Include="ReferenceObjects\Fastq.fs" />
     <Compile Include="ReferenceObjects\PDBParser.fs" />
     <Compile Include="ReferenceObjects\PDB.fs" />
+    <Compile Include="ReferenceObjects\SASAanalysis.fs" />
     <Compile Include="Core\PairwiseAlignmentTests.fs" />
     <Compile Include="Core\AminoAcidTests.fs" />
     <Compile Include="Core\DigestionTests.fs" />
@@ -57,6 +59,8 @@
     <Compile Include="IO\PDBParser.fs" />
     <Compile Include="IO\SOFT.fs" />
     <Compile Include="IO\Main.fs" />
+	<Compile Include="Algorithm\SASAanalysis.fs" />
+	<Compile Include="Algorithm\Main.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
 
@@ -65,6 +69,7 @@
     <PackageReference Include="Expecto" Version="10.*" />
     <PackageReference Include="YoloDev.Expecto.TestSdk" Version="0.15.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+	<PackageReference Include="Deedle" Version="3.0.0" />
     <ProjectReference Include="..\..\src\BioFSharp\BioFSharp.fsproj" />
   </ItemGroup>
 
