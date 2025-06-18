@@ -112,6 +112,7 @@
     <Compile Include="Algorithm\PatternQuery.fs" />
     <Compile Include="Algorithm\PairwiseAlignment.fs" />
     <Compile Include="Algorithm\ScoringMatrix.fs" />
+    <Compile Include="Algorithm\SASAanalysis.fs" />
     <EmbeddedResource Include="Resources\BLOSUM45.txt" />
     <EmbeddedResource Include="Resources\BLOSUM50.txt" />
     <EmbeddedResource Include="Resources\BLOSUM80.txt" />
@@ -122,6 +123,7 @@
     <EmbeddedResource Include="Resources\PAM70.txt" />
     <EmbeddedResource Include="Resources\AminoAcidProperties.txt" />
     <EmbeddedResource Include="Resources\BLOSUM62.txt" />
+	<None Include="Resources\**\*.pdb" CopyToOutputDirectory="Always" />
     <Compile Include="Formatting.fs" />
     <None Include="Playground.fsx" />
     <!-- Playground -->
