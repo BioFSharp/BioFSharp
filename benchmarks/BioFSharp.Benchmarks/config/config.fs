@@ -1,9 +1,7 @@
 ﻿module BioFSharp.Benchmarks.Config
 
 open BenchmarkDotNet.Configs
-open BenchmarkDotNet.Exporters
-open BenchmarkDotNet.Exporters.Csv
-open BenchmarkDotNet.Loggers
+
 
 let createConfig (argv: string[]) =
     let folderName =

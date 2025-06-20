@@ -2,8 +2,7 @@
 
 module SASATests = 
     
-    open BioFSharp.Algorithm.SASA.StructurePrep
-    open BioFSharp.Algorithm.SASA.Calculation
+    open BioFSharp.Algorithm.SASA
     open BioFSharp.IO.PDBParser
     open BioFSharp.FileFormats.PDBParser
     open BioFSharp.Tests.ReferenceObjects.SASA
