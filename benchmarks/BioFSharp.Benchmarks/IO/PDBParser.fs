@@ -26,10 +26,10 @@ module PDBParserBenchmarks =
                 let lines = readMetadata (readPBDFile testdata)
                 lines 
 
-        [<Benchmark>]
-        member this.readMetadataExtreme() =
-            let lines = readMetadata (readPBDFile htq)
-            lines 
+         [<Benchmark>]
+            member this.readMetadataExtreme() =
+                let lines = readMetadata (readPBDFile htq)
+                lines 
 
         [<Benchmark>]
         member this.readAtomNormal() =
