@@ -11,7 +11,8 @@
   <ItemGroup>
 	<Compile Include="config\config.fs" />
 	<None Include="resources\**\*.pdb" CopyToOutputDirectory="Always" />
-	<Compile Include="IO\PDBParser.fs" />  
+	<Compile Include="IO\PDBParser.fs" />
+	<Compile Include="Algorithm\SASAanalysis.fs" />
     <Compile Include="main.fs" />
   </ItemGroup>
 

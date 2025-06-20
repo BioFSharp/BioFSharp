@@ -2,7 +2,6 @@
 
 open BenchmarkDotNet.Running
 
-open BioFSharp.Benchmarks.IO
 open BioFSharp.Benchmarks.Config
 
 open System.Reflection
