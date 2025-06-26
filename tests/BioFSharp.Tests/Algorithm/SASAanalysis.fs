@@ -459,7 +459,7 @@ module SASATests =
                 ) exampleAtomsSASA python_SASA_arrayResidues
 
                 Expect.throws (fun () -> 
-                    sasaResidue "resources/rubisCOActivase"  5 100 |>ignore) 
+                    sasaResidue "resources/rubisCOActivase"  5 100|>ignore) 
                     "PDB File with only one model and one Chain should throw an 
                     error if modelid is not present"
 
@@ -481,10 +481,10 @@ module SASATests =
             test "relative Residue SASA is computed correctly"{
 
                 let rel_testdata = 
-                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 
+                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 false
 
                 let residueSASAtestdata = 
-                    sasaResidue ("resources/rubisCOActivase.pdb") 1 100
+                    sasaResidue ("resources/rubisCOActivase.pdb") 1 100 
 
                 Seq.iter2 (fun x y -> 
                         Expect.equal x y 
@@ -499,8 +499,8 @@ module SASATests =
                  )rel_testdata.['A'].Keys residueSASAtestdata.['A'].Keys
 
                 Expect.throws (fun () -> 
-                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 5 100 
-                    |>ignore) 
+                    relativeSASA_aminoacids 
+                        "resources/rubisCOActivase.pdb" 5 100 true |>ignore) 
                         "PDB File with only one model and one Chain should throw 
                         an error if modelid is not present"
 
@@ -531,16 +531,32 @@ module SASATests =
                         $"The SASA value for the atom with the serialnumber {fsharpSeries} 
                         should be equal to the one from the python reference"
                 ) exampleAtomsSASA python_SASA_array_relativeRes
+
+
+                let rel_testdataWithFixedValue = 
+                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 true 
+
+                let fixedMaxSASA_reference = 
+                    rel_testdataWithFixedValue.['A'].Values 
+                    |> Seq.indexed 
+                    |> Seq.toArray
+
+               
+                Array.iter2 (fun (fsharpSeries,fSharpSASA) (_,pythonSASA) ->
+                    Expect.floatClose Accuracy.high (fSharpSASA) (pythonSASA) 
+                        "When we use a fix MaxSASA the Value should be similar 
+                        to python reference"
+                ) fixedMaxSASA_reference python_SASA_array_relativeRes
             
             }
 
             test "differentiation into exposed and buried is sucessfull"{
             
                 let rel_testdata = 
-                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100
+                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 false
 
                 let differentiatedSASA = 
-                    differentiateAccessibleAA "resources/rubisCOActivase.pdb" 1 100 0.2
+                    differentiateAccessibleAA "resources/rubisCOActivase.pdb" 1 100 0.2 false
 
                 let exposed = differentiatedSASA|> Seq.map (fun kvp -> kvp.Key,kvp.Value.Exposed)|>dict
                 let buried = differentiatedSASA|> Seq.map (fun kvp -> kvp.Key,kvp.Value.Buried)|>dict
@@ -606,13 +622,11 @@ module SASATests =
                 )chainSASA_htq.Values
 
                 Expect.throws (fun () -> 
-                    relativeSASA_aminoacids "resources/htq.pdb" 100 100 |>ignore) 
+                    sasaChain "resources/htq.pdb" 125000 100 |>ignore) 
                         "PDB File with only one model and one Chain should throw 
                         an error if modelid is not present"
 
-           
-            
-
+                    
                 Expect.equal (testdata_chain.Count) sasaArrays_chains.Length 
                     "The number of SASA values should be the same as in the 
                     Python reference"

@@ -486,13 +486,41 @@ module SASA =
         )
         |> Map.ofSeq
 
+    let freesasa_Max = 
+        Map [
+         "ALA",108.76;
+         "ARG",238.17;
+         "ASN",145.01;
+         "ASP",142.76;
+         "CYS",132.2;
+         "GLN",178.83;
+         "GLU",174.18;
+         "GLY",81.09;
+         "HIS",182.97;
+         "ILE",175.73;
+         "LEU",179.56;
+         "LYS",204.98;
+         "MET",193.1;
+         "PHE",199.88;
+         "PRO",137.21;
+         "SER",118.34;
+         "THR",140.6;
+         "TRP",249.19;
+         "TYR",214.19;
+         "VAL",151.97   
+        ]
+
            
     // compute the relative SASA for each residue in the model
 
-    let relativeSASA_aminoacids (filepath:string) (modelid:int) (nrPoints: int)                                                = 
+    let relativeSASA_aminoacids (filepath:string) (modelid:int) (nrPoints: int) (fixedMaxSASA:bool) = 
         let sasaresidues = sasaResidue filepath modelid nrPoints 
             
-        let maxSASA = maxSASA modelid nrPoints
+        let maxSASA =  
+            if fixedMaxSASA = false then 
+               maxSASA modelid nrPoints
+            else 
+               freesasa_Max
 
         sasaresidues
         |> Seq.map (fun kvp -> 
@@ -511,12 +539,12 @@ module SASA =
     // Split residue List into acessibe and non acessible residues
 
     
-    let differentiateAccessibleAA (filepath: string)(modelId: int)
-        (nrPoints: int)(threshold: float) =
+    let differentiateAccessibleAA (filepath: string)(modelId: int) 
+        (nrPoints: int)(threshold: float) (fixedMaxSASA:bool) =
 
         // get acess to the relative SASA values for the residues in the model 
      
-        let chainDict = relativeSASA_aminoacids filepath modelId nrPoints
+        let chainDict = relativeSASA_aminoacids filepath modelId nrPoints fixedMaxSASA
 
         // create a dictionary with the chainId as Key and as Value another dictionary
     

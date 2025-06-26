@@ -14,7 +14,6 @@ index: 4
 #r "../src/BioFSharp/bin/Release/netstandard2.0/BioFSharp.dll"
 
 open BioFSharp.IO.PDBParser
-open BioFSharp.FileFormats.PDBParser
 open BioFSharp.Algorithm.SASA
 
 (**
@@ -591,7 +590,7 @@ it is buried. rSASA is the ratio of the absolute SASA and the maximal SASA of th
 corresponding residue. The Max SASA is the absolute SASA of the amino acid in 
 fully extended Conformation in Ala - X - Ala or Gly - X - Gly. Tripeptides. In
 our algorithm, we compute the maxSASA for the twenty Amino acids using the exact 
-same parameters as in the <b> sasaResidue </b> function. The file path is in this 
+same parameters as in the <b> sasaResidue </b> function, when we set the variable fixedMaxSASA as false The file path is in this 
 case the rsa tripeptides from the Python Free SASA implementation (<i>Mitternacht,2016</i>).
 This enables a more exact comparison of the absolute and the maxSASA Values. 
 The  maxSASA Values for one hundred test points are for example:
@@ -607,13 +606,14 @@ maxSASA 1 100
 <p>
 In Comparison with the Free SASA relative SASAs we see a slightly small difference 
 of approximately 0.1. The reason for that is, that Free SASA computes the maxSASA 
-slightly different and only once. To get the relative residue SASA for a model 
+slightly different and only once. If you want to have the exact same results to compare,
+just set the last variable fixedMaxSASA as True. To get the relative residue SASA for a model 
 in the PDB File as decimal, you can call the following function. To transform the 
 results in percent just multiply the values with 100.
 </p>
 *)
 
-relativeSASA_aminoacids filepath modelid numberOfTestpoints
+relativeSASA_aminoacids filepath modelid numberOfTestpoints 
 
 (**
 <details>
@@ -625,7 +625,7 @@ SASA would be using computed maxSASA.</summary>
 *)
 
 (***hide***)
-let rSASA = relativeSASA_aminoacids filepath modelid numberOfTestpoints
+let rSASA = relativeSASA_aminoacids filepath modelid numberOfTestpoints  
 (***include-value:rSASA***)
 
 rSASA.['A']
@@ -691,17 +691,17 @@ of dictionaries that show which are exposed and which are buried.
 
 let threshold = 0.2
 
-differentiateAccessibleAA filepath modelid numberOfTestpoints threshold
+differentiateAccessibleAA filepath modelid numberOfTestpoints threshold 
 
 (**
 <details>
-<summary> Click here to see an example how we use the relative SASA to categorize 
-amino Acids of RubisCO Activase in buried and exposed.</summary>
+<summary> Click here to see an example how we use the relative SASA to 
+categorize amino Acids of RubisCO Activase in buried and exposed.</summary>
 
 *)
 
 (***hide***)
-differentiateAccessibleAA filepath modelid numberOfTestpoints threshold
+differentiateAccessibleAA filepath modelid numberOfTestpoints threshold 
 (***include-it***)
 
 (**
