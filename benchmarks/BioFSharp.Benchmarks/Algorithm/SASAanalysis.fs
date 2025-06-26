@@ -194,11 +194,11 @@ module SASABenchmarks =
         
         [<Benchmark>]
         member this.relSASAresidue_small() =
-            relativeSASA_aminoacids testdata 1 100    
+            relativeSASA_aminoacids testdata 1 100 true   
             
         [<Benchmark>]
         member this.relSASAresidue_big() =
-            relativeSASA_aminoacids htq 1 100
+            relativeSASA_aminoacids htq 1 100 true
 
 
     
@@ -207,7 +207,7 @@ module SASABenchmarks =
 
         [<Benchmark>]
         member this.differentiateExposedandBuried_small() =
-            let diffTest= differentiateAccessibleAA testdata 1 100 20
+            let diffTest= differentiateAccessibleAA testdata 1 100 20 false
 
             let allAcessibles = 
                 diffTest 
@@ -226,7 +226,7 @@ module SASABenchmarks =
         [<Benchmark>]
         member this.differentiateExposedandBuried_big() =
 
-            let diffTest = differentiateAccessibleAA htq 1 100 0.2
+            let diffTest = differentiateAccessibleAA htq 1 100 0.2 false
 
             let allAcessibles = 
                 diffTest    
