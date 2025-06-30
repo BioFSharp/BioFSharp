@@ -8,7 +8,7 @@ AMD Ryzen 5 5500U with Radeon Graphics 2.10GHz, 1 CPU, 12 logical and 6 physical
 
 
 ```
-| Method                 | Mean         | Error      | StdDev     |
-|----------------------- |-------------:|-----------:|-----------:|
-| computeSASAchain_small |     87.66 ms |   1.378 ms |   1.532 ms |
-| computeSASAchain_big   | 18,891.20 ms | 204.845 ms | 171.055 ms |
+| Method                   | Mean         | Error      | StdDev     |
+|------------------------- |-------------:|-----------:|-----------:|
+| computeSASAchain_rubisco |     83.40 ms |   0.530 ms |   0.414 ms |
+| computeSASAchain_htq     | 18,685.61 ms | 239.823 ms | 212.596 ms |

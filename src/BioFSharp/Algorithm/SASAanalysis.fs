@@ -3,6 +3,7 @@
 
 open BioFSharp.FileFormats.PDBParser
 open BioFSharp.IO.PDBParser
+open BioFSharp.FileFormats.SASA
 
 open System.Collections
 open System
@@ -11,84 +12,8 @@ open System.Threading.Tasks
 open System.IO 
 
 
-module SASA =
-
-    // module to filter out multiple altlocs and prepare the structure data for 
-    //SASA calculation
-       
-    // extract Residues from the PDB File
-
-    let filterBestAltLoc residuearray = 
-        residuearray
-        |> Array.map (fun res ->
-                    let proteinAtoms =
-                        res.Atoms
-                        |> Array.filter (fun a -> not a.Hetatm)
-                    // dictionary to store for evety atom name the atom with
-                    //the best occupancy   
-                    let dict = System.Collections.Generic.Dictionary<string, 
-                        float * ResizeArray<Atom>>()
-
-                    // look for every residue if it contains atoms with 
-                    // multiple atlloc and take the one with the best occupancy 
-                    // or AltLoc
-                    for a in proteinAtoms do
-                        match dict.TryGetValue a.AtomName with
-                        | false, _ ->
-                            let bestAtomsStore = ResizeArray<Atom>()
-                            bestAtomsStore.Add a
-                            dict.Add(a.AtomName, (a.Occupancy, bestAtomsStore))
-                        | true, (bestOcc, bestAtomsStore) ->
-                            if a.Occupancy > bestOcc then
-                                let bestAtomsStore2 = ResizeArray<Atom>()
-                                bestAtomsStore2.Add a
-                                dict.[a.AtomName] <- (a.Occupancy, bestAtomsStore2)
-                            elif a.Occupancy = bestOcc && (a.AltLoc = ' ' || 
-                                a.AltLoc = 'A') then
-                                    bestAtomsStore.Add a
-                            else
-                                ()
-
-                    // create a new residue with only the best atoms
-                    let bestAtoms =
-                        dict
-                        |> Seq.collect (fun kvp -> snd kvp.Value :> seq<Atom>)
-                        |> Seq.toArray
-
-                    { res with Atoms = bestAtoms }
-                ) 
-                |> Array.filter (fun res -> res.Atoms.Length > 0)
-
-    // isolate residues from the chains in the model and filter out multiple altlocs
-
-    let getResiduesPerChain (filepath:string) (modelid:int) =
-        let model = 
-            readStructure filepath
-            |> fun pdb ->
-                pdb.Models
-                |> Array.tryFind (fun m -> m.ModelId = modelid)
-                |> Option.defaultWith (fun () ->
-                    failwithf "PDB File contains no model with modelid = %d." modelid)
-
-        model.Chains
-        |>Array.Parallel.map(fun chain -> 
-            let filteredResidues = filterBestAltLoc chain.Residues
-            chain.ChainId,filteredResidues)
-        |>dict
-
-    // collect all atoms from the residues in the model and store it per Chain
-
-    let getAtomsPerModel (filepath: string) ((modelid:int) )  = 
-        let collectedAtoms residuearray = 
-            Array.Parallel.collect (fun residue -> residue.Atoms)  residuearray
-    
-        getResiduesPerChain filepath modelid
-        |> Seq.map (fun (residue) -> residue.Key,collectedAtoms residue.Value)   
-        |> dict  
-
-   
-        
-    // Raadi taken from boondii
+module commonvdWraadi = 
+       // Raadi taken from boondii or calculated using Van der waals volumen of literature
 
     let vdw_raadi =
         Map[
@@ -98,10 +23,17 @@ module SASA =
             "O", 1.52;
             "P", 1.8;
             "S",1.8;
-        ]
+            "Biotin",3.7;
+            "Water", 1.4;
+            "Methane", 2.0;
+            "Ethanol", 2.5;
+            "Glycerol", 3.0;
+            "Glucose", 4.0;
+            "Adenosine", 4.2;
+            "ATP",6.0
+            "NADH", 6.5
 
-    // radius of the water molecule (vdw radius of water molecule)
-    let probe_rad = 1.4 
+        ]
 
     let allProtOR  =
         [
@@ -203,9 +135,89 @@ module SASA =
         ]
         |> Map.ofList
 
+
+module SASA =
+
+    open commonvdWraadi
+
+    // module to filter out multiple altlocs and prepare the structure data for 
+    //SASA calculation
+       
+    // extract Residues from the PDB File
+
+    let filterBestAltLoc residuearray = 
+        residuearray
+        |> Array.map (fun res ->
+                    let proteinAtoms =
+                        res.Atoms
+                        |> Array.filter (fun a -> not a.Hetatm)
+                    // dictionary to store for evety atom name the atom with
+                    //the best occupancy   
+                    let dict = System.Collections.Generic.Dictionary<string, 
+                        float * ResizeArray<Atom>>()
+
+                    // look for every residue if it contains atoms with 
+                    // multiple atlloc and take the one with the best occupancy 
+                    // or AltLoc
+                    for a in proteinAtoms do
+                        match dict.TryGetValue a.AtomName with
+                        | false, _ ->
+                            let bestAtomsStore = ResizeArray<Atom>()
+                            bestAtomsStore.Add a
+                            dict.Add(a.AtomName, (a.Occupancy, bestAtomsStore))
+                        | true, (bestOcc, bestAtomsStore) ->
+                            if a.Occupancy > bestOcc then
+                                let bestAtomsStore2 = ResizeArray<Atom>()
+                                bestAtomsStore2.Add a
+                                dict.[a.AtomName] <- (a.Occupancy, bestAtomsStore2)
+                            elif a.Occupancy = bestOcc && (a.AltLoc = ' ' || 
+                                a.AltLoc = 'A') then
+                                    bestAtomsStore.Add a
+                            else
+                                ()
+
+                    // create a new residue with only the best atoms
+                    let bestAtoms =
+                        dict
+                        |> Seq.collect (fun kvp -> snd kvp.Value :> seq<Atom>)
+                        |> Seq.toArray
+
+                    { res with Atoms = bestAtoms }
+                ) 
+                |> Array.filter (fun res -> res.Atoms.Length > 0)
+
+    // isolate residues from the chains in the model and filter out multiple altlocs
+
+    let getResiduesPerChain (filepath:string) (modelid:int) =
+        let model = 
+            readStructure filepath
+            |> fun pdb ->
+                pdb.Models
+                |> Array.tryFind (fun m -> m.ModelId = modelid)
+                |> Option.defaultWith (fun () ->
+                    failwithf "PDB File contains no model with modelid = %d." modelid)
+
+        model.Chains
+        |>Array.Parallel.map(fun chain -> 
+            let filteredResidues = filterBestAltLoc chain.Residues
+            chain.ChainId,filteredResidues)
+        |>dict
+
+    // collect all atoms from the residues in the model and store it per Chain
+
+    let getAtomsPerModel (filepath: string) ((modelid:int) )  = 
+        let collectedAtoms residuearray = 
+            Array.Parallel.collect (fun residue -> residue.Atoms)  residuearray
+    
+        getResiduesPerChain filepath modelid
+        |> Seq.map (fun (residue) -> residue.Key,collectedAtoms residue.Value)   
+        |> dict  
+
+  
     // match VDW Raddi with atoms in the list :
 
-    let determine_effective_radius (atom: Atom) (residueName: string)  =
+    
+    let determine_effective_radius (atom: Atom) (residueName: string) (probe)  =
            
         // match case function to determine the effective radius of an atom 
         // (first protor, then vdw)
@@ -222,7 +234,16 @@ module SASA =
                 //will be ignored in the SASA calculation
                 | None    -> 0.
 
-        baseRadius + probe_rad
+        let proberadius =
+            match probe with
+                | ProbeName name ->
+                    match Map.tryFind name vdw_raadi with
+                    | Some r -> r
+                    | None   -> failwith "Unknown probename"
+                | ProbeRadius f ->
+                    f
+
+        baseRadius + proberadius
 
     // Helper function to create testpoints over a sphere using 
     // Fibonacci sphere
@@ -241,9 +262,9 @@ module SASA =
 
     // Scale atoms on their points by scaling and transformation 
     let scaleFibonacciTestpoints (testPoints:Vector3D array) (atom:Atom) 
-        (residuename:string)  =
+        (residuename:string) (probe)  =
 
-        let vdwRadius_eff = determine_effective_radius atom residuename
+        let vdwRadius_eff = determine_effective_radius atom residuename probe
 
         testPoints 
         |> Array.map (fun tp ->
@@ -318,7 +339,7 @@ module SASA =
             }
 
     /// Computes the number of visible test points for each atom
-    let accessibleTestpoints (allAtoms: (Atom * string)[]) (nr_testpoints: int) =
+    let accessibleTestpoints (allAtoms: (Atom * string)[]) (nr_testpoints: int) (probe) =
         // generate a unit sphere containing the specified number of 
         // testpoints
         let unitSpherePoints = fibonacciTestPoints nr_testpoints
@@ -330,7 +351,7 @@ module SASA =
             |> Array.map (fun a -> a.Coordinates)
         let effectiveRadii = 
             allAtoms 
-            |> Array.map (fun (a, r) -> determine_effective_radius a r)
+            |> Array.map (fun (a, r) -> determine_effective_radius a r probe)
 
         // build a spatial hash grid with cell size equal to twice the 
         // maximum radius
@@ -351,7 +372,7 @@ module SASA =
 
             // compute effective radius and scale unit sphere points to the 
             // atom's surface
-            let surfacePts = scaleFibonacciTestpoints unitSpherePoints atom resName
+            let surfacePts = scaleFibonacciTestpoints unitSpherePoints atom resName probe
                 
             // initialize visibility array: all points start as visible
             let visible = BitArray(nr_testpoints, true)
@@ -382,7 +403,7 @@ module SASA =
 
     /// Computes the Solvent Accessible Surface Area (SASA) for each atom in the model
 
-    let sasaAtom (filepath: string) (modelid: int) (totalnr_points: int) =
+    let sasaAtom (filepath: string) (modelid: int) (totalnr_points: int) (probe) =
         // flatten the residue dictionary into an array of (chainId, Residue) tuples
         let chainResidueList : (char * Residue)[] =
             getResiduesPerChain filepath modelid
@@ -398,13 +419,13 @@ module SASA =
                 res.Atoms |> Array.map (fun atom -> atom, res.ResidueName))
 
         // compute the number of accessible points per atom
-        let accessCounts : float[] = accessibleTestpoints allAtomsWithRes totalnr_points
+        let accessCounts : float[] = accessibleTestpoints allAtomsWithRes totalnr_points probe
 
         // compute effective VDW radius for each atom 
         // ( Protor or boodii VDW radius + atom)
         let effectiveRadii : float[] =
             allAtomsWithRes
-            |> Array.map (fun (atom, resName) -> determine_effective_radius atom resName)
+            |> Array.map (fun (atom, resName) -> determine_effective_radius atom resName probe)
 
         // prepare helper arrays for grouping by residue
         let atomsPerRes : int[] = chainResidueList |> Array.map (fun (_ch, r) -> 
@@ -449,20 +470,20 @@ module SASA =
    
     // determine the SASA per residue 
 
-    let sasaResidue (filepath:string) (modelid:int) (nrPoints: int) =
-        sasaAtom filepath modelid nrPoints
+    let sasaResidue (filepath:string) (modelid:int) (nrPoints: int) (probe) =
+        sasaAtom filepath modelid nrPoints probe
         |> Seq.map (fun kvp -> 
             kvp.Key, 
             kvp.Value|>Seq.map(fun res -> 
                 res.Key,
                 res.Value|>Seq.sum)|> dict
-            )
+        )
         |> dict
 
        
     // dictionary with maxSASAvalues of proteinogen amino acids 
 
-    let maxSASA (modelid:  int) (nrPoints: int) : Map<string, float> =
+    let maxSASA (modelid:  int) (nrPoints: int) (probe) =
             
         let rootFolder = Path.Combine(__SOURCE_DIRECTORY__, "../Resources/rsa_tripeptide")
 
@@ -472,7 +493,7 @@ module SASA =
         |> Seq.collect (fun filePath ->
            
             let outer: IDictionary<char, IDictionary<(int * string), float>> =
-                sasaResidue filePath modelid nrPoints
+                sasaResidue filePath modelid nrPoints probe
 
         
             outer.Values
@@ -513,12 +534,12 @@ module SASA =
            
     // compute the relative SASA for each residue in the model
 
-    let relativeSASA_aminoacids (filepath:string) (modelid:int) (nrPoints: int) (fixedMaxSASA:bool) = 
-        let sasaresidues = sasaResidue filepath modelid nrPoints 
+    let relativeSASA_aminoacids (filepath:string) (modelid:int) (nrPoints: int) (probe) (fixedMaxSASA:bool) = 
+        let sasaresidues = sasaResidue filepath modelid nrPoints (probe)
             
         let maxSASA =  
             if fixedMaxSASA = false then 
-               maxSASA modelid nrPoints
+               maxSASA modelid nrPoints probe
             else 
                freesasa_Max
 
@@ -540,11 +561,11 @@ module SASA =
 
     
     let differentiateAccessibleAA (filepath: string)(modelId: int) 
-        (nrPoints: int)(threshold: float) (fixedMaxSASA:bool) =
+        (nrPoints: int) (probe) (threshold: float) (fixedMaxSASA:bool) =
 
         // get acess to the relative SASA values for the residues in the model 
      
-        let chainDict = relativeSASA_aminoacids filepath modelId nrPoints fixedMaxSASA
+        let chainDict = relativeSASA_aminoacids filepath modelId nrPoints probe fixedMaxSASA
 
         // create a dictionary with the chainId as Key and as Value another dictionary
     
@@ -568,10 +589,10 @@ module SASA =
 
         // compute the total SASA for each chain in the model
 
-    let sasaChain (filepath:string) (modelid:int) (nrPoints: int) =
-        sasaResidue filepath modelid nrPoints
+    let sasaChain (filepath:string) (modelid:int) (nrPoints: int) (probe) =
+        sasaResidue filepath modelid nrPoints probe
         |> Seq.map (fun kvp -> 
             kvp.Key, 
             kvp.Value.Values |> Seq.sum
-            )
+        )
         |> dict

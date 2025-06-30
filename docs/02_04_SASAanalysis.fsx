@@ -166,7 +166,8 @@ The effective radius is the sum of the van der Waals radii of the atoms and the
 probe radius. The probe radius is a measure of the size of the solvent molecule, 
 mostly water with 1.4&#197;  that is used to calculate the SASA and can be found 
 in literature. Often the Van der Waals Raadi of Bondii are used. In the following 
-Table the most used Boondii Raadii for protein atoms are shown (<i>Bondi,1964</i>). 
+Table the most used Boondii Raadii for protein atoms are shown , some more are 
+stored in the implementation in the module commonvdWraadi(<i>Bondi,1964</i>). 
  
 </p>
 
@@ -214,6 +215,11 @@ Table the most used Boondii Raadii for protein atoms are shown (<i>Bondi,1964</i
       <td>Water</td>
       <td>H<sub>2</sub>O</td>
       <td>1.4</td>
+    </tr>
+    <tr>
+        <td>Biotin</td>
+        <td></td>
+        <td>3.7</td>
   </tbody>
 </table>
 
@@ -431,7 +437,7 @@ exposed </li>
 
 <p>
 To 1:
-The effective van der Waals Radius is the sum of the probe radius (1.4 Angstrom)
+The effective van der Waals Radius is the sum of the choosen probe radius 
 and the  vdw radius / ProtOR radius of the corresponding Atom. Raadi that are 
 used for the computation can be looked up and are explained in Table 1 and 2 of 
 Chapter 1.3 (VDW Radius). <br>
@@ -464,9 +470,10 @@ they are potential reactive and therefore likely to be labelled (<i>Ali et al,20
 ## 3.1.compute SASA for every Atom:
 
 If you especially want to know which atom is mostly accessible you need to call 
-the <b> sasaAtom </b> function. The function has three variables as input: The 
-file path of the PDB File to analyse, the modelid of the model of interest and 
-the number of Test points per Atom. The output is a dictionary with the chain id 
+the <b> sasaAtom </b> function. The function has four variables as input: The 
+file path of the PDB File to analyse, the modelid of the model of interest,
+the number of Test points per Atom and the name of the probe or the value if the
+probe is not common. The output is a dictionary with the chain id 
 as key and another dictionary as value. The inner dictionary has the residue number 
 and name as key and the SASA array as value (Fig.7).
 
@@ -494,22 +501,23 @@ area formula for spheres (4pi*(eff_radius) <sup>2</sup>).
 let filepath = ("data/rubisCOActivase.pdb")
 let modelid = 1
 let numberOfTestpoints = 100
+let probe = "Water"
 
-sasaAtom filepath modelid numberOfTestpoints
+sasaAtom filepath modelid numberOfTestpoints probe
 
 (**
 
 <details>
 <summary> On this example of RubisCO Activase, you could see how the output of 
-the computed sasa per Atoms look like. The first output is a dictionary with the 
-chain id and the integrated snd dictionary and the snd output shows how the SASA 
-per Atom would look like on the example of the residue 65,ASN in chain A of RubisCO 
-Activase.
+the computed sasa per Atoms look like, when the probe is water. The first output 
+is a dictionary with the chain id and the integrated snd dictionary and the snd 
+output shows how the SASA per Atom would look like on the example of the residue
+65,ASN in chain A of RubisCO Activase.
  </summary>
 *)
 
 (***hide***)
-let atomSASA = sasaAtom filepath modelid numberOfTestpoints
+let atomSASA = sasaAtom filepath modelid numberOfTestpoints probe
 (***include-value:atomSASA***)
 
 atomSASA.['A'].[(65, "ASN")]
@@ -557,7 +565,7 @@ use the following function call:
 </p>
 *)
 
-sasaResidue filepath modelid numberOfTestpoints
+sasaResidue filepath modelid numberOfTestpoints probe
 
 (**
 <details>
@@ -568,7 +576,7 @@ like in chain A of RubisCO Activase. </summary>
 *)
 
 (***hide***)
-let residueSASA = sasaResidue filepath modelid numberOfTestpoints
+let residueSASA = sasaResidue filepath modelid numberOfTestpoints probe
 (***include-value:residueSASA***)
 
 residueSASA.['A']
@@ -606,14 +614,15 @@ maxSASA 1 100
 <p>
 In Comparison with the Free SASA relative SASAs we see a slightly small difference 
 of approximately 0.1. The reason for that is, that Free SASA computes the maxSASA 
-slightly different and only once. If you want to have the exact same results to compare,
-just set the last variable fixedMaxSASA as True. To get the relative residue SASA for a model 
-in the PDB File as decimal, you can call the following function. To transform the 
-results in percent just multiply the values with 100.
+slightly different and only once and with standard probe water. 
+If you want to have the exact same results to compare,just set the last variable 
+fixedMaxSASA as True. To get the relative residue SASA for a model in the PDB File
+as decimal, you can call the following function. To transform the results in percent
+just multiply the values with 100.
 </p>
 *)
 
-relativeSASA_aminoacids filepath modelid numberOfTestpoints false
+relativeSASA_aminoacids filepath modelid numberOfTestpoints probe false
 
 (**
 <details>
@@ -625,7 +634,7 @@ SASA would be using computed maxSASA.</summary>
 *)
 
 (***hide***)
-let rSASA = relativeSASA_aminoacids filepath modelid numberOfTestpoints false 
+let rSASA = relativeSASA_aminoacids filepath modelid numberOfTestpoints probe false 
 (***include-value:rSASA***)
 
 rSASA.['A']
@@ -652,7 +661,7 @@ inputs.
 
 *)
 
-sasaChain filepath modelid numberOfTestpoints
+sasaChain filepath modelid numberOfTestpoints probe
 
 (**
 <details>
@@ -661,7 +670,7 @@ of 1HTQ, which has multiple chains.</summary>
 *)
 
 (***hide***)
-sasaChain ("data/htq.pdb") 1 100
+sasaChain ("data/htq.pdb") 1 100 probe
 (***include-it***)
 
 (**
@@ -691,7 +700,7 @@ of dictionaries that show which are exposed and which are buried.
 
 let threshold = 0.2
 
-differentiateAccessibleAA filepath modelid numberOfTestpoints threshold false
+differentiateAccessibleAA filepath modelid numberOfTestpoints  probe threshold  false
 
 (**
 <details>
@@ -701,7 +710,7 @@ categorize amino Acids of RubisCO Activase in buried and exposed.</summary>
 *)
 
 (***hide***)
-differentiateAccessibleAA filepath modelid numberOfTestpoints threshold false
+differentiateAccessibleAA filepath modelid numberOfTestpoints probe threshold false
 (***include-it***)
 
 (**

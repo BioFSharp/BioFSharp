@@ -7,19 +7,19 @@ module SASABenchmarks =
 
     let testdata = "resources/rubisCOActivase.pdb"
     let htq = "resources/htq.pdb"
-    let residues_testdata = getResiduesPerChain testdata 1
+    let residues_testdata = getResiduesPerChain testdata 1 
     let residues_htq =  getResiduesPerChain htq 1
 
     [<MemoryDiagnoser>] 
     type ExtractResidues() =
              
         [<Benchmark>]
-        member this.extractTestdata_small() =
+        member this.extractTestdata_rubisco() =
             let lines = getResiduesPerChain testdata 1
             lines
 
         [<Benchmark>]
-        member this.extractTestdata_big() =
+        member this.extractTestdata_htq() =
             let lines = getResiduesPerChain htq 1
             lines
 
@@ -27,11 +27,11 @@ module SASABenchmarks =
 
         
         [<Benchmark>]
-        member this.extractAtoms_small() =
+        member this.extractAtoms_rubisco() =
             let lines = getAtomsPerModel testdata 1
             lines
         [<Benchmark>]
-        member this.extractAtoms_big() =
+        member this.extractAtoms_htq() =
             let lines = getAtomsPerModel htq 1
             lines
 
@@ -39,7 +39,7 @@ module SASABenchmarks =
     type vdw_lookup() =
              
         [<Benchmark>]
-        member this.VDW_small() =
+        member this.VDW_rubisco() =
             let vdw_raadi = 
                     residues_testdata
                     |> Seq.map ( fun kvp ->
@@ -47,7 +47,7 @@ module SASABenchmarks =
                          kvp.Value
                          |>Seq.map(fun residue ->                       
                                 residue.ResidueName,residue.Atoms
-                                |>Seq.map(fun atom -> (determine_effective_radius atom residue.ResidueName)
+                                |>Seq.map(fun atom -> (determine_effective_radius atom residue.ResidueName "Water")
                                 )                              
                         ))|> dict
 
@@ -55,7 +55,7 @@ module SASABenchmarks =
             vdw_raadi
 
         [<Benchmark>]
-        member this.vdw_big() =
+        member this.vdw_htq() =
             let vdw_raadi = 
                     residues_htq
                     |> Seq.map ( fun kvp ->
@@ -63,7 +63,7 @@ module SASABenchmarks =
                          kvp.Value
                          |>Seq.map(fun residue ->                       
                                 residue.ResidueName,residue.Atoms
-                                |>Seq.map(fun atom -> (determine_effective_radius atom residue.ResidueName)
+                                |>Seq.map(fun atom -> (determine_effective_radius atom residue.ResidueName "Water")
                                 )                              
                         ))|> dict
             vdw_raadi
@@ -71,12 +71,12 @@ module SASABenchmarks =
     type testpoints() =
 
             [<Benchmark>]
-            member this.testpoints_small() =
+            member this.testpoints_rubisco() =
                 let lines = fibonacciTestPoints 10
                 lines
 
             [<Benchmark>]
-            member this.testpoints_big() =
+            member this.testpoints_htq() =
                 let lines = fibonacciTestPoints 10000
                 lines
 
@@ -85,7 +85,7 @@ module SASABenchmarks =
         let testPoints = fibonacciTestPoints 100
           
         [<Benchmark>]
-        member this.scaleTespoints_small() =
+        member this.scaleTespoints_rubisco() =
             let testpoints =
                     residues_testdata
                     |> Seq.map ( fun kvp ->
@@ -93,13 +93,13 @@ module SASABenchmarks =
                          kvp.Value
                          |>Seq.map(fun residue ->                       
                                 residue.ResidueName,residue.Atoms
-                                |>Seq.map(fun atom -> (scaleFibonacciTestpoints testPoints atom residue.ResidueName)
+                                |>Seq.map(fun atom -> (scaleFibonacciTestpoints testPoints atom residue.ResidueName "Water")
                                 )                              
                         ))|> dict
             testpoints
 
         [<Benchmark>]
-        member this.scaleTestpoints_big() =
+        member this.scaleTestpoints_htq() =
             let testpoints =  
                     residues_htq
                     |> Seq.map ( fun kvp ->
@@ -107,7 +107,7 @@ module SASABenchmarks =
                             kvp.Value
                             |>Seq.map(fun residue ->                       
                                 residue.ResidueName,residue.Atoms
-                                |>Seq.map(fun atom -> (scaleFibonacciTestpoints testPoints atom residue.ResidueName)
+                                |>Seq.map(fun atom -> (scaleFibonacciTestpoints testPoints atom residue.ResidueName "Water")
                                 )                              
                         ))|> dict
 
@@ -117,7 +117,7 @@ module SASABenchmarks =
     type acessiblePoints() =
          
         [<Benchmark>]
-        member this.acessiblePoints_small() =
+        member this.acessiblePoints_rubisco() =
             let acessiblePointsDict_small= 
                         residues_testdata
                         |> Seq.map (fun kvp ->
@@ -131,7 +131,7 @@ module SASABenchmarks =
                                     |> Array.map (fun atom -> atom, residue.ResidueName)
                                 )
 
-                            accessibleTestpoints allAtomsOfChain 100
+                            accessibleTestpoints allAtomsOfChain 100 "Water"
                         )
                         |> Seq.toArray
 
@@ -139,7 +139,7 @@ module SASABenchmarks =
                 
               
         [<Benchmark>]
-        member this.acessiblePoints_big() =
+        member this.acessiblePoints_htq() =
             let acessiblePointsDictHTQ = 
                     residues_htq               
                     |> Seq.map (fun kvp ->
@@ -153,7 +153,7 @@ module SASABenchmarks =
                                 |> Array.map (fun atom -> atom, residue.ResidueName)
                             )
 
-                        accessibleTestpoints allAtomsOfChain 100
+                        accessibleTestpoints allAtomsOfChain 100 "Water"
                     )
                     |>Seq.toArray
 
@@ -165,13 +165,13 @@ module SASABenchmarks =
 
         
         [<Benchmark>]
-        member this.SASAatom_small() =
-            sasaAtom testdata 1 100
+        member this.SASAatom_rubisco() =
+            sasaAtom testdata 1 100 "Water"
 
 
         [<Benchmark>]
-        member this.SASAatom_big() =
-            sasaAtom htq 1 100
+        member this.SASAatom_htq() =
+            sasaAtom htq 1 100 "Water"
 
 
     
@@ -180,12 +180,12 @@ module SASABenchmarks =
 
         
         [<Benchmark>]
-        member this.SASAresidue_small() =
-            sasaResidue testdata 1 100    
+        member this.SASAresidue_rubisco() =
+            sasaResidue testdata 1 100  "Water"
             
         [<Benchmark>]
-        member this.SASAresidue_big() =
-            sasaResidue htq 1 100
+        member this.SASAresidue_htq() =
+            sasaResidue htq 1 100 "Water"
 
 
     
@@ -193,12 +193,12 @@ module SASABenchmarks =
     type relSASA() =
         
         [<Benchmark>]
-        member this.relSASAresidue_small() =
-            relativeSASA_aminoacids testdata 1 100 true   
+        member this.relSASAresidue_rubisco() =
+            relativeSASA_aminoacids testdata 1 100 "Water" true   
             
         [<Benchmark>]
-        member this.relSASAresidue_big() =
-            relativeSASA_aminoacids htq 1 100 true
+        member this.relSASAresidue_htq() =
+            relativeSASA_aminoacids htq 1 100 "Water" true
 
 
     
@@ -206,8 +206,8 @@ module SASABenchmarks =
     type differentiate() =
 
         [<Benchmark>]
-        member this.differentiateExposedandBuried_small() =
-            let diffTest= differentiateAccessibleAA testdata 1 100 20 false
+        member this.differentiateExposedandBuried_rubisco() =
+            let diffTest= differentiateAccessibleAA testdata 1 100 "Water" 0.2 false 
 
             let allAcessibles = 
                 diffTest 
@@ -224,9 +224,9 @@ module SASABenchmarks =
        
 
         [<Benchmark>]
-        member this.differentiateExposedandBuried_big() =
+        member this.differentiateExposedandBuried_htq() =
 
-            let diffTest = differentiateAccessibleAA htq 1 100 0.2 false
+            let diffTest = differentiateAccessibleAA htq 1 100 "Water" 0.2 false
 
             let allAcessibles = 
                 diffTest    
@@ -246,10 +246,10 @@ module SASABenchmarks =
     type chainSASA() =
 
         [<Benchmark>]
-        member this.computeSASAchain_small() =
-            sasaChain testdata 1 100    
+        member this.computeSASAchain_rubisco() =
+            sasaChain testdata 1 100 "Water"    
             
         [<Benchmark>]
-        member this.computeSASAchain_big() =
-            sasaResidue htq 1 100
+        member this.computeSASAchain_htq() =
+            sasaResidue htq 1 100 "Water"
 

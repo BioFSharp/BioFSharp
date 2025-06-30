@@ -7,9 +7,7 @@ module SASATests =
     open BioFSharp.FileFormats.PDBParser
     open BioFSharp.Tests.ReferenceObjects.SASA
 
-    open Expecto
-    open Deedle
-   
+    open Expecto  
     open System.Collections.Generic
 
 
@@ -120,7 +118,7 @@ module SASATests =
                         kvp.Value
                         |>Array.Parallel.map(fun residue ->                       
                                 (residue.ResidueName,residue.ResidueNumber),residue.Atoms
-                                |>Array.Parallel.map(fun atom -> (determine_effective_radius atom residue.ResidueName)
+                                |>Array.Parallel.map(fun atom -> (determine_effective_radius atom residue.ResidueName "Water")
                                 )                              
                         )|>dict)|> dict
                         
@@ -134,7 +132,7 @@ module SASATests =
                     "Amino acids contain at least one Carbon Atom"
                 Expect.contains vdw_raadi.['A'].["CYS",117] (1.77 + 1.4) 
                     "Aminoacids with disulfid bonds / Cystein need at least two S"
-                Expect.equal  (determine_effective_radius testdata.['A'].[0].Atoms.[3] "XYZ") 
+                Expect.equal  (determine_effective_radius testdata.['A'].[0].Atoms.[3] "XYZ" "Water") 
                     (1.52 + 1.4) "Atoms with Element O need vdw radius of 1.52" 
             }
 
@@ -207,7 +205,7 @@ module SASATests =
                     "Average distance between points should not be too large"
             }
 
-            test "fibonacci points are sclaed correctly onto the atoms"{
+            test "fibonacci points are scaled correctly onto the atoms"{
                 let fibonacci_example = fibonacciTestPoints 100
                 let testdata = getResiduesPerChain "resources/rubisCOActivase.pdb" 1
                 let surfacepoints = 
@@ -217,7 +215,7 @@ module SASATests =
                         kvp.Value
                         |>Array.Parallel.map(fun residue ->                       
                                 (residue.ResidueName,residue.ResidueNumber),residue.Atoms
-                                |>Array.Parallel.map(fun atom -> (scaleFibonacciTestpoints fibonacci_example atom residue.ResidueName)
+                                |>Array.Parallel.map(fun atom -> (scaleFibonacciTestpoints fibonacci_example atom residue.ResidueName "Water")
                                 )                              
                         )|>dict)|> dict
                                      
@@ -233,7 +231,7 @@ module SASATests =
                 )
 
                 let dummyatom = testdata.['A'].[0].Atoms.[0]
-                let testpointsDummy = scaleFibonacciTestpoints fibonacci_example dummyatom testdata.['A'].[0].ResidueName
+                let testpointsDummy = scaleFibonacciTestpoints fibonacci_example dummyatom testdata.['A'].[0].ResidueName "Water"
                 Expect.equal testpointsDummy.Length 100 "The number of testpoints 
                     should be 100"
                 Expect.floatClose Accuracy.high testpointsDummy.[0].X -2.7781552262181566 
@@ -278,7 +276,7 @@ module SASATests =
                             )
 
                     
-                        let allCounts : float[] = accessibleTestpoints allAtomsOfChain totalnr_points
+                        let allCounts : float[] = accessibleTestpoints allAtomsOfChain totalnr_points "Water"
                     
                         let atomCountTuples =
                             Array.zip allAtomsOfChain allCounts
@@ -339,7 +337,7 @@ module SASATests =
 
   
                                 let counts : float[] =
-                                    accessibleTestpoints atomTuples totalnr_points
+                                    accessibleTestpoints atomTuples totalnr_points "Water"
 
                                 key, counts
                             )
@@ -371,7 +369,7 @@ module SASATests =
 
                 let testdata = getResiduesPerChain "resources/rubisCOActivase.pdb" 1
 
-                let atomSASAtestdata = sasaAtom "resources/rubisCOActivase.pdb"  1 100
+                let atomSASAtestdata = sasaAtom "resources/rubisCOActivase.pdb"  1 100 "Water"
 
                 let nr_chains = atomSASAtestdata.Count
                 let nr_residues = atomSASAtestdata.['A'].Count
@@ -410,7 +408,7 @@ module SASATests =
                         should be equal to the one from the python reference"
                 ) exampleAtomsSASA python_SASA_array
 
-                Expect.throws (fun () -> sasaAtom "resources/rubisCOActivase.pdb"  5 100 |>ignore)
+                Expect.throws (fun () -> sasaAtom "resources/rubisCOActivase.pdb"  5 100 "Biotin" |>ignore)
                     "PDB File with only one model and one Chain should throw an 
                     error if modelid is not present"
                         
@@ -418,7 +416,8 @@ module SASATests =
 
             test "Absolute SASA per Residue is computed correctly"{
                 let residueSASAtestdata = 
-                    sasaResidue ("resources/rubisCOActivase.pdb") 1 100
+                    sasaResidue ("resources/rubisCOActivase.pdb") 1 100 "Water"
+
                 let parsedResidues_parser = 
                     getResiduesPerChain "resources/rubisCOActivase.pdb" 1
 
@@ -459,11 +458,11 @@ module SASATests =
                 ) exampleAtomsSASA python_SASA_arrayResidues
 
                 Expect.throws (fun () -> 
-                    sasaResidue "resources/rubisCOActivase"  5 100|>ignore) 
+                    sasaResidue "resources/rubisCOActivase"  5 100 "Water" |>ignore) 
                     "PDB File with only one model and one Chain should throw an 
                     error if modelid is not present"
 
-                let exampleSASAresiduesHTQ = sasaResidue "resources/htq.pdb" 1 100
+                let exampleSASAresiduesHTQ = sasaResidue "resources/htq.pdb" 1 100 "Water"
                 let parsedChainsHTQ = readModels (readPBDFile "resources/htq.pdb")
 
                 Expect.equal exampleSASAresiduesHTQ.Count (parsedChainsHTQ.[0].Chains.Length) 
@@ -481,10 +480,10 @@ module SASATests =
             test "relative Residue SASA is computed correctly"{
 
                 let rel_testdata = 
-                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 false
+                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 "Water" false 
 
                 let residueSASAtestdata = 
-                    sasaResidue ("resources/rubisCOActivase.pdb") 1 100 
+                    sasaResidue ("resources/rubisCOActivase.pdb") 1 100 "Water"
 
                 Seq.iter2 (fun x y -> 
                         Expect.equal x y 
@@ -500,7 +499,7 @@ module SASATests =
 
                 Expect.throws (fun () -> 
                     relativeSASA_aminoacids 
-                        "resources/rubisCOActivase.pdb" 5 100 true |>ignore) 
+                        "resources/rubisCOActivase.pdb" 5 100  "Biotin" true |>ignore) 
                         "PDB File with only one model and one Chain should throw 
                         an error if modelid is not present"
 
@@ -534,7 +533,7 @@ module SASATests =
 
 
                 let rel_testdataWithFixedValue = 
-                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 true 
+                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 "Water" true 
 
                 let fixedMaxSASA_reference = 
                     rel_testdataWithFixedValue.['A'].Values 
@@ -553,10 +552,10 @@ module SASATests =
             test "differentiation into exposed and buried is sucessfull"{
             
                 let rel_testdata = 
-                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 false
+                    relativeSASA_aminoacids "resources/rubisCOActivase.pdb" 1 100 "Water" false
 
                 let differentiatedSASA = 
-                    differentiateAccessibleAA "resources/rubisCOActivase.pdb" 1 100 0.2 false
+                    differentiateAccessibleAA "resources/rubisCOActivase.pdb" 1 100 "Water" 0.2  false 
 
                 let exposed = differentiatedSASA|> Seq.map (fun kvp -> kvp.Key,kvp.Value.Exposed)|>dict
                 let buried = differentiatedSASA|> Seq.map (fun kvp -> kvp.Key,kvp.Value.Buried)|>dict
@@ -606,15 +605,15 @@ module SASATests =
 
             test "chain SASA is computed correct"{
                 
-                let testdata_chain = sasaChain "resources/rubisCOActivase.pdb" 1 100 
-                let absoluteSASA_rca = sasaResidue "resources/rubisCOActivase.pdb" 1 100
+                let testdata_chain = sasaChain "resources/rubisCOActivase.pdb" 1 100 "Water"
+                let absoluteSASA_rca = sasaResidue "resources/rubisCOActivase.pdb" 1 100 "Water"
 
                 Seq.iter2 (fun x y -> 
                     Expect.equal x y "The relative SASA chain id should be equal
                     to the absolute SASA chain id"
                 ) testdata_chain.Keys absoluteSASA_rca.Keys
 
-                let chainSASA_htq = sasaChain "resources/htq.pdb" 1 100
+                let chainSASA_htq = sasaChain "resources/htq.pdb" 1 100 "Water"
 
                 Seq.iter (fun x -> 
                       Expect.isGreaterThan x 0.0 
