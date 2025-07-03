@@ -20,33 +20,31 @@ open BioFSharp.Algorithm.SASA
 # Solvent Acessible Surface Area analysis
 
 <i> Summary </i>: This documentation part provides an example and detailed description,
-how to use SASA functions in BioFSharp. The functions are completely tested with 
-the help of Unit tests and Performance tests. Parts of the Codes are optimized,
-for the improvement of memory and speed, with the help of ChatGPT (OpenAI,2025).
+how to use SASA functions in BioFSharp. 
 
 <h2>Abstract:</h2>
-Solvent accessible surface Area analysis (SASA) is a standard process in the analysis 
-of protein protein interactions or the evaluation of the reactivity of amino acids 
-in mass spectrometric protein proximity experiments, to define exposed and buried 
-areas.<br>
+Solvent accessible surface Area analysis (SASA) is a standard process to define 
+exposed and buried areas.<br>
 
 For that reason we create a accessibility analysis algorithm, which is comparable 
 with the Free SASA library in C and Python (<i>Mitternacht,2016</i>). Our Algorithm
 is based on the Shrake rupley algorithm to determine which amino acids are accessible
-(<i>Shrake&Rupley,1973;Cock et all, 2009</i>). As input, we need a PDB File, 
-that will be parsed using the <a href = "03_07_pdb.html">PDB Parser </a>. 
+(<i>Shrake&Rupley,1973;Cock et all, 2009</i>). As input, we need a PDB File and 
+the implemented <a href = "03_07_pdb.html"> PDB Parser </a>. 
 Accessible amino acids are those that are exposed to the solvent and can be modified 
-by the labelling reagent. Non accessible amino acids are those that are not exposed 
+by the labelling reagent. Non accessible amino acids are those that are buried
 to the solvent and therefore cannot be modified by the labelling reagent. Using 
 the relative SASA for residues we can categorize the amino acids of any protein 
 into exposed and buried.
 
 <figure>
-    <img src="img/overviewSASA.png" alt="drawing" title="SASA analysis" width="80%"/> 
+    <img src="img/overviewSASA.png" alt="drawing" title="SASA analysis" width="100%"/> 
     <figcaption>
         <font size="2">
             <b>Fig.1. Overview of the SASA analysis</b>: <br> 
-            The diagram illustrates the method to differentiate between accessible amino acids and non-accessible in proteins. Some icons are taken from BioIcon (<i>Duerr et all, 2024 </i>). 
+            The diagram illustrates the method to differentiate between accessible 
+            amino acids and non-accessible in proteins. Some icons are taken from
+            BioIcon (<i>Duerr et all, 2024 </i>). 
         </font>
     </figcaption>
 </figure>
@@ -60,7 +58,7 @@ of protein structures as well as Proximity analysis.
 (**
 <br>
 
-# 1.Theoretical Background
+# 1. Theoretical Background
 
 <p>
 One method that is used often to analyse protein -protein interactions on a large 
@@ -77,75 +75,29 @@ non-acessible.
 (**
 <br>
 
-### 1.1. MS based proximity labelling:
+### 1.1. Principle of the SASA analysis
 
-<p>
-MS based proximity labelling is a method, which is used to analyse protein - protein 
-interactions on a large scale. In this method a target protein is fuesed with a 
-labelling enzyme (e.g.APEX). This fusion complex is called the bait protein. The 
-labelling domain of this Fusion protein uses Biotin as a substrate and labels nearby 
-proteins with Biotin. The biotinylated proteins have then to be isolated by 
-streptavidin pulldown and identified by Mass spectrometry (<i>Kaloscay,2019; Roux 
-et all,2012 </i>) (Fig.2).
-</p>
-
-<figure>
-    <img src="img/ms.png" alt="drawing" title="proximity labelling" width="60%"/> 
-    <figcaption>
-        <font size="2">
-            <b>Fig.2. MS based proximity labelling </b>: <br> 
-            The diagram illustrates the preparation for MS based analysis of interaction 
-            partners of a target. Proteins nearby to the fusion proteins 
-            are marked with biotin. Parts of the figure are designed with clipart’s 
-            of Bioicon (<i>Duerr et all, 2024 </i>).
-        </font>
-    </figcaption>
-</figure>
-
-<p>
-The labelling efficiency of the bait protein is influenced by several factors 
-as the spatial proximity of the proteins and the protein abundance. One further 
-factor that influences the labelling efficiency is the reactivity of the amino 
-acids in the protein To investigate this factor we first need to identify the amino 
-acids that are likely to be labelled by the labelling reagent using the SASA.
-</p>
-
-*)
-
-(**
-<br>
-### 1.2.The principle of the SASA analysis
-
-As already explained the SASA analysis is a method to determine which amino acids are exposed 
-to the solvent and which are buried computing the surface area of a biomolecule 
-that is accessible to a solvent. Therefore it has been considered as an important 
-factor in protein structure analysis, because exposed atoms are potential reactive 
-and therefore likely to be labeled (<i>Ali et al,2014</i>). We compute the SASA 
-for distinct levels using the Shrake - Rupley algorithm. The idea behind this Algorithm 
-is that every atom in the biomolecule is represented as solved sphere. Now the 
-acessible surface of the Atom is determined by calculating the van-de-Waals raadi 
-of the atoms. The surface of each of the spheres is approximated by creating testpoints, 
-that are uniformely distributed over each sphere representing one atom. The uniformly
-dsitributed testpoints are created using the spherical Fibonacci lattice or golden 
-spiral lattice, a method to create a set of points on the surface of a sphere that 
-are uniformly distributed along the imaginary equator from -1 to 1. The coordinates 
-X,Y and Z of the points are calculated using the golden angle, which is an irrational 
-number that is approximately 137.5 degrees and the high of the sphere (i>Gonzalez,2010</i>). 
-<br>
-For every Atom it is now proofed, if any of the testpoints are overlapped by another 
-Atom.A test point is considered overlapped if the distance to the center of the other 
+SASA analysis is a method to determine which amino acids are exposed to the solvent 
+and which are buried computing the solvent acessible surface area of a biomolecule. 
+We compute the SASA using the Shrake - Rupley algorithm. The idea behind the Algorithm 
+is that every atom in the biomolecule is represented as solved sphere. Now the acessible 
+surface of the Atom is determined by calculating the van-de-Waals raadi of the atoms. 
+The surface of each of the spheres is approximated by creating testpoints, that are 
+uniformely distributed over each sphere representing one atom. 
+For every Atom the number of testpoints overlapped by another Atom is determined.
+A test point is considered overlapped if the distance to the center of the other 
 atom is smaller than the effective radius (VDW Radii atom + VDW Raddii probe) of 
-the other atom (Fig.3)(<i>Shrake&Rupley,1973</i>).
+the other atom (Fig.2)(<i>Shrake&Rupley,1973</i>).
 
 <figure>
-    <img src="img/shrake_Rupley.png" alt="drawing" title="data structure" width="60%"/> 
+    <img src="img/shrake_Rupley.png" alt="drawing" title="data structure" width="80%"/> 
     <figcaption>
         <font size="2">
-            <b>Fig.3. Principle of the Shake-Rupley Algorithm</b>: <br> 
+            <b>Fig.2. Principle of the Shake-Rupley Algorithm</b>: <br> 
             This figur represents a chematic overview of the principle to compute 
             the solvent acessible Surface area of a Atom on the example of two 
             Atoms. Testpoints that are overlapped by the other Atom are marked red, 
-            exposed are marked green. The figure is designed by the explanations of Shrake & Rupley.
+            exposed are marked green.
         </font>
     </figcaption>
 </figure>
@@ -153,26 +105,26 @@ the other atom (Fig.3)(<i>Shrake&Rupley,1973</i>).
 *)
 
 (**
+
 <br>
-### 1.3. the Van der Waals Radius
+
+### 1.2. The Van der Waals Radius
 
 <p>
 To consider if an atom is exposed or buried, we need the van der Waals radius of 
 atoms. The van-der Waals radius (vdW) is the experimentally identified  distance 
 of the centre of the atom to the outer edge of the electron cloud and is important 
-for the calculation of the solvent accessible surface area (SASA) because it is 
-used to determine the effective radius of the atoms. 
-The effective radius is the sum of the van der Waals radii of the atoms and the
-probe radius. The probe radius is a measure of the size of the solvent molecule, 
-mostly water with 1.4&#197;  that is used to calculate the SASA and can be found 
-in literature. Often the Van der Waals Raadi of Bondii are used. In the following 
-Table the most used Boondii Raadii for protein atoms are shown , some more are 
-stored in the implementation in the module commonvdWraadi(<i>Bondi,1964</i>). 
+for the calculation of the SASA, because it is used to determine the effective 
+radius of the atoms. The effective radius is the sum of the van der Waals radii 
+of the atoms and the probe radius. The probe radius is a measure of the size of 
+the solvent molecule,  that is used to calculate the SASA. Often the Van der Waals 
+Raadi of Bondii are used. In the following Table the most used Boondii Raadii for 
+protein atoms are shown (<i>Bondi,1964</i>). 
  
 </p>
 
 <table border="1" cellspacing="0" cellpadding="5">
-  <caption><strong> Table 1: van der Waals Radii (Bondi, 1964)</strong>: lierally described van der waals raadi of Bondi </caption>
+  <caption><strong> Table 1. Van der Waals Radii (Bondi, 1964)</strong>: lierally described van der waals raadi of Bondi </caption>
   <thead>
     <tr>
       <th>Element</th>
@@ -223,18 +175,13 @@ stored in the implementation in the module commonvdWraadi(<i>Bondi,1964</i>).
   </tbody>
 </table>
 
-*)
-(**
 <p>
-ProtOr raadi, that are first described by Tsai et al in 1999, are a variant of 
-the van der Waals radii, which are determined specially for proteins. 
-Van der Waals radii lead in proteins to different packing densities, which can lead 
-to inaccuracies in the calculation of the solvent accessible surface area. 
-The ProtOr radii are determined by the packing density of proteins and are used 
-to calculate the solvent accessible surface area more accurately because they  
-consider the specific packing density of proteins through different protein 
-environments. For that reason the protor describes not only the element of the 
-atom, but instead the complete atomgroup,e.g. the methyl group (<i>Tsai et al,1999</i>).´An example is shown in Fig.4 (<i>Tsai et al,1999</i>).
+ProtOr raadi are a variant of the van der Waals radii, which are determined specially 
+for proteins. Van der Waals radii lead in proteins to different packing densities, which can lead 
+to inaccuracies in the calculation of the solvent accessible surface area. The 
+ProtOr radii are determined by the packing density of proteins and are used 
+to calculate the SASA more accurately because they consider the specific packing 
+density of proteins through different protein environments. For that reason the protor describes the complete atomgroup,e.g. the methyl group (<i>Tsai et al,1999</i>). An example is shown in Fig.3 (<i>Tsai et al,1999</i>).
 
 </p>
 
@@ -242,8 +189,10 @@ atom, but instead the complete atomgroup,e.g. the methyl group (<i>Tsai et al,19
     <img src="img/alanin_protor.png" alt="drawing" title="vdw_example" width="80%"/> 
     <figcaption>
         <font size="2">
-            <b>Fig.4. Protor radii example alanin</b>: <br> 
-           Shown is the meaning of single protor radii on the example of alanin. The different atom groups are shown in different colors and the Protor radii are shown as spheres around the atoms. The figure is designed by the explanations of Tsai et al.1999.
+            <b>Fig.3. Protor radii example alanin</b>: <br> 
+           Shown is how to determine single protor radii on the example of alanin. 
+           The different atom groups are shown in different colors and the Protor 
+           radii are shown as spheres around the atoms. 
         </font>
     </figcaption>
 </figure>
@@ -251,7 +200,9 @@ atom, but instead the complete atomgroup,e.g. the methyl group (<i>Tsai et al,19
 
 
 <table border="1" cellspacing="0" cellpadding="5">
-    <caption><strong> Table 2: ProtOR Raddi (Tsai et al., 1999)</strong>: literally Described ProtOR raadi and to which atomname they are assigned to  </caption>
+    <caption> <strong> Table 2. ProtOR Raddi (Tsai et al., 1999)</strong>: 
+    literally Described ProtOR raadi and to which atomname they are assigned to  
+    </caption>
   <thead>
     <tr>
       <th>Atomic Group</th>
@@ -294,36 +245,33 @@ atom, but instead the complete atomgroup,e.g. the methyl group (<i>Tsai et al,19
 
 *)
 
-
 (**
+
 <br>
 
-# 2.Extract Residues from Proteins:
+# 2. Extract Residues from Proteins:
 
 <p>
-All of the SASA function we show you in the next chapters, extract in the first 
-step Residues from a parsed PDB File. The PDB file is parsed using the 
-<b> readStructure </b> function of the PDB Parser module, which is explained  
-<a href = "03_07_pdb.html">
-here </a> (<i>Schneider et all,2025</i>). The function <b> getResiduesPerChain </b>
+The first step of all SASA functions is, that they extract Residues from a 
+parsed PDB File. The PDB file is parsed using the <b> readStructure </b> function 
+of the PDB Parser module. The function <b> getResiduesPerChain </b>
 has a short helper function inside, that has as input the residuearray and removes 
 all HETATM entries as well as multiple Alternative Locations for the same Atom 
 in one residue. To decide, which Location for one atom is kept we use two criteria’s:  
  </p>
 
 <ol>
-<li> the atom with the best occupancy (the occupancy is a value between 0 and 1, 
-that describes how many times the atom is present in the structure)</li> 
+<li> the atom with the best occupancy </li> 
 <li> if two atoms have the same occupancy, we take the one with the AltLoc 'A' or ' ' 
 (empty) </li>
 </ol>
-(Fig.5)
+(Fig.4)
 
 <figure>
     <img src="img/altLoc.png" alt="drawing" title="isolate single altloc" width="100%"/> 
     <figcaption>
         <font size="2">
-            <b>Fig.5. Filter best Alternative Location</b>: <br> 
+            <b>Fig.4. Filter best Alternative Location</b>: <br> 
             Shown is a schematic illustration of the steps to keep per chain and 
             residue only one atom with the same atomname, when different alternative 
             Locations exist.
@@ -341,8 +289,9 @@ filterBestAltLoc residuearray
 
 (**
 <details>
-<summary> If you just want to clear already extracted residues from Alternative Locations,
-you  can use this function. Here on the example of the residuearray shown above. </summary>
+<summary> If you just want to clear already extracted residues from Alternative 
+Locations, you  can use this function. 
+Here on the example of the residuearray shown above. </summary>
 *)
 
 (***hide***)
@@ -369,10 +318,10 @@ removed </summary>
 
 (**
 <p>
-The main function of this part is the <b> getResiduePerChain </b> function, which 
+The main function is the <b> getResiduePerChain </b> function, which 
 has as input the path as well as the modelid of the model to isolate. The output 
 is a <char,residuearray> Dictionary. The char represents the chainID and the 
-residuearray the filtered residues present in this chain (Fig.6).
+residuearray the filtered residues present in this chain (Fig.5).
 </p>
 
 <figure>
@@ -380,14 +329,13 @@ residuearray the filtered residues present in this chain (Fig.6).
     of extracted residues" width="100%"/> 
     <figcaption>
         <font size="2">
-            <b>Fig.6.Dictionary of extracted residues per chain id:</b>: <br> 
+            <b>Fig.5. Dictionary of extracted residues per chain id:</b>: <br> 
             Shown is a schematic illustration of the steps to create a dictionary 
             with the chainid as key and the residues as value. The residues are 
             filtered using the filterBestAltLoc function.
         </font>
     </figcaption>
 </figure>
-
 
 *)
 
@@ -403,7 +351,6 @@ snd Array represents all Residues present in Chain A of the RubisCO Activase.
 *)
 
 (***hide:***)
-
 let dic = getResiduesPerChain ("data/rubisCOActivase.pdb") 1
 (***include-value:dic***)
 
@@ -420,9 +367,9 @@ dic.['A']
 # 3. Compute Solvent acessible surface area: 
 
 <p>
-The function explained in chapter 2.Extract Residues from Proteins, is called 
-in all SASA Algorithm functions and used as basis. As already explained in Chapter 
-1.2 and 1.3 every SASA algorithm is based on four main steps:
+The function explained in chapter 2, is called in all SASA Algorithm functions 
+and used as basis. As already explained in Chapter 1.1 every SASA algorithm is 
+based on four main steps:
 </p>
 
 <ol>
@@ -433,56 +380,57 @@ the effective radius </li>
 of the protein. </li>
 <li> categorize test points based on distance and effective radius in buried and 
 exposed </li>
-</ol
+</ol>
 
 <p>
-To 1:
+<b>To 1</b>:
 The effective van der Waals Radius is the sum of the choosen probe radius 
 and the  vdw radius / ProtOR radius of the corresponding Atom. Raadi that are 
 used for the computation can be looked up and are explained in Table 1 and 2 of 
 Chapter 1.3 (VDW Radius). <br>
-To 2: Test points are computed  on the atoms using 
+<b>To 2</b>: Test points are computed  on the atoms using 
 the mathematical Shrake Rupley algorithm (<i>Shrake&Rupley,1973</i>). Scaling the 
 test points on the atoms surface is done by sum of the coordinates of that atom 
 and the product of the test points  coordinate and the effective van der waals radii 
 of the atom.<br>
-To 3: The distance between two 3D points is computed using the Euclidian distance,
-that is the root of all squared single distances 
-To 4: A test point is considered buried / non  accessible if the distance to the 
+<b>To 3</b>: The distance between two 3D points is computed using the Euclidian distance,
+that is the root of all squared single distances <br>
+<b>To 4</b>: A test point is considered buried / non  accessible if the distance to the 
 centre of the other atom is smaller than the effective radius of the other atom 
-(Fig.3) (<i>Shrake&Rupley,1973</i>). For the complete atom we compare all test 
+(Fig.2) (<i>Shrake&Rupley,1973</i>). For the complete atom we compare all test 
 points against other atoms and determine the sum of exposed test points.
 
 </p>
 
 <p>
-Solvent accessible surface Area (SASA) is one method to determine which amino 
-acids are exposed to the solvent and which are buried. The SASA itself is the area 
-of a biomolecule that is accessible for the solvent and for atoms this means, that 
-they are potential reactive and therefore likely to be labelled (<i>Ali et al,2014</i>).
-
+SASA is one method to determine which amino acids are exposed to the solvent 
+and which are buried. The SASA is the area of a biomolecule that is accessible 
+for the solvent.
 </p>
 
 *)
 
 (**
-<br>
-## 3.1.compute SASA for every Atom:
 
+<br>
+
+### 3.1. Compute SASA for every Atom:
+
+<p>
 If you especially want to know which atom is mostly accessible you need to call 
 the <b> sasaAtom </b> function. The function has four variables as input: The 
 file path of the PDB File to analyse, the modelid of the model of interest,
 the number of Test points per Atom and the name of the probe or the value if the
-probe is not common. The output is a dictionary with the chain id 
-as key and another dictionary as value. The inner dictionary has the residue number 
-and name as key and the SASA array as value (Fig.7).
-
+probe is not common. The output is a dictionary with the chain id as key and another 
+dictionary as value. The inner dictionary has the residue number and name as key 
+and the SASA array as value (Fig.6).
+</p>
 
 <figure>
     <img src="img/sasaAtom.png" alt="drawing" title="sasa atom" width="100%"/> 
     <figcaption>
         <font size="2">
-            <b>Fig.7.Result of sasaAtom</b>: <br> 
+            <b>Fig.6. Result of sasaAtom</b>: <br> 
             Shown is the structure of the dictionary representing the result 
             of the compute sasa Atom function. 
         </font>
@@ -512,8 +460,7 @@ sasaAtom filepath modelid numberOfTestpoints probe
 the computed sasa per Atoms look like, when the probe is water. The first output 
 is a dictionary with the chain id and the integrated snd dictionary and the snd 
 output shows how the SASA per Atom would look like on the example of the residue
-65,ASN in chain A of RubisCO Activase.
- </summary>
+65,ASN in chain A of RubisCO Activase </summary>.
 *)
 
 (***hide***)
@@ -528,30 +475,27 @@ atomSASA.['A'].[(65, "ASN")]
 *)
 
 (**
-## 3.2. compute the SASA of residues
+
+### 3.2. Compute the SASA of residues
 
 For Residues, in case of proteins the amino acids, two different SASA Values can 
-be computed: The absolute SASA and the relative SASA chosen to decide, which amino 
-acids are exposed to the solvent.
+be computed: The absolute SASA and the relative SASA.
 
-### 3.2.1. the absolute Residue SASA:
+#### 3.2.1. Absolute Residue SASA:
 
 <p>
-The absolute SASA for Residues is just the Sum of all atom SASA for the 
-corresponding Residues. For that reason, we have for the <b> sasaResidue </b>
-function, the same inputs as for the sasaAtom function, described in Chp. 3.1.
-The output is again a dictionary with the chain id as key and another dictionary 
-as value. The inner dictionary has the structure Dictionary<int*string,float>>,
-whereby the Key is a tuple of Residue number and Residue name, and the Value is 
-the absolute SASA of the residue (Fig.8).
-
+The absolute SASA for Residues is the Sum of all atom SASA for the corresponding 
+Residues. For that reason, we have for the <b> sasaResidue </b> function, the same 
+inputs as for the sasaAtom function. The output is a dictionary with the chain id as key and another dictionary 
+as value. The inner dictionary is a dictionary with the Key that is a tuple of 
+Residue number and Residue name, and a Value that is the absolute SASA of the residue (Fig.7).
 </p>
 
 <figure>
     <img src="img/sasaResidue.png" alt="drawing" title="residue sasa structure" width="100%"/> 
     <figcaption>
         <font size="2">
-            <b>Fig.8.Result of sasaAtom</b>: <br> 
+            <b>Fig.7. Result of sasaAtom</b>: <br> 
             Shown is the structure of the dictionary representing the result of 
             the compute sasa Atom function.b) shows an example of such a residue 
             Sasa  dictionary computed for PDB id - 4w5w. 
@@ -589,43 +533,43 @@ residueSASA.['A']
 (**
 <br>
 
-### 3.2.2.the relative Residue SASA: 
+#### 3.2.2. Relative Residue SASA: 
 
 <p>
-In Research the relative SASA (rSASA) is often used because this is a Value 
-to predict if a residue is accessible and with that likely to be labelled or if 
-it is buried. rSASA is the ratio of the absolute SASA and the maximal SASA of the
-corresponding residue. The Max SASA is the absolute SASA of the amino acid in 
-fully extended Conformation in Ala - X - Ala or Gly - X - Gly. Tripeptides. In
-our algorithm, we compute the maxSASA for the twenty Amino acids using the exact 
-same parameters as in the <b> sasaResidue </b> function, when we set the variable fixedMaxSASA as false The file path is in this 
-case the rsa tripeptides from the Python Free SASA implementation (<i>Mitternacht,2016</i>).
-This enables a more exact comparison of the absolute and the maxSASA Values. 
-The  maxSASA Values for one hundred test points are for example:
+The relative SASA (rSASA) is often used because this is a Value to predict if a 
+residue is accessible or if it is buried. rSASA is the ratio of the absolute SASA 
+and the maximal SASA of the corresponding residue. 
+The Max SASA is the absolute SASA of the amino acid in fully extended Conformation 
+in Ala - X - Ala or Gly - X - Gly Tripeptides. In our algorithm, we compute the
+maxSASA for the twenty Amino acids using the exact same parameters as in the 
+<b> sasaResidue </b> function, when we set the variable fixedMaxSASA as false 
+The maxSASA Values for one hundred test points are for example:
 </p>
 
 *)
 
 (***hide***)
 maxSASA 1 100
-(***include-it***)
+(***include-it:***)
 
 (**
+
 <p>
-In Comparison with the Free SASA relative SASAs we see a slightly small difference 
-of approximately 0.1. The reason for that is, that Free SASA computes the maxSASA 
-slightly different and only once and with standard probe water. 
-If you want to have the exact same results to compare,just set the last variable 
-fixedMaxSASA as True. To get the relative residue SASA for a model in the PDB File
-as decimal, you can call the following function. To transform the results in percent
-just multiply the values with 100.
+In Comparison with the Free SASA relative SASAs we see small differences. The reason 
+for that is, that Free SASA uses fix max SASA values, that are computed with 
+water as probe. If you want to have the exact same results to compare, just set the last variable 
+fixedMaxSASA as True. 
+To get the relative residue SASA for a model in the PDB File
+as decimal, you can call the following function.
 </p>
 *)
 
 relativeSASA_aminoacids filepath modelid numberOfTestpoints probe false
 
 (**
+
 <details>
+
 <summary> Click here to see an exemplary output for relativeSASA_aminoacids, 
 applied to RubisCO Activase. The first output is a dictionary with the chain id 
 and the integrated second dictionary and the Second output shows how the relative 
@@ -638,7 +582,7 @@ let rSASA = relativeSASA_aminoacids filepath modelid numberOfTestpoints probe fa
 (***include-value:rSASA***)
 
 rSASA.['A']
-(***include-it***)
+(***include-it:***)
 
 (**
 </details>
@@ -646,17 +590,14 @@ rSASA.['A']
 
 (**
 
-## 3.3. Compute the SASA of chains:
+### 3.3. Compute the SASA of chains:
 
 <p>
 Sometimes you are interested in the SASA of a whole chain, e.g. when you want to 
-analyse protein-protein interaction. In the analysis of protein-protein interactions 
-you need for example the SASA of the chains to compare the  exposed surface in 
-and out of complex. The function <b>sasaChain</b> is similar to the one 
-for the residue SASA. The only difference is that we need the sum of all residues 
-SASA in the Chain. The result is again a dictionary with the chain id as key and 
-the SASA of the chain as value. To call the function you again need the same 
-inputs.
+analyse protein-protein interaction. The function <b>sasaChain</b> computes the 
+sum of all residues SASA in the Chain. The result is again a dictionary with the 
+chain id as key and the SASA of the chain as value. To call the function you need the same 
+inputs as for sasaResidue.
 </p>
 
 *)
@@ -671,7 +612,7 @@ of 1HTQ, which has multiple chains.</summary>
 
 (***hide***)
 sasaChain ("data/htq.pdb") 1 100 probe
-(***include-it***)
+(***include-it:***)
 
 (**
 </details>
@@ -690,8 +631,8 @@ of the relative SASA. is the relative SASA lower as the threshold they are burie
 and when they are higher as the threshold the residue is exposed. The threshold 
 itself is mostly between 0.2 and 0.3 in literature. We create a function 
 <b>differentiateAccessibleAA</b> you can call that has as input again 
-filepath,modelid and number of points, but also the chosen threshold. The output 
-is a dictionary, containing as key the chain id and as Value two diverse types 
+filepath,modelid and number of points and additional the chosen threshold. 
+The output is a dictionary, containing as key the chain id and as Value two diverse types 
 of dictionaries that show which are exposed and which are buried.
 
 </p>
@@ -711,7 +652,7 @@ categorize amino Acids of RubisCO Activase in buried and exposed.</summary>
 
 (***hide***)
 differentiateAccessibleAA filepath modelid numberOfTestpoints probe threshold false
-(***include-it***)
+(***include-it:***)
 
 (**
 </details>
@@ -725,10 +666,6 @@ differentiateAccessibleAA filepath modelid numberOfTestpoints probe threshold fa
 #  Bibliography 
 
 <ul style="list-style-type: none;">
-    <li>Ali, Syed, Md. Hassan, Asimul Islam, and Faizan Ahmad. "A Review of Methods 
-    Available to Estimate Solvent-Accessible Surface Areas of Soluble Proteins in 
-    the Folded and Unfolded States". Current Protein & Peptide Science 15, no. 5 
-    (31 May 2014): 456-76. https://doi.org/10.2174/1389203715666140327114232.</li>
     <li>Bondi, A. "Van Der Waals Volumes and Radii". The Journal of Physical 
     Chemistry 68, no. 3 (March 1964): 441-51. https://doi.org/10.1021/j100785a001.</li>
     <li>Cock, Peter J. A., Tiago Antao, Jeffrey T. Chang, Brad A. Chapman, Cymon J.
@@ -739,23 +676,9 @@ differentiateAccessibleAA filepath modelid numberOfTestpoints probe threshold fa
     <li> Duerr, Simon, Kanaren,Kathryn, Derek Croote, Emmett Leddin, and Jeroen 
     Van Goey. "duerrsimon/bioicons: April24". Zenodo, 25. April 2024. 
     https://doi.org/10.5281/ZENODO.11068293.</li>
-    <li>González, Álvaro. "Measurement of Areas on a Sphere Using Fibonacci and 
-    Latitude–Longitude Lattices". Mathematical Geosciences 42, no. 1 (January 2010):
-    49-64. https://doi.org/10.1007/s11004-009-9257-x.</li>
-    <li> Kalocsay, Marian. "APEX Peroxidase-Catalyzed Proximity Labeling and Multiplexed 
-    Quantitative Proteomics". In Proximity Labeling, herausgegeben von Murat Sunbul 
-    and Andres J&aumlschke, 2008:41-55. Methods in Molecular Biology. New York, NY: 
-    Springer New York, 2019. https://doi.org/10.1007/978-1-4939-9537-0_4.</li>
     <li>Mitternacht, Simon. &quotFreeSASA: An Open Source C Library for Solvent 
     Accessible Surface Area Calculations&quot. F1000Research 5 (18 February 2016): 
     189. https://doi.org/10.12688/f1000research.7931.1.</li>
-    <li> OpenAI. (2025). ChatGPT (Version GPT-01, March 2025) [Large language model].
-    https://openai.com/chatgpt/overview/. </li>
-    <li>Roux, Kyle J., Dae In Kim, Manfred Raida, und Brian Burke. "A Promiscuous 
-    Biotin Ligase Fusion Protein Identifies Proximal and Interacting Proteins in 
-    Mammalian Cells". Journal of Cell Biology 196, Nr. 6 (19. M&aumlrz 2012): 801 - 10. 
-    https://doi.org/10.1083/jcb.201112098.</li>
-    <li>Kevin Schneider, Lukas Weil, Timo Mühlhaus, David Zimmer, graemevissers, WieczorekE, Benedikt Venn, et al. ‘BioFSharp/BioFSharp: 2.0.0’. Zenodo, 25 April 2025. https://doi.org/10.5281/ZENODO.6335372. </li>
     <li>Shrake, A., and J.A. Rupley. &quotEnvironment and Exposure to Solvent 
     of Protein Atoms. Lysozyme and Insulin&quot. Journal of Molecular Biology 79,
     Nr. 2 (September 1973): 351 &#45 71. https://doi.org/10.1016/0022-2836(73)90011-9. </li>

@@ -20,26 +20,21 @@ open BioFSharp.FileFormats.PDBParser
 (**
 # PDBParser
 
-<i> Summary </i>: This part of the documentation provides an detailed overview 
-of how to parse PDB files using the BioFSharp. Parts of the Codes are optimized,
-for the improvement of memory and speed, with the help of ChatGPT (OpenAI,2024).
-The implemented PDB parser functions are completely tested using Expecto for 
-Unittesing and Benchmarkdotnet for the Performance testing.
+<i>Summary</i>: This part of the documentation provides an detailed overview 
+of how to parse different levels as well as the complete PDB files using 
+BioFSharp. 
 
-<h2>Abstract</h2>
+<h2>Abstract:</h2>
 
 Protein Data Bank (PDB) file format is the standard format for representing 
 three-dimensional structures of biological macromolecules, such as proteins and
 nucleic acids, along with additional metadata information. The PDB format is 
 commonly stored in text files with the extension `.pdb. and serve as a foundation 
-for computational biology and structural bioinformatics applications. Accurate 
-extraction and processing of pdb data are essential for tasks such as structural
-analysis and AI-driven protein folding predictions in bioinformatics.<br>
+for computational biology and structural bioinformatics applications. <br>
 
 For that reason we implement a parser for the PDB file format in BioFSharp,
 using the approach of Haskell by M.j.Gajda (hPDB) as template 
-(<i>Gaja, 2010</i>; <i>Gaja, 2013</i>) 
-that read the PDB file format and structure the data in the types metadata, atom,
+(<i>Gaja, 2010</i>; <i>Gaja, 2013</i>), that read the PDB file format and structure the data in the types metadata, atom,
 residue, chain, model and complete structure (Fig.1). <br>
 
 <figure>
@@ -49,15 +44,11 @@ residue, chain, model and complete structure (Fig.1). <br>
         <font size="2">
             <b>Fig.1. Overview of a PDB parser's function</b>: <br> 
             The diagram illustrates the function of a PDB file writer and a 
-            PDB file reader. Some icons are taken from BioIcon 
-            (<i>Duerr et all, 2024 </i>).
+            PDB file reader. Some icons are taken from BioIcon (<i>Duerr et all, 
+            2024 </i>).
         </font>
     </figcaption>
 </figure>
-
-The implemented PDB parser reads
-and structure the data of 1HTQ in approximately 18 seconds and is with that 
-usable for further AI-driven analysis of protein structures.
 
 *)
 
@@ -65,9 +56,9 @@ usable for further AI-driven analysis of protein structures.
 
 <br>
 
-# 1.Theoretical Background
+# 1. Theoretical Background
 
-### 1.1.Protein structure modelling 
+### 1.1. Protein structure modelling 
 
 <p>
 A protein is a functional and structural important part in Living cells. 
@@ -91,7 +82,7 @@ The structure of a protein is especially important for the functionality of a
 protein because it defines possible protein-protein interactions and play additional 
 a role in protein folding. For that reasons the protein structure information’s, 
 often identified experimentally e.g. by X ray microscopy, are stored in the PDB 
-file format, (<i>Campbell et all,2016</i>) (Fig 2).
+file format (<i>Campbell et all,2016</i>) (Fig 2).
 </p>
 
 <figure>
@@ -99,7 +90,7 @@ file format, (<i>Campbell et all,2016</i>) (Fig 2).
     modell" width="60%"/> 
     <figcaption>
         <font size="2">
-            <b>Fig.2. protein structure modell</b>: <br> 
+            <b>Fig.2. Protein structure modell</b>: <br> 
             Shown is the protein structure modell. Structure is hierarchically 
             ordered in Primary, Secoundary, Tertiary and Quarternary. 
             Informations about Structures experimentally identified are stored 
@@ -120,23 +111,18 @@ describes one line in the file.
 This records are arranged in a specific defined order that
 describes the structure of the protein. Files that are written in the format 
 end with .pdb and get in the PDB often a unique identifier (<i>Berman et all.,
-2000; RCSB PDB,2024</i>).
-The general structure of a PDB file is shown in Fig.3 and is described exactly 
-in the following abstract on the example 
-<a href="https://doi.org/10.2210/pdb4w5w/pdb"> <i>RuBisCO Activase of A.thaliana 
-</i> </a>, that is used in the implementation part as well to show how the parser 
-works (<i>wwPDB,2012</i>). 
+2000; RCSB PDB,2024</i>) (Fig.3).
 </p>
 
 <figure>
     <img src="img/file_overview.png" alt="drawing" title="structure PDB data" width="60%"/> 
     <figcaption>
         <font size="2">
-            <b>Fig.3. the Protein Data Bank file format</b>: <br>
+            <b>Fig.3. The Protein Data Bank file format</b>: <br>
             Shown is a general overview of the structure of the PDB file format
             and the function of the three main parts. Parts of this figure are
-            taken from the Biocon Repository (<i>Duerr et all., 2024)</i></a>.
-        </font>
+            taken from Biocon (<i>Duerr et all.,2024)</i></a>.
+        </font
     </figcaption>
 </figure>
 
@@ -147,10 +133,8 @@ researchers that identified the protein.
 Some Record types present in the title section are:
 <ul>
     <li>HEADER: Brief description of the structure </li>
-    <li>TITLE: Name of experiment or molecule represented in the entry, 
-    here: Rubisco Activase from A.thaliana </li>
-    <li>SOURCE: Biological or chemical source of each molecule in the entry,
-    described by common name and scientific name </li>
+    <li>TITLE: Name of experiment or molecule represented in the entry </li>
+    <li>SOURCE: Biological or chemical source of each molecule in the entry </li>
 </ul>
 <i>(wwPDB,2021)</i>
 </p>
@@ -160,7 +144,7 @@ Some Record types present in the title section are:
     title="introductionary" width="60%"/> 
     <figcaption>
         <font size="2">
-        <b>Fig.4. the introductionary Part in a PDB File</b>: <br> 
+        <b>Fig.4. Introductionary Part in a PDB File</b>: <br> 
         First Part in a PDB File on the example 
         <a href="https://doi.org/10.2210/pdb4w5w/pdb"> RuBisCO Activase of 
         <i>A.thaliana</i> </a> .
@@ -169,8 +153,8 @@ Some Record types present in the title section are:
 </figure>
 
 <p>
-The next big part of the PDB format contains structural information about the 
-strucure in form of atomic coordinates or other forms: 
+The next part of the PDB format contains structural information about the 
+structure: 
 
 <ul>
 <li> <b>Secondary structure section</b>: </li>
@@ -180,30 +164,26 @@ strucure in form of atomic coordinates or other forms:
     <li>SHEET: describe position of &#946-sheets in the molecule as well as 
     residues around sheets</li>
 </ul>
-<li> <b>other sections:</b> </li>
+<li> <b>Other sections:</b> </li>
 <ul>
-    <li>CISPEP: specify peptides as well as prolines found in cis conformation 
+    <li>CISPEP: specify peptides found in cis conformation 
     </li>
-    <li>SITE: Miscellaneous feature, which describes residues comprising 
-    catalytic, co-factor, anti-codon and other regulatory ligands  
+    <li>SITE: describes residues comprising catalytic, co-factor, anti-codon and 
+    other regulatory ligands  
     </li>
     <li>LINK: Describes the covalent linkage e.g. through a peptide bond, 
     between two residues </li> 
 </ul>
 <li><b>Coordinate Section</b>: </li>
 <ul>
-    <li> ATOM: represents atomic coordinates for standard amino acids and 
-    nucleotides as well as their temperature and occupancy. element symbol 
-    is always present and charge optional. Each single atom is described in 
-    one single line. </li>
-    <li>TER: Keyword representing the end of ATOM or HETATM list --> chain end  </li>
+    <li> ATOM: represents for one atom the atomic coordinates for standard amino acids and 
+    nucleotides as well as additional informations. </li>
     <li>HETATM: same as ATOM, but for non - polymer or other chemical 
     coordinates present in HET </li>
     <li>MODEL: specifies the model serial number, when multiple models of a
-    structure are presented in one file, most case when structures are determined 
-    by NMR</li>
+    structure are presented in one file. </li>
 </ul>
-<li><b>connectivity and bookkeeping section</b>: </li>
+<li><b>Connectivity and bookkeeping section</b>: </li>
 <ul>
     <li>CONECT: describes which atoms are linked covalently and in which form </li>
     <li>MASTER: bookkeeping record or summary of file</li>
@@ -224,25 +204,23 @@ strucure in form of atomic coordinates or other forms:
             <i> RuBisCO Activase of A.thaliana</i> </a> . While a) represents 
             the part where the primary structure is described, b) represents 
             the part where the coordinates are given and secoundary data as well. 
-            c) represents at the beginn also some coordinative data and then 
-            some connectivity data as well as the END Keyword.
+            c) represents some coordinative data and some connectivity data.
         </font>
     </figcaption>
 </figure>
 
-### 1.3.PDB-file reader 
+### 1.3. PDB-file reader 
 
 <p>
 A PDB Parser is needed to parse information’s stored in the PDB file and process 
 them further (Fig 1.). Functions of a PDB Reader are: 
 <ul>
-    <li>the Read in of a PDB file</li> 
-    <li>the parsing of data read by line: Identification of Record types and extract data </li>
-    <li>data structuring: store data in structured format  and allow access to data </li>
-    <li> data processing and analysis: validate data, visualize, and analyse </li>
-    <li> error handling: handling of errors or missing data </li>
+    <li> Read in of a PDB file</li> 
+    <li> Parsing of data read by line: Identification of Record types and extract data </li>
+    <li> Data structuring: store data in structured format and allow access to data </li>
+    <li> Data processing and analysis: validate data, visualize, and analyse </li>
+    <li> Error handling: handling of errors and missing data </li>
 </ul>
-In case of protein modelling a  PDB File Reader is important for the extraction of atom coordinates, which are important for 3D visualization of protein as well as analysis and comparison of protein structure. 
 *)
 
 (**
@@ -251,38 +229,18 @@ In case of protein modelling a  PDB File Reader is important for the extraction 
 
 # 2. Read PDB files with BioFSharp
 
-### 2.1. The PDB Parser file format:
+### 2.1. PDB Parser file format:
 
-The first step in the implentation as well the understanding of the PDB parser 
-format is the defination of the data types. This data types summarize the in 
-chapter 1.3 described record types. We dont need for every record type a different 
-data type, because this record types are linked together e.g. HETATM and ATOM, 
-are only slightly different in the data they contain and can be handled in a 
-single data type. The type Metadata contains several general information, and 
+The first step to understand the PDB parser format is the defination of the data 
+types. Data types summarize the in the PDB File listed record types (Chp.1.2). We 
+dont need for every record type a different data type, because this record types 
+are linked together. The type Metadata contains several general information, and 
 is seperately defined but connected to the type Structure . 
 Structure contains several other informations stored in the hierarchy lower 
-record types, which are atom,residue,chain and model. Residue and model contain 
-also some additional informations shown in Fig.6. One example is the atom type 
-storing the atomar information in the PDB File. 
-
-     type Atom = {   
-        SerialNumber: int;
-        AtomName: string;
-        AltLoc: char;
-        Coordinates: Vector3D;
-        Occupancy: float;
-        TempFactor: float;
-        SegId: string option;
-        Element: string;
-        Charge: string option;
-        Hetatm: bool; 
-    }
-
-The used data types can be found 
-<a href="https://github.com/vLeidel/BioFSharp/blob/vleidel--PDBParser%26SASAanalysis/src/BioFSharp/FileFormats/PDBParser.fs">here </a>.
+record types, which are atom,residue,chain and model (Fig.6). 
 
 <figure>
-    <img src="img/data_structure_diagram.png" alt="drawing" title="data structure" width="80%"/> 
+    <img src="img/data_structure_diagram.png" alt="drawing" title="data structure" width="100%"/> 
     <figcaption>
         <font size="2">
             <b>Fig.6. Data structure to describe PDB Record types</b>: <br> 
@@ -301,8 +259,7 @@ The used data types can be found
 (**
 ### 2.2. Read the PDB file:
 
-Now we can beginn with the general read in of the PDB file. First we read in 
-the PDB file as a sequence of lines, That is done similar to the txt file 
+The first step for all levels is to read the PDB file as a sequence of lines
 (readPDBFile).
   
 *)
@@ -324,48 +281,43 @@ readPBDFile "data/rubisCOActivase.pdb" |> Seq.toList
 </details>
 
 <p>
-The readPDBFile function is the basis for all following functions, that convert
-the linewise read in record type information’s into the in chapter 2.1 defined 
-data model types. To understand the converting functions, it is important to keep 
+The readPDBFile function converts the linewise read in record type information’s 
+into the in chapter 2.1 defined data model types. To understand the converting functions, it is important to keep 
 in mind, that every item in the sequence is a line in the PDB file, that 
-represents different type of information. If you need to parse more information,
-than already done e.g. DBRef showing informations about the primary sequence, you can simply add this fields or complete types and functions extracting the informations to the 
-<a href="https://github.com/vLeidel/BioFSharp/tree/vleidel--PDBParser%26SASAanalysis/src/BioFSharp">BioFSharp.IO.PDBParser module´</a>functions.
+represents different type of information.
 </p>
 *)
 
 (**
 <br>
 
-### 2.3.Read Metadata:
+### 2.3. Read Metadata:
 
 <p>
 Now we can begin to convert the read in sequence of lines into the different 
-datatypes shown in Fig.6. The first data type we describe here is the Metadata 
-type. Metadata contains general information about the PDB file, such as the Header, 
-the Author or information about the source of the protein and the experiment, 
-where the coordinates are for example identified. The function readMetadata 
-extracts information from the sequence of lines and returns a Metadata type. 
-The Metadata type contains the following fields, representing the 
-exactly equally named record types in the PDB file:
+datatypes shown in Fig.6. Metadata contains general information about the PDB 
+file, such as the Header or the Author. The function readMetadata extracts 
+information from the sequence of lines and returns a Metadata type. The Metadata 
+type contains the following fields, representing the exactly equally named record
+types in the PDB file:
 </p>
 
 <ul>
 <li>Header: Unique PDB identifier </li>
 <li>Title: Title for represented analysis</li>
 <li>Compound: Macromolecular content of entry </li>
-<li>Source:biological or chemical source of each biological molecule in exp. </li>
-<li>Keywords: set of relevant categorizing terms</li>
-<li>ExpData: describes experiment in file </li>
-<li>Authors: auhors of ODB file</li>
-<li>Remarks: additional experimental details, annotations, comments, and information</li>
+<li>Source: Biological or chemical source of each biological molecule in exp. </li>
+<li>Keywords: Set of relevant categorizing terms</li>
+<li>ExpData: Describes experiment in file </li>
+<li>Authors: Authors of PDB file</li>
+<li>Remarks: Additional experimental details, annotations, comments, and information</li>
 <li>Caveats: Errors and unresolved issues in file </li>
 </ul>
 (<i>wwPDB,2021</i>)
 
     
 <p>
-The function readMetadata itself needs a sequence of lines as input, 
+The function readMetadata needs a sequence of lines as input, 
 which you get through the in 2.2 described readPDBFile function and returns 
 the Metadata type with the informations describing the Metadata.
 </p>
@@ -393,22 +345,20 @@ readPBDFile ("data/rubisCOActivase.pdb")
 (**
 <br>
 
-### 2.4.Read Atomic information:
+### 2.4. Read Atomic information:
 
 <p>
 In addition to the metadata, we also want to extract structural information about 
-the biomolecule structure, given in the PDB file for further analysis. The parsing 
-/ Reading of the structural information is done using various levels described 
-in this and the next chapters. The levels are designed using the “bottom-up” approach,
-where we first read the atomic information, describing the details and generalize
-then gradually (Fig.7).
+the biomolecule structure. The Reading of the structural information is done using 
+various levels. The levels are designed using the “bottom-up” approach, where we first 
+read the atomic information, describing the details and generalize then gradually (Fig.7).
 </p>
 
 <figure>
-    <img src="img/structure_level.png" alt="drawing" title="structure level" width="60%"/> 
+    <img src="img/structure_level.png" alt="drawing" title="structure level" width="80%"/> 
         <figcaption>
             <font size="2">
-                <b>Fig.7. various levels of structure in the PDB Parser</b>: <br> 
+                <b>Fig.7. Various levels of structure in the PDB Parser</b>: <br> 
                 Shown is a schematic diagram that visualizes the various levels 
                 to describe the protein structure. The last (top) level to describe 
                 a protein is structure, that summarizes all levels before. Parts 
@@ -419,33 +369,30 @@ then gradually (Fig.7).
 </figure>
 
 <p>
-The most precise level to describe the 3D structure of a protein is the atomic level.
-For that reason you have first to read the atomic information from the PDB file, 
-which are stored in the ATOM and HETATM record types. The function readAtom uses
-again the sequence of lines as input and returns a list with Atom type items. In 
-this case every Atom is described by the following fields:
+The most precise level to describe the 3D structure of a protein is the atomic level. 
+The function readAtom uses again the sequence of lines as input and returns a 
+list with Atom type items. In this case every Atom is described by the following fields:
 </p>
 
 <ul>
-<li>SerialNumber: unique serial number of atom in entry </li>
-<li>AtomName: name of atom in entry e.g. CA </li>
-<li>AltLoc: alternative location indicator, if more than one conformation of 
-the protein is described </li>
+<li>SerialNumber: Unique serial number of atom in entry </li>
+<li>AtomName: Name of atom in entry e.g. CA </li>
+<li>AltLoc: Alternative location indicator </li>
 <li>Coordinates: 3D Vector containing X,Y,Z,coordinates of atom in Angstrom </li>
-<li>Occupancy: probability of atom being present in this conformation in crystal 
+<li>Occupancy: Probability of atom being present in this conformation in crystal 
 structure </li>
-<li>TempFactor: temperature factor of atom in Angstrom </li>
-<li>SegId: optional segment identifier </li>
-<li>Element: element symbol of atom, e.g. C </li>
-<li>Charge: optional charge of atom,  </li>
-<li>Hetatm: boolean, true if atom is a HETATM, false if ATOM </li>
+<li>TempFactor: Temperature factor of atom in Angstrom </li>
+<li>SegId: Optional segment identifier </li>
+<li>Element: Element symbol of atom, e.g. C </li>
+<li>Charge: Optional charge of atom,  </li>
+<li>Hetatm: is Atom an Hetatm? </li>
 </ul>
 (<i>wwPDB,2021</i>)
 
 <p>
 The principle of the readAtom function is similar to the readMetadata function, 
 where we read in the sequence of lines, filter for ATOM and HETATM items and then 
-convert the information's OF this items to the corresponding Atom type fields (Fig.8).
+convert the item's informations to the corresponding Atom type fields (Fig.8).
 </p>
 
 <figure>
@@ -490,28 +437,23 @@ readPBDFile ("data/rubisCOActivase.pdb")
 (**
 <br>
 
-### 2.5.Read Residues:
+### 2.5. Read Residues:
 
 <p>
 As you can see in Fig.7, the next level to describe the structure of a protein 
-is the residue level. A residue is in the case of proteins the Amino acid, that 
-consists of several Atoms, which are covalently linked together. The readResidues 
-function groups the Atoms you extracted in the previous step by the 
-correspondence to the Residue they belong to and returns a list of items of the 
-Residue type. One Residue could be exactly identified by the name, the nr and if 
-it contains the insertion code The Residue type describing one residue is described
-by the following fields:
+is the residue level. A residue is in the case of proteins the Amino acid. The 
+readResidues function groups Atoms by the correspondence to the Residue they belong 
+to and returns a list of items of the Residue type. One Residue could be exactly 
+identified by the name, the nr and the optional insertion code. The Residue type 
+is described by the following fields:
 </p>
 
 <ul>
 <li>ResidueName: Name of residue, e.g. ALA </li>
-<li>ResidueNumber: unique number Number of residue in chain </li>
-<li>InsertionCode: optional insertion code for residue, if one residue is 
-described more than once </li>
-<li>SecStructureType: type of secondary structure, the residue belongs to, e.g. 
-HELIX </li>
-<li>Modification: describes modifications of residue, e.g. Phosphorylation, when 
-modified </li> 
+<li>ResidueNumber: Unique number Number of residue in chain </li>
+<li>InsertionCode: Optional insertion code for residue </li>
+<li>SecStructureType: Type of secondary structure the residue belongs to </li>
+<li>Modification: Describes optional modifications of residue, e.g. Phosphorylation </li> 
 <li>Atoms: List of Atoms, that belong to the residue </li>
 </ul>
 
@@ -546,22 +488,18 @@ readPBDFile ("data/rubisCOActivase.pdb")
 (**
 <br>
 
-### 2.6.Read Chains:
+### 2.6. Read Chains:
 
 <p>
-When you have a multimer e.g. haemoglobin as protein to analyse, you should analyse
-every chain separately. For that reason, the readChain function handles with the 
-next higher level to describe the structure of a protein, the chain level (Fig.7.).
-Chains consist of several residues, in the case of proteins of amino acids, which 
-are linked together by peptide bonds. If a protein contains only one chain this 
-is also the primary structure, otherwise it is only a part of the primary structure.
-The readChain function groups the Residues you extracted in the previous step by 
-the chainID, which is the unique identifier of the chain in the PDB file and the 
-only additional field besides the Residues list field.<br>
-If you dont need to seperate by the correspondance to one model, if the PDB file 
-contains more than one model, you can use the readChain function directly and get 
-a list of all Chains in the PDB file. 
-
+When you have a multimer e.g. haemoglobin as protein to analyse, you should 
+analyse every chain separately. The readChain function handles 
+with the next higher level to describe the structure of a protein, the chain level 
+(Fig.7.). Chains consist of several residues. The readChain function groups the 
+Residues you extracted in the previous step by  the chainID, which is the unique 
+identifier of the chain in the PDB file.<br>
+If you dont need to seperate by the correspondance to one model, 
+you can use the readChain function directly and get a list of all Chains in the 
+PDB file. 
 </p>
 *)
 
@@ -587,11 +525,11 @@ readPBDFile ("data/rubisCOActivase.pdb")
 (**
 <br>
 
-### 2.7.Read Models:
+### 2.7. Read Models:
 
 <p>
 Often PDB files describe more than one model of a protein. A model is a specific 
-conformation (spatial arrangement) of the protein as determined by experimental 
+conformation (spatial arrangement) of the protein, determined by experimental 
 methods (e.g. X-ray crystallography, NMR). For example a protein conformation could 
 be described in the native and in the unfolded state. The Model data type, which 
 is the result of the readModel function, contains beside of the Chains part of 
@@ -666,7 +604,7 @@ readPBDFile ("data/rubisCOActivase.pdb")
 (**
 <br>
 
-### 2.8.Read the complete structure:
+### 2.8. Read the complete structure:
 
 The last level to describe the structures in the PDB file is a summary of the entire 
 information's (All Models) in the PDB file and the Metadata. The two field of the 
@@ -681,7 +619,9 @@ readStructure ("data/rubisCOActivase.pdb")
 (**
 <details>
 <summary>
-Click here to see an example of how the console output for the structure type of the PDB File 4W5W-Rubisco activase from <i>Arabidopsis thaliana</i> looks like. </summary>
+Click here to see an example of how the console output for the structure type 
+of the PDB File 4W5W-Rubisco activase from <i>Arabidopsis thaliana</i> looks like.
+</summary>
 *)
 
 (***hide ***)
@@ -695,13 +635,13 @@ readStructure ("data/rubisCOActivase.pdb")
 (**
 <br>
 
-# 3.Application of the PDB Parser - Example
+# 3. Application of the PDB Parser: 
 
 <p>
 One example of the application of the PDB Parser is the first step in protein structure
 modeling, the pre modeling step. In this step you extract per model the coordinates 
 of all Atoms and one information for the color code e.g.,correspondance to which 
-Residuename it belongs and create a 3D scatterplot. The function to extract looks like  following
+Residuename it belongs and create a 3D scatterplot.
 </p>
 *)
 
@@ -723,12 +663,13 @@ let extractData (pdbstructure: Structure) =
 
 (**
 <details>
-<summary> click here to see how the extracted data look like on the example RubisCO 
+<summary> Click here to see how the extracted data look like on the example RubisCO 
 Activase and extracted residues correspondance to atoms </summary>
 *)
 
 (***hide ***)
-extractData (readStructure ("data/rubisCOActivase.pdb"))
+(readStructure ("data/rubisCOActivase.pdb"))
+|>extractData
 (***include-it:***)
 
 (**
@@ -774,8 +715,6 @@ read in correctly.
     <li> Gajda, Michał Jan.„hPDB – Haskell Library for Processing Atomic 
     Biomolecular Structures in Protein Data Bank Format“. BMC Research Notes 6, 
     Nr. 1 (Dezember 2013): 483. https://doi.org/10.1186/1756-0500-6-483.</li>
-    <li> OpenAI. (2025). ChatGPT (Version GPT-01, March 2025) [Large language model].
-    https://openai.com/chatgpt/overview/. </li>
     <li> RCSB PDB. „PDB-101: Learn: Guide to Understanding PDB Data: 
     PDB Overview“. Guide to Understanding PDB Data. acessed 25. September 2024. 
     https://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/introduction.
