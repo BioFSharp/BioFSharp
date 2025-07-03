@@ -191,4 +191,4 @@ docs/tmp/watch/
 tmp/watch/
 
 # BenchmarkDotNet results 
-.fsdocs/benchmarks/BioFSharp.Benchmarks/BenchmarkDotNet.Artifacts/
+/benchmarks/BioFSharp.Benchmarks/BenchmarkDotNet.Artifacts
