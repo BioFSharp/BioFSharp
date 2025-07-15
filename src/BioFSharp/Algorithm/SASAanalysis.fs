@@ -17,12 +17,6 @@ module commonvdWraadi =
 
     let vdw_raadi =
         Map[
-            "H",1.2;
-            "N", 1.55;
-            "C",1.7;
-            "O", 1.52;
-            "P", 1.8;
-            "S",1.8;
             "Biotin",3.7;
             "Water", 1.4;
             "Methane", 2.0;
@@ -226,13 +220,8 @@ module SASA =
                 |> Option.bind (fun resMap -> 
                     Map.tryFind atom.AtomName resMap) with
             | Some r -> r
-            | None ->
-                let el = atom.Element 
-                match Map.tryFind el vdw_raadi with
-                | Some br -> br
-                // when the element is not in the vdw_raadi map, return 0.0 
-                //will be ignored in the SASA calculation
-                | None    -> 0.
+            | None -> 0.
+            
 
         let proberadius =
             match probe with
