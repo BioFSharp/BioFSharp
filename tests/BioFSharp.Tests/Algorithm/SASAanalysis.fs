@@ -370,7 +370,7 @@ module SASATests =
 
                 let testdata = getResiduesPerChain "resources/rubisCOActivase.pdb" 1
 
-                let atomSASAtestdata = sasaAtom "resources/rubisCOActivase.pdb"  1 100 "Water"
+                let atomSASAtestdata = sasaAtom "resources/rubisCOActivase.pdb"  1 100 "Biotin"
 
                 let nr_chains = atomSASAtestdata.Count
                 let nr_residues = atomSASAtestdata.['A'].Count

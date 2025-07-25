@@ -1,81 +1,86 @@
-#!/usr/bin/env python3
 import os
 import freesasa
 import pandas as pd
 from Bio.PDB import PDBParser
 
-# 1. Arbeitsverzeichnis auf den Ordner setzen, in dem das Skript liegt
+# Set working directory
+
 script_dir = os.path.dirname(os.path.abspath(__file__))
 os.chdir(script_dir)
-print("Neues Arbeitsverzeichnis:", os.getcwd())
+print("new working directory:", os.getcwd())
 
-# 2. Parameter
-probe     = 1.4    # Probe‐Radius in Å
-npoints   = 100    # Testpunkte pro Atom
+def compute_sasa_to_csv(pdb_path: str, output_csv_path: str, probe: float = 3.7, npoints: int = 100):
+    """
+    Args:
+        pdb_path (str): path to pdb file.
+        output_csv_path (str): output path
+        probe (float): radius of probe.
+        npoints (int): nr of testpoints
+        
+    """
 
-# 3. PDB-Datei laden
-pdb_file  = "../testdata/exampledata.pdb"
-structure = freesasa.Structure(pdb_file)
+    # load structure with Freesasa
+    structure = freesasa.Structure(pdb_path)
+    
+    # set parameter
+    params = freesasa.Parameters()
+    params.setProbeRadius(probe)
+    params.setNPoints(npoints)
+    params.setAlgorithm(freesasa.ShrakeRupley)
 
-# 4. Shrake–Rupley Parameter setzen
-params = freesasa.Parameters()
-params.setProbeRadius(probe)
-params.setNPoints(npoints)
-params.setAlgorithm(freesasa.ShrakeRupley)
+    # compute SASA 
+    result = freesasa.calc(structure, params)
 
-# 5. SASA berechnen
-result = freesasa.calc(structure, params)
-
-# --- Serialnummern wie in FreeSASA filtern (nur "echte" Atome, kein H, nur AltLoc " " oder "A") ---
-def get_freesasa_serials(pdb_file):
-    parser = PDBParser(QUIET=True)
-    structure = parser.get_structure("X", pdb_file)
-    serials = []
-    for model in structure:
-        for chain in model:
-            for residue in chain:
-                # Nur "ATOM"-Residues, keine HETATM (Residue-ID[0] == " ")
-                if residue.id[0] != " ":
-                    continue
-                for atom in residue:
-                    # FreeSASA nimmt keine Wasserstoffatome
-                    element = atom.element.upper()
-                    if element == "H":
+    # serialnr with freesasa
+    def get_freesasa_serials(pdb_file):
+        parser = PDBParser(QUIET=True)
+        structure = parser.get_structure("X", pdb_file)
+        serials = []
+        for model in structure:
+            for chain in model:
+                for residue in chain:
+                    if residue.id[0] != " ":  # kein HETATM
                         continue
-                    # AltLoc: nur " " (keine alternativen Konformationen) oder "A"
-                    if atom.get_altloc() not in (" ", "A"):
-                        continue
-                    serials.append(atom.get_serial_number())
-    return serials
+                    for atom in residue:
+                        if atom.element.upper() == "H":
+                            continue
+                        if atom.get_altloc() not in (" ", "A"):
+                            continue
+                        serials.append(atom.get_serial_number())
+        return serials
+
+    serials = get_freesasa_serials(pdb_path)
+    assert len(serials) == structure.nAtoms(), "Mismatch in atom count between FreeSASA and Biopython"
+
+    # create frame
+    rows = []
+    for i in range(structure.nAtoms()):
+        rows.append({
+            "serial":       serials[i],
+            "chain":        structure.chainLabel(i),
+            "residue_num":  structure.residueNumber(i),
+            "residue":      structure.residueName(i),
+            "atom_name":    structure.atomName(i),
+            "sasa":         result.atomArea(i)
+        })
+
+    df = pd.DataFrame(rows)
+
+    # output 
+    df.to_csv(output_csv_path, index=False, encoding="utf-8")
+    print(f"SASA-Ergebnisse in '{output_csv_path}' gespeichert.")
+    return df
 
 
-serials = get_freesasa_serials(pdb_file)
+# function call
 
-# Sicherstellen, dass die Anzahl zu nAtoms passt
-if len(serials) != structure.nAtoms():
-    raise RuntimeError(
-        f"Anzahl gefilterter Atome ({len(serials)}) stimmt nicht mit FreeSASA ({structure.nAtoms()}) überein!"
-    )
-
-# 6. Pro-Atom-Flächen holen und DataFrame bauen (jetzt mit Serial)
-rows = []
-for i in range(structure.nAtoms()):
-    rows.append({
-        "serial":       serials[i],
-        "chain":        structure.chainLabel(i),
-        "residue_num":  structure.residueNumber(i),
-        "residue":      structure.residueName(i),
-        "atom_name":    structure.atomName(i),
-        "sasa":         result.atomArea(i)
-    })
-
-df = pd.DataFrame(rows)
-
-# 7. Ausgabe auf der Konsole
-print(df.head(20).to_string(index=False))
-
-# 8. Ergebnisse als CSV speichern
-df.to_csv("sasa_per_atom.csv", index=False)
-print("\nErgebnisse in 'sasa_per_atom.csv' gespeichert.")
-
+if __name__ == "__main__":
+    pdb_file = "Cre01g001550t11.pdb"
+    output_file = "sasa_per_atom_realworld.csv"
+    compute_sasa_to_csv(pdb_file, output_file)
+    
+if __name__ == "__main__":
+    pdb_file = "rubisCOActivase.pdb"
+    output_file = "sasa_per_atom.csv"
+    compute_sasa_to_csv(pdb_file, output_file)
 

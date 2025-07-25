@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+	<PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
-	
-  <ItemGroup>
+	<ItemGroup>
     <EmbeddedResource Include="resources\ATOMSequence.txt" />
     <EmbeddedResource Include="resources\Glucagon.txt" />
     <EmbeddedResource Include="resources\HasA.txt" />
     <EmbeddedResource Include="resources\HETATMSequence.txt" />
-    <None Include="resources\**\*.pdb" CopyToOutputDirectory="Always" />
+	<EmbeddedResource Include="resources\*.pdb" />
+	<None Include="resources\*.pdb" CopyToOutputDirectory="PreserveNewest"/>
 	<None Include="resources\**\*.csv" CopyToOutputDirectory="Always" />
     <None Include="fixtures/**" CopyToOutputDirectory="Always" />
     <Compile Include="Utils.fs" />

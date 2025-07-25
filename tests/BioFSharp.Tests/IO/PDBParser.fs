@@ -18,7 +18,6 @@ module PDBParserTests =
                Expect.isTrue (lastElement.StartsWith("END"))  
                 "End should be the last element in a PDB File"
               
-
                let firstElement=Seq.head testdata
                Expect.isTrue (firstElement.StartsWith("HEADER")) 
                 "First Element should start with HEADER "
@@ -36,6 +35,30 @@ module PDBParserTests =
               
                let wrongLastElement = Seq.last testdata2
                Expect.isTrue (not (wrongLastElement.StartsWith("END")))  "End should be the last element in a PDB File"
+
+               let exampleFile_Cre = readPBDFile("resources/Cre01g001550t11.pdb")
+               
+               let lastElement = Seq.last exampleFile_Cre
+               Expect.isTrue (lastElement.StartsWith("END"))  
+                "End should be the last element in every PDB File"
+
+               let containsAtom = Seq.exists (fun (element:string) -> 
+                element.StartsWith("ATOM")|| 
+                element.StartsWith("HETATM")) exampleFile_Cre
+               
+               Expect.isTrue containsAtom "every PDB Data needs at least one  
+               ATOM or HETATM line"
+
+               let lengthOfSequence = Seq.length exampleFile_Cre
+               Expect.equal lengthOfSequence 6556  "Sequence length should be 
+                the same as number of rows in PDB data" 
+
+               let testUnique = exampleFile_Cre |> Seq.distinct |> Seq.length
+
+               Expect.equal testUnique lengthOfSequence 
+                    "PDB Files should not contain duplicate lines, 
+                    so length of sequence should be equal to number of unique 
+                    lines"
            }
 
            test "read Metadata with parts of PDB File and real World examples" {
@@ -103,6 +126,32 @@ module PDBParserTests =
                     "The COMPD field should not be empty in the real PDB file"
                 Expect.equal metadata_oxidoreductase.ExpData 
                     (Some ["X-RAY DIFFRACTION"]) "The EXPDTA field should be parsed correctly"
+
+                // Test File with no Metadata
+                let exampleFile_Cre = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> readMetadata
+
+                Expect.equal exampleFile_Cre.Header ""
+                    "PDB Files without Metadata should have Header an empty Header"
+                Expect.equal exampleFile_Cre.Title ""
+                    "PDB Files without Metadata should have Title an empty Title"
+
+                Expect.isNone exampleFile_Cre.Compound 
+                    "The COMPND field should be none when no metadata is given"
+                Expect.isNone exampleFile_Cre.Source 
+                    "The SOURCE field should be none when no metadata is given"
+                Expect.isNone exampleFile_Cre.Keywords 
+                    "The KEYWDS field should be none when no metadata is given"
+                Expect.isNone exampleFile_Cre.ExpData 
+                    "The EXPDTA field should be none when no metadata is given"
+                Expect.isNone exampleFile_Cre.Authors 
+                    "The AUTHOR field should be none when no metadata is given"
+                Expect.isFalse (exampleFile_Cre.Remarks.Length > 0) 
+                    "The REMARK field should be 0 when no metradata is given"
+                Expect.isNone (exampleFile_Cre.Caveats) 
+                    "PDB Files without Caveats warnings should have value None" 
+
            }
 
            test "filtering of ATOM and HETATM lines is succesfull"{
@@ -119,7 +168,14 @@ module PDBParserTests =
                 Expect.equal (Seq.length filteredatoms) 2169 
                     "Length of atmos should be the same as number of lines 
                         in PDB File"
-          
+
+                let exampleFile_Cre = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> filterAtomLines
+
+                Expect.equal (Seq.length exampleFile_Cre) 6554
+                    "Length of atmos should be the same as number of lines 
+                        in PDB File"         
            }
 
            test "readAtom function works in parts and realWorld examples" {
@@ -188,6 +244,53 @@ module PDBParserTests =
                     "Atomname should be the same as in the PDB File even with errors"
                 Expect.equal (parsewrong.[0].SerialNumber) 1 
                     "the serialnumber of the first atom should be always 1 even with errors" 
+
+
+                let exampleFile_Cre_read =  readPBDFile("resources/Cre01g001550t11.pdb") 
+
+                let filtered_Cre  = 
+                    exampleFile_Cre_read
+                    |> Seq.filter (fun line -> 
+                        line.StartsWith("ATOM  ") || 
+                        line.StartsWith("HETATM")
+                    )
+                    |> Seq.toArray
+
+                let exampleFile_Cre = 
+                    exampleFile_Cre_read
+                    |> readAtom 
+
+                                           
+                Expect.equal (Array.length exampleFile_Cre) filtered_Cre.Length
+                    "Length of atmos should be the same as number of lines in 
+                    PDB File"
+                Expect.equal (exampleFile_Cre.[0].SerialNumber) 1
+                    "Serialnumber should be the same as in PDB File"
+                Expect.equal (exampleFile_Cre.[0].Coordinates.X) 94.622
+                    "X Coordinates should be parsed correctly"
+                Expect.equal (exampleFile_Cre.[0].Coordinates.Y) -23.580
+                    " Y Coordinates should be parsed correctly"
+                Expect.equal (exampleFile_Cre.[0].Coordinates.Z) 26.178 
+                    "Z Coordinates should be parsed correctly"
+                Expect.isNone (exampleFile_Cre.[0].SegId) 
+                    "ATOM / HETATM lines without an segId, should be parsed 
+                    with None"
+                Expect.equal (exampleFile_Cre.[2].AtomName)"H2" 
+                    "Atomname should be the same as in the PDB File"
+                Expect.equal (exampleFile_Cre.[1].Element) "H" 
+                    "Element should be the same as in PDB file"
+                Expect.equal (exampleFile_Cre.[0].AltLoc) ' ' 
+                    "ATOM / HETATM lines without an alternative location, 
+                    should be empty"
+                Expect.equal (exampleFile_Cre.[2].Occupancy) 1.00 
+                    "Occupancy should be 1 when no AltLoc is there"
+                Expect.isNone (exampleFile_Cre.[0].Charge) 
+                    "ATOM / HETATM lines without charge, should be parsed 
+                    with None"
+                Expect.equal (exampleFile_Cre.[3].TempFactor) 20.45
+                    "Temp. Fctor should be the same as in PDB File"
+                Expect.isFalse exampleFile_Cre.[124].Hetatm
+                    "ATOM lines in a PDB file should have False as HETATM File"
               
            }
 
@@ -238,6 +341,13 @@ module PDBParserTests =
                     "Endresidues have to be present and bigger 0 in Helix 
                     or Sheet Lines in PDB Files" 
 
+                let exampleFile_Cre = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> readSecstructure
+
+                Expect.isEmpty exampleFile_Cre 
+                    "PDB Files without secondary structure informations should 
+                    be empty"
            }
 
            test "readModification function works in parts and realWorld examples" {
@@ -277,6 +387,12 @@ module PDBParserTests =
                     "N-TRIMETHYLLYSINE" 
                     "Message should be parsed correctly"
 
+                let exampleFile_Cre = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> readModifications 
+
+                Expect.isEmpty exampleFile_Cre "PDB Files without modifications
+                    informations should be empty"
            }
 
            test "readResidue function works in parts and realWorld examples" {
@@ -360,6 +476,52 @@ module PDBParserTests =
                     "IN Real PDB Files WITH Modifications some Residues 
                     should have a Modification description"
 
+                // cre example
+                let creExample = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> readResidues 
+
+                let residue_amount = 
+                    creExample 
+                    |> Array.last 
+                    |> fun residue -> residue.ResidueNumber
+
+                Expect.isGreaterThan  creExample.Length 0
+                    "PDB Files with Residues should have a length greater than 0"
+
+                Expect.equal creExample.Length residue_amount 
+                    "The Number of Residues should be equal to number of 
+                    different Residue numbers"
+
+                Expect.equal creExample.[0].ResidueName "MET" 
+                    "First Residuename should be MET in PDB File "
+                Expect.equal creExample.[1].ResidueName "LEU" 
+                    "Residuename should be the same as in PDB File "
+
+                Expect.equal creExample.[0].ResidueNumber 1
+                    "complete PDB File without missing data should have 
+                    Residuenumber 1 a"
+
+                Expect.equal creExample.[creExample.Length-1].ResidueNumber residue_amount
+                    "Residuenumber should be grouped correctly 
+                    and the same as in PDB File"
+
+                Expect.isNone creExample.[0].InsertionCode 
+                    "Residues without an Insertioncode should have the Value 
+                    none"
+   
+                Expect.isNone creExample.[0].SecStructureType 
+                    "Residues that have no secondary structure information should 
+                    be none"
+              
+                Expect.isNone creExample.[0].Modification 
+                    "Residues without Modifications should have at this 
+                    field value None"
+              
+                Expect.equal  (Array.length (creExample.[0].Atoms)) 19 
+                    "Number of atoms should be equal to number of atoms with 
+                    equal residuenumber "
+
            }
 
            test "readChain function works in parts and realWorld examples" {
@@ -396,13 +558,31 @@ module PDBParserTests =
 
                 Expect.equal parsedhemoglobin.Length 4 
                     "Hemoglobin should have as a Polypeptide 4 chains"
-                Expect.exists parsedhemoglobin (fun chain -> chain.ChainId = 'A') 
-                    "Polymeres must have at leats one Residue with Chain Identifier A"
-                Expect.exists parsedhemoglobin (fun chain -> chain.ChainId = 'D') 
+                Expect.exists parsedhemoglobin (fun chain -> 
+                    chain.ChainId = 'A') 
+                    "Polymeres must have at leats one Residue with 
+                    Chain Identifier A"
+                Expect.exists parsedhemoglobin (fun chain -> 
+                    chain.ChainId = 'D') 
                     "Hemoglobin that has 4 chains  must have at leats 
                         one Residue with Chain Identifier D"
 
 
+                let creExample = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> readChain 
+
+                Expect.isGreaterThan creExample.Length 0 
+                    "PDB Files with Chains should have a length greater than 0"
+
+                let uniqueChainIds = 
+                    creExample 
+                    |> Array.map (fun chain -> chain.ChainId)
+                    |> Array.distinct 
+                  
+                Expect.equal creExample.Length uniqueChainIds.Length
+                    "The Number of Chains should be equal to number of 
+                    different Chain Ids"
 
 
            }
@@ -497,7 +677,15 @@ module PDBParserTests =
                     "PDB Files that contains NO  CISPEP  
                     should have only other Linktype"
 
-                
+                // example withoutLinkages 
+
+                let exampleFile_Cre = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> readLinkages 
+
+                Expect.isEmpty exampleFile_Cre 
+                    "PDB Files without Linkages should be empty"
+              
            }
 
            test "readSites function works in parts and realWorld examples" {
@@ -557,7 +745,16 @@ module PDBParserTests =
                     readPBDFile("resources/rubisCOActivase_false.pdb")
 
                 Expect.throws (fun () -> readSite testdata_false|> ignore) 
-                    "Mistakes in Site data should lead to an error"             
+                    "Mistakes in Site data should lead to an error"  
+                    
+                // example without Sites 
+
+                let exampleFile_Cre = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> readSite 
+
+                Expect.isEmpty exampleFile_Cre 
+                    "PDB Files without Sites informations should be empty"
            }
 
            test "readModel function works in parts and realWorld examples" {
@@ -649,6 +846,45 @@ module PDBParserTests =
                 Expect.isEmpty parsedManyModels2.[0].Linkages 
                     "When no Linkage is described in a PDB File the List 
                     should be empty"
+
+                let exampleFile_Cre = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                    |> readModels
+
+                Expect.isGreaterThan exampleFile_Cre.Length 0 "Every PDB File 
+                    should have at least one Modell Block"
+
+                Expect.equal (Array.length exampleFile_Cre) 1 
+                    "Number of Modell blocks should be equal to the last modell 
+                    id in PDB File"
+
+                let uniqueModelIds = 
+                    exampleFile_Cre 
+                    |> Array.map (fun model -> model.ModelId)
+                    |> Array.distinct
+
+                Expect.equal (Array.length exampleFile_Cre) uniqueModelIds.Length
+                    "Number of Modell blocks should be equal to the last modell 
+                    id in PDB File"
+
+                Expect.equal exampleFile_Cre.[0].ModelId 1 "first Modellid and 
+                once in single models should be 1"
+                Expect.equal (Array.length (exampleFile_Cre.[0].Chains)) 1 
+                    "Number of chains shoudl be equal to  different chains in 
+                    the Modell Block" 
+                Expect.exists (exampleFile_Cre.[0].Chains) (fun chain -> 
+                    chain.ChainId = 'A' ) 
+                    "parsed Chains must be contain a chain with ID A"
+
+                Expect.equal (Array.length exampleFile_Cre.[0].Linkages) 0 
+                    "Linkage Array should zero when no Linkage info exist"
+               
+                Expect.equal(Array.length exampleFile_Cre.[0].Sites) 0 
+                    "When no Site information exist site part should be 0"
+                
+                Expect.isGreaterThan 
+                    (Array.length exampleFile_Cre.[0].Chains.[0].Residues) 0 
+                    "there should be at least one residue in the chain"
                 
            }
 
@@ -756,6 +992,87 @@ module PDBParserTests =
 
                 Expect.isGreaterThan parseConnects.Length 1 
                     "There should be more than 1 pair of Connected Atoms"
+
+
+                // example without Modifications, Sites, Linkages and multiple 
+                // Models-cre
+
+                let readcreExample = 
+                    "resources/Cre01g001550t11.pdb"
+                    |> readStructure
+
+                let exampleFile_Cre = 
+                    readPBDFile("resources/Cre01g001550t11.pdb") 
+                  
+
+                let creExampleChains = readChain exampleFile_Cre
+
+              
+
+                Expect.equal readcreExample.Metadata.Header "" 
+                    "The HEADER field should be parsed correctly and be empty with
+                    no metadata informations"
+
+                Expect.equal readcreExample.Metadata.Title "" 
+                    "The TITLE field should be parsed correctly for the real 
+                    PDB file"
+
+                Expect.isNone readcreExample.Metadata.Compound 
+                    "The COMPND field should be none when no metadata informations"
+
+                Expect.isTrue (readcreExample.Metadata.Remarks.Length = 0) 
+                    "The REMARK field should  be empty when no 
+                    metadata info are given"
+
+                Expect.equal (Array.length readcreExample.Models) 1 
+                    "PDB Files with only one Modell should have length one"
+
+                Expect.equal (readcreExample.Models.[0].ModelId) 1 
+                    "first Modell ID in a PDB File has to be one"
+
+                Expect.equal (Array.length (readcreExample.Models.[0].Chains)) (creExampleChains.Length) 
+                    "PDB Files with only one Modell have to be the same Chain 
+                    number as parsed"
+
+                Expect.exists (readcreExample.Models.[0].Chains) 
+                    (fun chain -> chain.ChainId = 'A') 
+                    "parsed Chains must be contain a chain with ID A"
+
+                Expect.isGreaterThan (Array.length 
+                    readcreExample.Models.[0].Chains.[0].Residues) 0 
+                    "PDB Files should contain at least one Residual Group"
+
+                Expect.exists readcreExample.Models.[0].Chains.[0].Residues 
+                    (fun residue -> residue.ResidueName = "MET") 
+                    "Evervy PDB File should contain at least one MET residue"
+
+                Expect.exists readcreExample.Models.[0].Chains.[0].Residues 
+                    (fun residue -> residue.ResidueNumber = 1) 
+                    "PDB File testdata should contain one residue with 1 "
+
+                Expect.exists readcreExample.Models.[0].Chains.[0].Residues 
+                    (fun residue -> residue.Atoms |> Array.exists (fun atom -> 
+                        atom.SerialNumber = 1)) "Each chain should contain at least 
+                        one atom with SerialNumber 1"
+
+                Expect.all readcreExample.Models.[0].Chains.[0].Residues 
+                    (fun residue -> residue.Modification.IsNone) 
+                    "PDB Files without modified Residues should have value NONE"
+
+                Expect.all readcreExample.Models.[0].Chains.[0].Residues 
+                    (fun residue -> residue.SecStructureType.IsNone) 
+                    "PDB Files without modified Residues should have value NONE"
+
+                Expect.isEmpty readcreExample.Models.[0].Linkages  
+                        "PDB Data should contain at least one Linkage"
+
+                Expect.isEmpty readcreExample.Models.[0].Sites 
+                    "PDBFiles without Sites should have an empty Site Array" 
+
+           
+
+
+               
              
            }
                                
