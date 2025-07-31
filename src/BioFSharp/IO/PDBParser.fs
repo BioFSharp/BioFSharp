@@ -294,7 +294,7 @@ module PDBParser =
 
 
         // grouping lines / atoms by creating a dictionary with the key (ResidueName, ResidueNumber, InsertionCode)
-        let dict = Dictionary<(string * int * char option), ResizeArray<string>>()
+        let dict = Dictionary<(string * int * char option*char), ResizeArray<string>>()
 
         for line in lines do
             if line.StartsWith("ATOM") || line.StartsWith("HETATM") then
@@ -315,8 +315,11 @@ module PDBParser =
                     else 
                         None
 
+                // use chain id as a key to group the residues atoms correctly
+                let chainID = if line.Length > 21 then line.[21] else '_'
+
                 // define extracted infos as key --> grouping
-                let key = (residueName, rNum, insertionCode)
+                let key = (residueName, rNum, insertionCode, chainID)
 
                 // create dictionary key if not present with a empty resizeArray
                 if not (dict.ContainsKey(key)) then
@@ -338,7 +341,7 @@ module PDBParser =
         // parse modifications, secondary structures and atoms for each residue group
         
         groupedResidues
-        |> Array.Parallel.map (fun ((resName, rNum, iCode), linesForResidue) ->
+        |> Array.Parallel.map (fun ((resName, rNum, iCode,_chainid), linesForResidue) ->
            
             let atoms = readAtom linesForResidue
 
