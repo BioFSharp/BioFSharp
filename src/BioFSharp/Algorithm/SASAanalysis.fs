@@ -13,7 +13,7 @@ open System.IO
 
 
 module commonvdWraadi = 
-       // Raadi taken from boondii or calculated using Van der waals volumen of literature
+       // Raadi taken from Protor or calculated using Van der waals volumen of literature
 
     let vdw_raadi =
         Map[
@@ -239,6 +239,9 @@ module SASA =
 
     let fibonacciTestPoints (nr_point:int): Vector3D array =
         // create nr of test points 
+        if nr_point < 1 then
+            failwith "Number of test points must be at least 1."
+
         [| for i in 0 .. (nr_point-1) do
             let z = 1.0 - (float i + 0.5) *( 2.0/float nr_point)
             let radius = sqrt (1.0 - z * z)
