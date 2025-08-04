@@ -230,7 +230,9 @@ module SASA =
                     | Some r -> r
                     | None   -> failwith "Unknown probename"
                 | ProbeRadius f ->
-                    f
+                    if f < 0 
+                        then failwith "egative proberadius is not valid"
+                    else f
 
         baseRadius + proberadius
 
@@ -554,6 +556,8 @@ module SASA =
     
     let differentiateAccessibleAA (filepath: string)(modelId: int) 
         (nrPoints: int) (probe) (threshold: float) (fixedMaxSASA:bool) =
+
+        if threshold < 0. then failwith "invalid probe. Proberadius must be positive"
 
         // get acess to the relative SASA values for the residues in the model 
      
