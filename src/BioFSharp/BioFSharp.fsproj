@@ -83,6 +83,8 @@
     <Compile Include="FileFormats\Obo.fs" />
     <Compile Include="FileFormats\OrthoMCL.fs" />
     <Compile Include="FileFormats\PDB.fs" />
+    <Compile Include="FileFormats\PDBParser.fs" />
+    <Compile Include="FileFormats\SASAanalysis.fs" />
     <Compile Include="FileFormats\SOFT.fs" />
     <Compile Include="CLIArgs\Blast.fs" />
     <Compile Include="CLIArgs\ClustalO.fs" />
@@ -102,6 +104,7 @@
     <Compile Include="IO\Obo.fs" />
     <Compile Include="IO\OrthoMCL.fs" />
     <Compile Include="IO\PDB.fs" />
+    <Compile Include="IO\PDBParser.fs" />
     <None Include="IO\GenerateSOFTTypes.fsx" />
     <Compile Include="IO\SOFT.fs" />
     <Compile Include="CLITools\CLITool.fs" />
@@ -110,6 +113,7 @@
     <Compile Include="Algorithm\PatternQuery.fs" />
     <Compile Include="Algorithm\PairwiseAlignment.fs" />
     <Compile Include="Algorithm\ScoringMatrix.fs" />
+    <Compile Include="Algorithm\SASAanalysis.fs" />
     <EmbeddedResource Include="Resources\BLOSUM45.txt" />
     <EmbeddedResource Include="Resources\BLOSUM50.txt" />
     <EmbeddedResource Include="Resources\BLOSUM80.txt" />
@@ -120,6 +124,7 @@
     <EmbeddedResource Include="Resources\PAM70.txt" />
     <EmbeddedResource Include="Resources\AminoAcidProperties.txt" />
     <EmbeddedResource Include="Resources\BLOSUM62.txt" />
+	<None Include="Resources\**\*.pdb" CopyToOutputDirectory="Always" />
     <Compile Include="Formatting.fs" />
     <None Include="Playground.fsx" />
     <!-- Playground -->
