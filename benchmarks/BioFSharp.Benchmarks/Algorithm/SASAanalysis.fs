@@ -195,10 +195,20 @@ module SASABenchmarks =
         [<Benchmark>]
         member this.relSASAresidue_rubisco() =
             relativeSASA_aminoacids testdata 1 100 "Water" true   
+
+
+        [<Benchmark>]
+        member this.relSASAresidue_rubisco_960() =
+            relativeSASA_aminoacids testdata 1 960 "Water" true  
+            
             
         [<Benchmark>]
         member this.relSASAresidue_htq() =
             relativeSASA_aminoacids htq 1 100 "Water" true
+
+        [<Benchmark>]
+        member this.relSASAresidue_htq_960() =
+            relativeSASA_aminoacids htq 1 960 "Water" true
 
 
     
