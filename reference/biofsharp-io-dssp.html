@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en" data-root="https://biofsharp.com/BioFSharp/">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" name="author">
+    <!-- Opengraph properties (https://ogp.me/) -->
+    <meta property="og:site_name" content="BioFSharp">
+    <meta property="og:title" content="DSSP (BioFSharp)" />
+    <meta property="og:url" content="https://biofsharp.com/BioFSharp/{{fsdocs-source-basename}}.html">
+    <meta property="og:type" content="website" />
+    <!-- Twitter cards (https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="https://biofsharp.com/BioFSharp/">
+    <meta name="twitter:title" content="DSSP (BioFSharp)">
+    
+    <title>DSSP (BioFSharp) | BioFSharp</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://biofsharp.com/BioFSharp/img/favicon.ico" rel="icon" sizes="32x32" type="image/png"/>
+    <script type="application/javascript" src="https://biofsharp.com/BioFSharp/content/fsdocs-theme-set-dark.js"></script>
+    <link href="https://biofsharp.com/BioFSharp/content/fsdocs-default.css" rel="stylesheet" type="text/css"/>
+    <link href="https://biofsharp.com/BioFSharp/content/fsdocs-theme.css" rel="stylesheet" type="text/css"/>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+    
+</head>
+<body class="api-docs">
+<header>
+    <div class="start">
+        <div id="menu-toggle">
+            <iconify-icon class="icon closed" height="22" icon="eva:menu-fill" width="22"></iconify-icon>
+            <iconify-icon class="icon open" height="22" icon="mi:close" width="22"></iconify-icon>
+            <input type="checkbox" name="mobile-menu" />
+            <ul class="menu">
+                <li class="nav-header">Links</li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/BioFSharp/BioFSharp/blob/main/LICENSE">License</a>
+                </li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="https://github.com/BioFSharp/BioFSharp/blob/main/RELEASE_NOTES.md">Release
+                    Notes</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/BioFSharp/BioFSharp/">Source
+                    Repository</a></li>
+                <li class="nav-header ">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/biocollections.html">
+    Biocollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/rnaseq_normalization.html">
+    RNA-Seq data normalization
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+        <a href="https://biofsharp.com/BioFSharp/">
+            <img alt="Header menu logo" src="https://biofsharp.com/BioFSharp/img/logo.png">
+            <strong>BioFSharp</strong>
+        </a>
+    </div>
+    <div class="end">
+        <a href="https://github.com/BioFSharp/BioFSharp/" target="_blank">
+            <iconify-icon icon="uil:github" width="26" height="26"></iconify-icon>
+        </a>
+        <iconify-icon id="search-btn" icon="carbon:search" class="search" width="24" height="24"></iconify-icon>
+        <fsdocs-theme-toggle></fsdocs-theme-toggle>
+    </div>
+</header>
+<aside id="fsdocs-main-menu">
+    <ul class="menu">
+        <li class="nav-header">Links</li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/BioFSharp/BioFSharp/blob/main/LICENSE">License</a>
+        </li>
+        <li class="nav-item"><a class="nav-link"
+                                href="https://github.com/BioFSharp/BioFSharp/blob/main/RELEASE_NOTES.md">Release
+            Notes</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/BioFSharp/BioFSharp/">Source
+            Repository</a></li>
+        <li class="nav-header ">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/biocollections.html">
+    Biocollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/rnaseq_normalization.html">
+    RNA-Seq data normalization
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+        <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+    </ul>
+</aside>
+<main>
+    <div id="content">
+        <div>
+  <h2>
+    DSSP Module
+  </h2>
+  <dl class="fsdocs-metadata">
+    <dt>
+      Namespace: 
+      <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-io.html">
+        BioFSharp.IO
+      </a>
+    </dt>
+    <dt>
+      Assembly: BioFSharp.dll
+    </dt>
+  </dl>
+  <div class="fsdocs-xmldoc">
+    <div>
+      <p class="fsdocs-summary">
+        
+      </p>
+    </div>
+  </div>
+  <div>
+    <h3>
+      Functions and values
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Function or value
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '519', 519)" onmouseover="showTip(event, '519', 519)">
+                <p>
+                  <a id="read">
+                    <a href="#read">
+                      <code><span>read&#32;<span>path</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="519">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>read&#32;<span>path</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        path
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><span><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a>&#32;list</span></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  path
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><span><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '520', 520)" onmouseover="showTip(event, '520', 520)">
+                <p>
+                  <a id="readLines">
+                    <a href="#readLines">
+                      <code><span>readLines&#32;<span>source</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="520">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>readLines&#32;<span>source</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        source
+                      </b>
+                      :
+                      <code><span>string&#32;seq</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><span><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a>&#32;list</span></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  source
+                </span>
+                :
+                <code><span>string&#32;seq</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><span><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a>&#32;list</span></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>
+      Type extensions
+    </h3>
+    <table class="table outer-list fsdocs-member-list">
+      <thead>
+        <tr>
+          <td class="fsdocs-member-list-header">
+            Type extension
+          </td>
+          <td class="fsdocs-member-list-header">
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '521', 521)" onmouseover="showTip(event, '521', 521)">
+                <p>
+                  <a id="ofParseResults">
+                    <a href="#ofParseResults">
+                      <code><span>DSSPLine.ofParseResults&#32;<span>residueindex&#32;residuename&#32;insertioncode&#32;chainid&#32;aminoacid&#32;secondarystructure&#32;accessiblesurface&#32;nh_o_1_relidx&#32;nh_o_1_energy&#32;o_nh_1_relidx&#32;o_nh_1_energy&#32;nh_o_2_relidx&#32;nh_o_2_energy&#32;o_nh_2_relidx&#32;o_nh_2_energy&#32;tco&#32;kappa&#32;alpha&#32;phi&#32;psi&#32;x_ca&#32;y_ca&#32;z_ca&#32;chain</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="521">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>DSSPLine.ofParseResults&#32;<span>residueindex&#32;residuename&#32;insertioncode&#32;chainid&#32;aminoacid&#32;secondarystructure&#32;accessiblesurface&#32;nh_o_1_relidx&#32;nh_o_1_energy&#32;o_nh_1_relidx&#32;o_nh_1_energy&#32;nh_o_2_relidx&#32;nh_o_2_energy&#32;o_nh_2_relidx&#32;o_nh_2_energy&#32;tco&#32;kappa&#32;alpha&#32;phi&#32;psi&#32;x_ca&#32;y_ca&#32;z_ca&#32;chain</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        residueindex
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'a&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        residuename
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'b&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        insertioncode
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'c&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        chainid
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'d&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        aminoacid
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'e&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        secondarystructure
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-secondarystructure.html">SecondaryStructure</a>,&#32;<span>(<span>'f&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        accessiblesurface
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'g&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        nh_o_1_relidx
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'h&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        nh_o_1_energy
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'i&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        o_nh_1_relidx
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'j&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        o_nh_1_energy
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'k&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        nh_o_2_relidx
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'l&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        nh_o_2_energy
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'m&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        o_nh_2_relidx
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'n&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        o_nh_2_energy
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'o&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        tco
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'p&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        kappa
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'q&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        alpha
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'r&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        phi
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'s&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        psi
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'t&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        x_ca
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'a1&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        y_ca
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'a2&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        z_ca
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'a3&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                    <span>
+                      <b>
+                        chain
+                      </b>
+                      :
+                      <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'a4&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <p>
+              Extended Type: 
+              <code><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a></code>
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  residueindex
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'a&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  residuename
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'b&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  insertioncode
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'c&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  chainid
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'d&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  aminoacid
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'e&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  secondarystructure
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-secondarystructure.html">SecondaryStructure</a>,&#32;<span>(<span>'f&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  accessiblesurface
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'g&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  nh_o_1_relidx
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'h&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  nh_o_1_energy
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'i&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  o_nh_1_relidx
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'j&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  o_nh_1_energy
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'k&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  nh_o_2_relidx
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'l&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  nh_o_2_energy
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'m&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  o_nh_2_relidx
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>int,&#32;<span>(<span>'n&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  o_nh_2_energy
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'o&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  tco
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'p&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  kappa
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'q&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  alpha
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'r&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  phi
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'s&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  psi
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'t&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  x_ca
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'a1&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  y_ca
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'a2&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  z_ca
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>float,&#32;<span>(<span>'a3&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  chain
+                </span>
+                :
+                <code><span><a href="https://fsharp.github.io/fsharp-core-docs/reference/fsharp-core-fsharpresult-2">Result</a>&lt;<span>string,&#32;<span>(<span>'a4&#32;*&#32;exn</span>)</span></span>&gt;</span></code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-member-usage">
+            <div>
+              <code onmouseout="hideTip(event, '522', 522)" onmouseover="showTip(event, '522', 522)">
+                <p>
+                  <a id="ofString">
+                    <a href="#ofString">
+                      <code><span>DSSPLine.ofString&#32;<span>line</span></span></code>
+                    </a>
+                  </a>
+                </p>
+              </code>
+              <div class="fsdocs-tip" id="522">
+                <div class="member-tooltip">
+                  Full Usage: 
+                  <code><span>DSSPLine.ofString&#32;<span>line</span></span></code>
+                  <br/>
+                  <br/>
+                  Parameters: 
+                  <ul>
+                    <span>
+                      <b>
+                        line
+                      </b>
+                      :
+                      <code>string</code>
+                    </span>
+                    <br/>
+                  </ul>
+                  <br/>
+                  <span>
+                    Returns: 
+                    <code><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a></code>
+                  </span>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td class="fsdocs-member-xmldoc">
+            <p>
+              Extended Type: 
+              <code><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a></code>
+            </p>
+            <dl class="fsdocs-params">
+              <dt class="fsdocs-param">
+                <span class="fsdocs-param-name">
+                  line
+                </span>
+                :
+                <code>string</code>
+              </dt>
+              <dd class="fsdocs-param-docs"></dd>
+            </dl>
+            <dl class="fsdocs-returns">
+              <dt>
+                <span class="fsdocs-return-name">
+                  Returns: 
+                </span>
+                <code><a href="https://biofsharp.com/BioFSharp/reference/biofsharp-fileformats-dssp-dsspline.html">DSSPLine</a></code>
+              </dt>
+              <dd class="fsdocs-return-docs"></dd>
+            </dl>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+        
+    </div>
+</main>
+<aside id="fsdocs-page-menu">
+    <p id="on-this-page">On this page</p>
+    <div class="empty"></div>
+</aside>
+<dialog>
+    <input type="search" placeholder="Search docs" />
+    <div class="results">
+        <ul></ul>
+        <p class="empty">Type something to start searching.</p>
+    </div>
+</dialog>
+<script type="module" src="https://biofsharp.com/BioFSharp/content/fsdocs-tips.js"></script>
+<script type="module" src="https://biofsharp.com/BioFSharp/content/fsdocs-theme-toggle.js"></script>
+<script type="module" src="https://biofsharp.com/BioFSharp/content/fsdocs-theme.js"></script>
+<script type="module" src="https://biofsharp.com/BioFSharp/content/fsdocs-search.js"></script>
+
+</body>
+</html>

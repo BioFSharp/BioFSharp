@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en" data-root="https://biofsharp.com/BioFSharp/">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Timo Mühlhaus, Kevin Schneider, Heinrich Lukas Weil, David Zimmer, F# open source contributors" name="author">
+    <!-- Opengraph properties (https://ogp.me/) -->
+    <meta property="og:site_name" content="BioFSharp">
+    <meta property="og:title" content="BlastN (BioFSharp)" />
+    <meta property="og:url" content="https://biofsharp.com/BioFSharp/{{fsdocs-source-basename}}.html">
+    <meta property="og:type" content="website" />
+    <!-- Twitter cards (https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/summary-card-with-large-image) -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="https://biofsharp.com/BioFSharp/">
+    <meta name="twitter:title" content="BlastN (BioFSharp)">
+    
+    <title>BlastN (BioFSharp) | BioFSharp</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://biofsharp.com/BioFSharp/img/favicon.ico" rel="icon" sizes="32x32" type="image/png"/>
+    <script type="application/javascript" src="https://biofsharp.com/BioFSharp/content/fsdocs-theme-set-dark.js"></script>
+    <link href="https://biofsharp.com/BioFSharp/content/fsdocs-default.css" rel="stylesheet" type="text/css"/>
+    <link href="https://biofsharp.com/BioFSharp/content/fsdocs-theme.css" rel="stylesheet" type="text/css"/>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+    
+</head>
+<body class="api-docs">
+<header>
+    <div class="start">
+        <div id="menu-toggle">
+            <iconify-icon class="icon closed" height="22" icon="eva:menu-fill" width="22"></iconify-icon>
+            <iconify-icon class="icon open" height="22" icon="mi:close" width="22"></iconify-icon>
+            <input type="checkbox" name="mobile-menu" />
+            <ul class="menu">
+                <li class="nav-header">Links</li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/BioFSharp/BioFSharp/blob/main/LICENSE">License</a>
+                </li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="https://github.com/BioFSharp/BioFSharp/blob/main/RELEASE_NOTES.md">Release
+                    Notes</a></li>
+                <li class="nav-item"><a class="nav-link" href="https://github.com/BioFSharp/BioFSharp/">Source
+                    Repository</a></li>
+                <li class="nav-header ">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/biocollections.html">
+    Biocollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/rnaseq_normalization.html">
+    RNA-Seq data normalization
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+                <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+            </ul>
+        </div>
+        <a href="https://biofsharp.com/BioFSharp/">
+            <img alt="Header menu logo" src="https://biofsharp.com/BioFSharp/img/logo.png">
+            <strong>BioFSharp</strong>
+        </a>
+    </div>
+    <div class="end">
+        <a href="https://github.com/BioFSharp/BioFSharp/" target="_blank">
+            <iconify-icon icon="uil:github" width="26" height="26"></iconify-icon>
+        </a>
+        <iconify-icon id="search-btn" icon="carbon:search" class="search" width="24" height="24"></iconify-icon>
+        <fsdocs-theme-toggle></fsdocs-theme-toggle>
+    </div>
+</header>
+<aside id="fsdocs-main-menu">
+    <ul class="menu">
+        <li class="nav-header">Links</li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/BioFSharp/BioFSharp/blob/main/LICENSE">License</a>
+        </li>
+        <li class="nav-item"><a class="nav-link"
+                                href="https://github.com/BioFSharp/BioFSharp/blob/main/RELEASE_NOTES.md">Release
+            Notes</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/BioFSharp/BioFSharp/">Source
+            Repository</a></li>
+        <li class="nav-header ">
+  BioFSharp Core
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/formula.html">
+    Formulas
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/bioitems.html">
+    BioItems
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/core/biocollections.html">
+    Biocollections
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/01_04_sequence_properties.html">
+    Sequence properties
+  </a>
+</li>             
+<li class="nav-header ">
+  Algorithms
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_01_alignment.html">
+    Alignment
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_02_blast.html">
+    Blast
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/02_03_pattern_query_algorithms.html">
+    Pattern query algorithms
+  </a>
+</li>             
+<li class="nav-header ">
+  BioParsers
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_01_fasta_parsing.html">
+    Fasta
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_02_fastq_parsing.html">
+    Fastq
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_03_gff3_parsing.html">
+    GFF3
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_04_genbank_parsing.html">
+    GenBank
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_05_obo.html">
+    Obo
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/03_06_newick.html">
+    Newick
+  </a>
+</li>             
+<li class="nav-header ">
+  Other
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/rnaseq_normalization.html">
+    RNA-Seq data normalization
+  </a>
+</li>             
+<li class="nav-item ">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/img/release-notes.html">
+    release-notes
+  </a>
+</li>
+        <li class="nav-header">
+  API Reference
+</li>             
+<li class="nav-item">
+  <a class="nav-link" href="https://biofsharp.com/BioFSharp/reference/index.html">
+    All Namespaces
+  </a>
+</li>
+    </ul>
+</aside>
+<main>
+    <div id="content">
+        <div>
+  <h2>
+    BlastN Module
+  </h2>
+  <dl class="fsdocs-metadata">
+    <dt>
+      Namespace: 
+      <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs.html">
+        BioFSharp.CLIArgs
+      </a>
+    </dt>
+    <dt>
+      Assembly: BioFSharp.dll
+    </dt>
+    <dt>
+      Parent Module: 
+      <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast.html">
+        Blast
+      </a>
+    </dt>
+  </dl>
+  <div class="fsdocs-xmldoc">
+    <div>
+      <p class="fsdocs-summary">
+        DSL for blastn programs
+The blastn application searches a nucleotide query against nucleotide subject sequences or a nucleotide database. 
+Four different tasks are supported: 
+
+1.) “megablast”, for very similar sequences (e.g, sequencing errors)
+
+2.) “dc-megablast”, typically used for inter-species comparisons
+
+3.) “blastn”, the traditional program used for inter-species comparisons
+
+4.) “blastn-short”, optimized for sequences less than 30 nucleotides.
+      </p>
+    </div>
+  </div>
+  <div>
+    <h3>
+      Types
+    </h3>
+    <table class="table outer-list fsdocs-entity-list">
+      <thead>
+        <tr>
+          <td>
+            Type
+          </td>
+          <td>
+            Description
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="BlastNParameters">
+                <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast-blastn-blastnparameters.html">
+                  BlastNParameters
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.CLIArgs.Blast.BlastN.BlastNParameters`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.CLIArgs.Blast.BlastN.BlastNParameters\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/BioFSharp/BioFSharp/tree/master/src/BioFSharp/CLIArgs/Blast.fs#L677-677" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <pre>use this type to specify specific and generic command line parameters for the blastn task like this:
+
+let myParams = [
+
+     BlastNParameters.CommonOptions [...]
+
+     BlastNParameters.SpecificOptions [...]
+]</pre>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="BlastNParams">
+                <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast-blastn-blastnparams.html">
+                  BlastNParams
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.CLIArgs.Blast.BlastN.BlastNParams`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.CLIArgs.Blast.BlastN.BlastNParams\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/BioFSharp/BioFSharp/tree/master/src/BioFSharp/CLIArgs/Blast.fs#L501-501" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                DSL fo blastn command line options
+blastn is the traditional program used for inter-species comparisons
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="BlastNShortParameters">
+                <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast-blastn-blastnshortparameters.html">
+                  BlastNShortParameters
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.CLIArgs.Blast.BlastN.BlastNShortParameters`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.CLIArgs.Blast.BlastN.BlastNShortParameters\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/BioFSharp/BioFSharp/tree/master/src/BioFSharp/CLIArgs/Blast.fs#L695-695" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <pre>use this type to specify specific and generic command line parameters for the blastn-short task like this:
+
+let myParams = [
+
+     BlastNShortParameters.CommonOptions [...]
+
+     BlastNShortParameters.SpecificOptions [...]
+]</pre>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="BlastNShortParams">
+                <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast-blastn-blastnshortparams.html">
+                  BlastNShortParams
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.CLIArgs.Blast.BlastN.BlastNShortParams`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.CLIArgs.Blast.BlastN.BlastNShortParams\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/BioFSharp/BioFSharp/tree/master/src/BioFSharp/CLIArgs/Blast.fs#L567-567" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                DSL fo the blastn 'blastn-short' task command line options
+blastn-short is optimized for sequences less than 30 nucleotides.
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="DCMegablastParameters">
+                <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast-blastn-dcmegablastparameters.html">
+                  DCMegablastParameters
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.CLIArgs.Blast.BlastN.DCMegablastParameters`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.CLIArgs.Blast.BlastN.DCMegablastParameters\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/BioFSharp/BioFSharp/tree/master/src/BioFSharp/CLIArgs/Blast.fs#L659-659" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <pre>use this type to specify specific and generic command line parameters for the blastn dc-megablast task like this:
+
+let myParams = [
+
+     DCMegablastParameters.CommonOptions [...]
+
+     DCMegablastParameters.SpecificOptions [...]
+]</pre>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="DCMegablastParams">
+                <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast-blastn-dcmegablastparams.html">
+                  DCMegablastParams
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.CLIArgs.Blast.BlastN.DCMegablastParams`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.CLIArgs.Blast.BlastN.DCMegablastParams\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/BioFSharp/BioFSharp/tree/master/src/BioFSharp/CLIArgs/Blast.fs#L424-424" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                DSL fo the blastn 'dc-megablast' task command line options
+dc-megablast is typically used for inter-species comparison
+              </p>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="MegablastParameters">
+                <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast-blastn-megablastparameters.html">
+                  MegablastParameters
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.CLIArgs.Blast.BlastN.MegablastParameters`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.CLIArgs.Blast.BlastN.MegablastParameters\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/BioFSharp/BioFSharp/tree/master/src/BioFSharp/CLIArgs/Blast.fs#L641-641" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <pre>use this type to specify specific and generic command line parameters for the blastn megablast task like this:
+
+let myParams = [
+
+     MegablastParameters.CommonOptions [...]
+
+     MegablastParameters.SpecificOptions [...]
+]</pre>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="fsdocs-entity-name">
+            <p>
+              <a name="MegablastParams">
+                <a href="https://biofsharp.com/BioFSharp/reference/biofsharp-cliargs-blast-blastn-megablastparams.html">
+                  MegablastParams
+                </a>
+              </a>
+            </p>
+          </td>
+          <td class="fsdocs-entity-xmldoc">
+            <div>
+              <div class="fsdocs-source-link" title="Copy signature (Markdown)" onclick="Clipboard_CopyTo('`cref:T:BioFSharp.CLIArgs.Blast.BlastN.MegablastParams`')">
+                <iconify-icon icon="bi:filetype-md" height="24" width="24"></iconify-icon>
+              </div>
+              <div class="fsdocs-source-link" title="Copy signature (XML)" onclick="Clipboard_CopyTo('<see cref=\'T:BioFSharp.CLIArgs.Blast.BlastN.MegablastParams\'/>')">
+                <iconify-icon icon="bi:filetype-xml" height="24" width="24"></iconify-icon>
+              </div>
+              <a href="https://github.com/BioFSharp/BioFSharp/tree/master/src/BioFSharp/CLIArgs/Blast.fs#L348-348" class="fsdocs-source-link" title="Source on GitHub">
+                <iconify-icon icon="ri:github-fill" height="24" width="24"></iconify-icon>
+              </a>
+              <p class="fsdocs-summary">
+                DSL fo the blastn 'megablast' task command line options
+megablast is usually used for very similar sequences (e.g, sequencing errors)
+              </p>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+        
+    </div>
+</main>
+<aside id="fsdocs-page-menu">
+    <p id="on-this-page">On this page</p>
+    <div class="empty"></div>
+</aside>
+<dialog>
+    <input type="search" placeholder="Search docs" />
+    <div class="results">
+        <ul></ul>
+        <p class="empty">Type something to start searching.</p>
+    </div>
+</dialog>
+<script type="module" src="https://biofsharp.com/BioFSharp/content/fsdocs-tips.js"></script>
+<script type="module" src="https://biofsharp.com/BioFSharp/content/fsdocs-theme-toggle.js"></script>
+<script type="module" src="https://biofsharp.com/BioFSharp/content/fsdocs-theme.js"></script>
+<script type="module" src="https://biofsharp.com/BioFSharp/content/fsdocs-search.js"></script>
+
+</body>
+</html>
