@@ -26,13 +26,13 @@
       BioFSharp has grown to a whole ecosystem of bioinformatic packages that build on this foundation.
     </Summary>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://csbiology.github.io/BioFSharp/</PackageProjectUrl>
+    <PackageProjectUrl>https://biofsharp.com/BioFSharp/</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/CSBiology/BioFSharp/master/docsrc/files/img/logo.png</PackageIconUrl>
     <PackageTags>bioinformatics biostatistics datascience biology dataprocessing amino-acids nucleotides sequence-analysis F# FSharp</PackageTags>
-    <RepositoryUrl>https://github.com/CSBiology/BioFSharp</RepositoryUrl>
+    <RepositoryUrl>https://github.com/BioFSharp/BioFSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <FsDocsLicenseLink>https://github.com/CSBiology/BioFSharp/blob/developer/LICENSE</FsDocsLicenseLink>
-    <FsDocsReleaseNotesLink>https://github.com/CSBiology/BioFSharp/blob/developer/RELEASE_NOTES.md</FsDocsReleaseNotesLink>
+    <FsDocsLicenseLink>https://github.com/BioFSharp/BioFSharp/blob/main/LICENSE</FsDocsLicenseLink>
+    <FsDocsReleaseNotesLink>https://github.com/BioFSharp/BioFSharp/blob/main/RELEASE_NOTES.md</FsDocsReleaseNotesLink>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Playground\**" />
