@@ -171,6 +171,14 @@ packages/
 # Test results produced by build
 TestResults.xml
 
+# comparable csv files and python scripts of tests, 
+# as well as rsa_tripeptide
+
+/tests/BioFSharp.Tests/resources/pdbParser/*.csv
+/tests/BioFSharp.Tests/resources/pdbParser/*.py
+/tests/BioFSharp.Tests/fixtures/rsa_tripeptide/**
+
+
 # Nuget outputs
 nuget/*.nupkg
 release.cmd
@@ -189,4 +197,6 @@ codeCov.xml
 docs/.fsdocs/
 docs/tmp/watch/
 tmp/watch/
-.fsdocs
+
+# BenchmarkDotNet results 
+/benchmarks/BioFSharp.Benchmarks/BenchmarkDotNet.Artifacts/**
