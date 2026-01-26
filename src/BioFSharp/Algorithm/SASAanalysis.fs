@@ -24,7 +24,7 @@ module commonvdWraadi =
             "Glycerol", 3.0;
             "Glucose", 4.0;
             "Adenosine", 4.2;
-            "ATP",6.0
+            "ATP",6.0;
             "NADH", 6.5
 
         ]
@@ -299,38 +299,42 @@ module SASA =
 
     // find for every atom actual all possible other overlapping atoms in 
     // neighbouring cells
-    let getOverlappingAtoms 
-        (spatialHash: Dictionary<int * int * int, ResizeArray<int>>) 
+    let getOverlappingAtoms
+        (spatialHash: Dictionary<int * int * int, ResizeArray<int>>)
         (cellCoordsOf: Vector3D -> int * int * int)
-        (atomCenters: Vector3D[])(effectiveRadii: float[]) (atomIndex: int) =
-            //define Index and centre of actual atom
-            let actAtomIndex = atomCenters.[atomIndex]
-            let actAtomRadius = effectiveRadii.[atomIndex]
-            // define the actual grid cell pf the atom by 
-            let xi, yi, zi = cellCoordsOf actAtomIndex
-            let offset = 1  // create offset for the neighbouring cells of + -1
+        (atomCenters: Vector3D[])
+        (effectiveRadii: float[])
+        (cellSize: float)              // <— neu: cellSize reinreichen
+        (atomIndex: int) =
 
-            seq {
-                // check the neighbouring cells and ans store cells with 
-                // potential overlapping atoms
-                for dx in -offset .. offset do
-                    for dy in -offset .. offset do
-                        for dz in -offset .. offset do
-                            let neighborKey = (xi + dx, yi + dy, zi + dz)
-                            if spatialHash.ContainsKey neighborKey then
-                                for otherAtom in spatialHash.[neighborKey] do
-                                    // check if the atom is not the same as the
-                                    //actual atom AND DEFINE the distance between 
-                                    //the atoms --> store potential overlapping atoms
-                                    if otherAtom <> atomIndex then
-                                        let centerOtherAtom = 
-                                            atomCenters.[otherAtom]
-                                        let radiusOtherAtom = 
-                                            effectiveRadii.[otherAtom]
-                                        if euclidianDistance actAtomIndex centerOtherAtom 
-                                            < (actAtomRadius + radiusOtherAtom) then
-                                                yield otherAtom
-            }
+        let centerI = atomCenters.[atomIndex]
+        let rI      = effectiveRadii.[atomIndex]
+        let xi, yi, zi = cellCoordsOf centerI
+
+        // Wie viele Zellen müssen wir maximal in jede Richtung prüfen?
+        // Wir brauchen Atome, deren Zentren innerhalb (rI + rMax) liegen könnten.
+        let rMax = effectiveRadii |> Array.max
+        let reach = rI + rMax
+        let offset = int (ceil (reach / cellSize))  // i.d.R. 1, aber korrekt auch bei anderen cellSize
+
+        seq {
+            for dx in -offset .. offset do
+                for dy in -offset .. offset do
+                    for dz in -offset .. offset do
+                        let neighborKey = (xi + dx, yi + dy, zi + dz)
+                        match spatialHash.TryGetValue neighborKey with
+                        | true, idxs ->
+                            for j in idxs do
+                                if j <> atomIndex then
+                                    let centerJ = atomCenters.[j]
+                                    let rJ      = effectiveRadii.[j]
+
+                                    // Enger geometrischer Filter: Zentren müssen nahe genug sein
+                                    // damit eine Okklusion überhaupt möglich ist.
+                                    if euclidianDistance centerI centerJ < (rI + rJ) then
+                                        yield j
+                        | _ -> ()
+        }
 
     /// Computes the number of visible test points for each atom
     let accessibleTestpoints (allAtoms: (Atom * string)[]) (nr_testpoints: int) (probe) =
@@ -373,7 +377,7 @@ module SASA =
 
             // identify overlapping atoms to reduce collision checks
             let neighbors = 
-                getOverlappingAtoms spatialHash cellCoordsOf atomCenters effectiveRadii i
+                getOverlappingAtoms spatialHash cellCoordsOf atomCenters effectiveRadii cellSize i
 
             // hide points buried by neighboring atoms
             for other in neighbors do
