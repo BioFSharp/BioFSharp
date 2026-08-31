@@ -32,8 +32,8 @@ module Fastq =
             | _ -> raise (System.IO.InvalidDataException "Incorrect FASTQ format: record did not consist of 4 lines")
     
         lines
-        |> Seq.filter (fun (l:string) -> not (l.StartsWith ";" || l.StartsWith "#"))
-        |> Seq.groupWhen same_group 
+        |> Seq.filter (fun (l:string) -> l.Trim() <> "")
+        |> Seq.chunkBySize 4
         |> Seq.map (fun l -> parseRecord (List.ofSeq l))
           
     /// Reads FastqItem from FastQ format file. Converter and qualityConverter determines type of sequence by converting seq<char> -> type
