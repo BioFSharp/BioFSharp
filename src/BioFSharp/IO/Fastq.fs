@@ -13,28 +13,64 @@ module Fastq =
     /// Maps each lines from an entry to FastqItem
     let readLines (sequenceConverter: seq<char>-> #seq<'SequenceItem>) (qualitySequenceConverter: seq<char>-> #seq<'QualitySequenceItem>) (lines: seq<string>) : seq<FastqItem<'SequenceItem,'QualitySequenceItem>> =
 
-        // Conditon of grouping lines
-        let same_group l =             
-            not (String.length l = 0 || l.[0] <> '@')
+        // Raises an error that includes the line number where parsing failed
+        let fail (lineNumber: int) (message: string) : 'T =
+            raise (InvalidDataException (sprintf "Incorrect FASTQ format (line %i): %s" lineNumber message))
 
-        // Matches grouped lines and aggregates to a single fasta record
-        let parseRecord (l: string list) = 
-            match l with
-            | [] -> raise (System.IO.InvalidDataException "Incorrect FASTQ format: input was empty")
-            | (h:string) :: (s:string) :: (qh:string) :: (qs:string) :: _  ->
-                if not (h.StartsWith("@")) then raise (System.IO.InvalidDataException "Incorrect FASTQ format: record header did start with '@'")
-                if not (qh.StartsWith("+")) then raise (System.IO.InvalidDataException "Incorrect FASTQ format: quality header did start with '+'")
-                let header = h.Remove(0,1)
-                let sequence = sequenceConverter s
-                let qualityHeader = qh.Remove(0,1)
-                let qualitySequence = qualitySequenceConverter qs
-                FastqItem.create header sequence qualityHeader qualitySequence
-            | _ -> raise (System.IO.InvalidDataException "Incorrect FASTQ format: record did not consist of 4 lines")
-    
-        lines
-        |> Seq.filter (fun (l:string) -> l.Trim() <> "")
-        |> Seq.chunkBySize 4
-        |> Seq.map (fun l -> parseRecord (List.ofSeq l))
+        seq {
+            use enumerator = lines.GetEnumerator()
+            let lineNumber = ref 0
+
+            // Returns the next line without whitespace or None at the end
+            let nextLine () =
+                if enumerator.MoveNext() then
+                    lineNumber.Value <- lineNumber.Value + 1
+                    Some (enumerator.Current.TrimEnd())
+                else
+                    None
+
+            // Skips blank lines
+            let rec nextHeader () =
+                match nextLine () with
+                | Some "" -> nextHeader ()
+                | other   -> other
+
+            let finished = ref false
+            while not finished.Value do
+                match nextHeader () with
+                | None -> finished.Value <- true
+                | Some headerLine ->
+                    let recordStart = lineNumber.Value
+                    if not (headerLine.StartsWith "@") then
+                        fail recordStart "the header did not start with '@'"
+
+                    // Sequence lines until the '+' separator
+                    let sequence = StringBuilder()
+                    let rec readSequence () =
+                        match nextLine () with
+                        | None -> fail lineNumber.Value (sprintf "record starting at line %i ended before the '+' seperator" recordStart)
+                        | Some l when l.StartsWith "+" -> l.Substring 1
+                        | Some l ->
+                            sequence.Append l |> ignore
+                            readSequence ()
+                    let qualityHeader = readSequence ()
+
+                    // Store Quality lines
+                    let quality = StringBuilder()
+                    while quality.Length < sequence.Length do
+                        match nextLine () with
+                        | None -> fail lineNumber.Value (sprintf "record starting at line %i ended before its quality string was complete (%i of %i characters)" recordStart quality.Length sequence.Length)
+                        | Some l -> quality.Append l |> ignore
+                    if quality.Length <> sequence.Length then
+                        fail lineNumber.Value (sprintf "record starting at line %i has a quality string of length %i but a sequence of length %i" recordStart quality.Length sequence.Length)
+
+                    // Matches grouped lines and aggregates to a fastq record
+                    yield FastqItem.create
+                        (headerLine.Substring 1)
+                        (sequenceConverter (sequence.ToString()))
+                        qualityHeader
+                        (qualitySequenceConverter (quality.ToString()))
+        }
           
     /// Reads FastqItem from FastQ format file. Converter and qualityConverter determines type of sequence by converting seq<char> -> type
     let read converter qualityConverter filePath =
@@ -45,3 +81,4 @@ module Fastq =
     let readGZip converter qualityConverter filePath =
         FileIO.readFileGZip filePath
         |> readLines converter qualityConverter
+        
