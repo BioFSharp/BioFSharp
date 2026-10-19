@@ -66,4 +66,94 @@ module FastqTests =
             ptest "write (2 entries)" {
                 ()
             }
+            test "readLines with # and ; quality characters" {
+                // FASTQ string that starts with # and ;
+                let mockFastq = "@read1\nACGT\n+\n#;II"
+                let lines = mockFastq.Split('\n')
+
+                // Pass the lines into the parser
+                let actual = 
+                    lines 
+                    |> Fastq.readLines BioArray.ofNucleotideString charToPhred33 
+                    |> Seq.item 0
+
+                // The parser shouldn't strip the quality line and should correctly parse the scores.
+                // ASCII: # = 35, ; = 59, I = 73. 
+                // Phred+33: 35-33=2, 59-33=26, 73-33=40.
+                let expectedQual = [2; 26; 40; 40]
+                
+                Expect.equal actual.Header "read1" "Header was not equal"
+                Expect.sequenceEqual actual.QualitySequence expectedQual "Quality sequence stripped or incorrect"
+            }
+            test "readLines starting with '@', '#', ';' and '+'" {
+                let actual =
+                    "@read1\nACGT\n+\n@III\n@read2\nACGT\n+\n#III\n@read3\nACGT\n+read3\n;III\n@read4\nACGT\n+\n+III".Split('\n')
+                    |> Fastq.readLines BioArray.ofNucleotideString charToPhred33
+                    |> List.ofSeq
+                Expect.equal (actual |> List.map (fun r -> r.Header)) ["read1"; "read2"; "read3"; "read4"] "All four records should be parsed"
+                Expect.sequenceEqual actual[0].QualitySequence [31; 40; 40; 40] "'@' is Phred+33 score 31"
+                Expect.sequenceEqual actual[1].QualitySequence [2; 40; 40; 40] "'#' is Phred+33 score 2"
+                Expect.sequenceEqual actual[2].QualitySequence [26; 40; 40; 40] "';' is Phred+33 score 26"
+                Expect.sequenceEqual actual[3].QualitySequence [10; 40; 40; 40] "'+' is Phred+33 score 10"
+                Expect.equal actual[2].QualityHeader "read3" "Quality header should be kept"
+            }
+            test "readLines with wrapped records" {
+                let actual =
+                    "@wrapped1\nACG\nTAC\n+\n@@I\nIII\n@wrapped2\nGG\n+\nII".Split('\n')
+                    |> Fastq.readLines BioArray.ofNucleotideString charToPhred33
+                    |> List.ofSeq
+                Expect.equal actual.Length 2 "Two records should be parsed"
+                Expect.sequenceEqual actual[0].Sequence [A; C; G; T; A; C] "Wrapped sequence lines should be joined"
+                Expect.sequenceEqual actual[0].QualitySequence [31; 31; 40; 40; 40; 40] "Wrapped quality lines should be joined"
+                Expect.equal actual[1].Header "wrapped2" "Second record should start after the first quality string"
+            }
+            test "readLines with zero-length read" {
+                let actual =
+                    "@empty\n\n+\n\n@read2\nAC\n+\nII".Split('\n')
+                    |> Fastq.readLines BioArray.ofNucleotideString charToPhred33
+                    |> List.ofSeq
+                Expect.equal actual.Length 2 "Two records should be parsed"
+                Expect.isEmpty actual[0].Sequence "First record should have an empty sequence"
+                Expect.equal actual[1].Header "read2" "Second record should be parsed after the empty one"
+            }
+            test "readLines with blank lines and CRLF line endings" {
+                let actual =
+                    "\r\n@read1\r\nAC\r\n+\r\nII\r\n\r\n@read2\r\nGT\r\n+\r\nII\r\n".Split('\n')
+                    |> Fastq.readLines BioArray.ofNucleotideString charToPhred33
+                    |> List.ofSeq
+                Expect.equal (actual |> List.map (fun r -> r.Header)) ["read1"; "read2"] "Blank lines and '\\r' should be ignored"
+                Expect.sequenceEqual actual[1].Sequence [G; T] "Sequence was not equal"
+            }
+            test "readLines with empty input" {
+                let actual = [||] |> Fastq.readLines BioArray.ofNucleotideString charToPhred33
+                Expect.isEmpty actual "Empty input should give no records"
+            }
+            test "readLines fails when header is missing" {
+                Expect.throwsT<System.IO.InvalidDataException>
+                    (fun () -> [| "read1"; "ACGT"; "+"; "IIII" |] |> Fastq.readLines BioArray.ofNucleotideString charToPhred33 |> Seq.iter ignore)
+                    "A record without '@' should fail"
+            }
+            test "readLines fails when '+' line is missing" {
+                Expect.throwsT<System.IO.InvalidDataException>
+                    (fun () -> [| "@read1"; "ACGT" |] |> Fastq.readLines BioArray.ofNucleotideString charToPhred33 |> Seq.iter ignore)
+                    "A record without '+' should fail"
+            }
+            test "readLines fails when quality is shorter than sequence" {
+                Expect.throwsT<System.IO.InvalidDataException>
+                    (fun () -> [| "@read1"; "ACGT"; "+"; "II" |] |> Fastq.readLines BioArray.ofNucleotideString charToPhred33 |> Seq.iter ignore)
+                    "Truncated quality should fail"
+            }
+            test "readLines fails when quality is longer than sequence" {
+                Expect.throwsT<System.IO.InvalidDataException>
+                    (fun () -> [| "@read1"; "ACGT"; "+"; "IIIIII" |] |> Fastq.readLines BioArray.ofNucleotideString charToPhred33 |> Seq.iter ignore)
+                    "Too long quality should fail"
+            }
+            test "readLines only parses the records that are requested" {
+                let first =
+                    [| "@read1"; "AC"; "+"; "II"; "broken" |]
+                    |> Fastq.readLines BioArray.ofNucleotideString charToPhred33
+                    |> Seq.head
+                Expect.equal first.Header "read1" "First record should be readable before the later one"
+            }
+            
         ]
