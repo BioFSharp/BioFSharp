@@ -35,6 +35,7 @@
     <Compile Include="Core\Main.fs" />
     <Compile Include="FileFormats\Fasta.fs" />
     <Compile Include="FileFormats\Fastq.fs" />
+    <Compile Include="FileFormats\FastaIndex.fs" />
     <Compile Include="FileFormats\Main.fs" />
     <Compile Include="IO\Fasta.fs" />
     <Compile Include="IO\Fastq.fs" />

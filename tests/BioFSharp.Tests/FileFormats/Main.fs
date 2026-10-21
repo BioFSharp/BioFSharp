@@ -9,4 +9,5 @@ module All =
         testList "FileFormat models" [
             FastaTests.fileFormatTests
             FastqTests.fileFormatTests
+            FastaIndexTests.fileFormatTests
         ]
