@@ -1,0 +1,26 @@
+REMARK   GENERATED USING QUANTA FOR NACCESS                                     
+REMARK   AUTHOR SIMON HUBBARD                                                   
+ATOM      1  N   ALA S   1       0.000   0.000   0.000  1.00  0.00           N  
+ATOM      2  CA  ALA S   1       1.376   0.000  -0.516  1.00  0.00           C  
+ATOM      3  C   ALA S   1       1.899   1.409  -0.712  1.00  0.00           C  
+ATOM      4  O   ALA S   1       1.235   2.291  -1.242  1.00  0.00           O  
+ATOM      5  CB  ALA S   1       1.389  -0.742  -1.854  1.00  0.00           C  
+ATOM      6  HT1 ALA S   1      -0.325  -0.981   0.122  1.00  0.00           H  
+ATOM      7  HT2 ALA S   1      -0.026   0.490   0.917  1.00  0.00           H  
+ATOM      8  HT3 ALA S   1      -0.623   0.490  -0.673  1.00  0.00           H  
+ATOM      9  N   VAL S   2       3.139   1.594  -0.255  1.00  0.00           N  
+ATOM     10  CA  VAL S   2       3.723   2.924  -0.403  1.00  0.00           C  
+ATOM     11  C   VAL S   2       5.186   2.883  -0.795  1.00  0.00           C  
+ATOM     12  O   VAL S   2       5.992   2.131  -0.259  1.00  0.00           O  
+ATOM     13  CB  VAL S   2       3.573   3.651   0.935  1.00  0.00           C  
+ATOM     14  CG1 VAL S   2       4.154   5.066   0.900  1.00  0.00           C  
+ATOM     15  CG2 VAL S   2       2.111   3.797   1.361  1.00  0.00           C  
+ATOM     16  H   VAL S   2       3.656   0.853   0.173  1.00  0.00           H  
+ATOM     17  N   ALA S   3       5.509   3.736  -1.769  1.00  0.00           N  
+ATOM     18  CA  ALA S   3       6.901   3.764  -2.210  1.00  0.00           C  
+ATOM     19  C   ALA S   3       7.401   5.167  -2.487  1.00  0.00           C  
+ATOM     20  O   ALA S   3       7.534   5.522  -3.657  1.00  0.00           O  
+ATOM     21  CB  ALA S   3       7.002   2.922  -3.483  1.00  0.00           C  
+ATOM     22  OXT ALA S   3       7.656   5.898  -1.532  1.00  0.00           O1-
+ATOM     23  H   ALA S   3       4.828   4.338  -2.186  1.00  0.00           H  
+END                                                                             

@@ -1,0 +1,25 @@
+REMARK   GENERATED USING QUANTA FOR NACCESS                                     
+REMARK   AUTHOR SIMON HUBBARD                                                   
+ATOM      1  N   ALA S   1       0.000   0.000   0.000  1.00  0.00           N  
+ATOM      2  CA  ALA S   1       1.456   0.000   0.205  1.00  0.00           C  
+ATOM      3  C   ALA S   1       2.008   1.409   0.282  1.00  0.00           C  
+ATOM      4  O   ALA S   1       1.463   2.362  -0.261  1.00  0.00           O  
+ATOM      5  CB  ALA S   1       2.106  -0.742  -0.965  1.00  0.00           C  
+ATOM      6  HT1 ALA S   1      -0.343  -0.981  -0.048  1.00  0.00           H  
+ATOM      7  HT2 ALA S   1      -0.461   0.490   0.793  1.00  0.00           H  
+ATOM      8  HT3 ALA S   1      -0.225   0.490  -0.889  1.00  0.00           H  
+ATOM      9  N   PRO S   2       3.133   1.487   0.996  1.00  0.00           N  
+ATOM     10  CA  PRO S   2       3.873   2.741   1.100  1.00  0.00           C  
+ATOM     11  C   PRO S   2       4.495   3.132  -0.225  1.00  0.00           C  
+ATOM     12  O   PRO S   2       4.657   2.334  -1.140  1.00  0.00           O  
+ATOM     13  CB  PRO S   2       4.970   2.568   2.151  1.00  0.00           C  
+ATOM     14  CG  PRO S   2       4.879   1.142   2.699  1.00  0.00           C  
+ATOM     15  CD  PRO S   2       3.622   0.293   1.680  1.00  0.00           C  
+ATOM     16  N   ALA S   3       4.847   4.418  -0.299  1.00  0.00           N  
+ATOM     17  CA  ALA S   3       5.544   4.861  -1.503  1.00  0.00           C  
+ATOM     18  C   ALA S   3       5.959   6.316  -1.439  1.00  0.00           C  
+ATOM     19  O   ALA S   3       6.541   6.803  -2.407  1.00  0.00           O  
+ATOM     20  CB  ALA S   3       4.604   4.647  -2.691  1.00  0.00           C  
+ATOM     21  OXT ALA S   3       5.698   6.957  -0.423  1.00  0.00           O1-
+ATOM     22  H   ALA S   3       4.643   5.060   0.440  1.00  0.00           H  
+END                                                                             

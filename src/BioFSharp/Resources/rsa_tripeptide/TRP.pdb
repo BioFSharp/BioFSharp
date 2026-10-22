@@ -1,0 +1,34 @@
+REMARK   GENERATED USING QUANTA FOR NACCESS                                     
+REMARK   AUTHOR SIMON HUBBARD                                                   
+ATOM      1  N   ALA S   1       0.000   0.000   0.000  1.00  0.00           N  
+ATOM      2  CA  ALA S   1       0.720  -1.171   0.521  1.00  0.00           C  
+ATOM      3  C   ALA S   1       2.206  -0.900   0.649  1.00  0.00           C  
+ATOM      4  O   ALA S   1       2.854  -0.346  -0.230  1.00  0.00           O  
+ATOM      5  CB  ALA S   1       0.493  -2.341  -0.438  1.00  0.00           C  
+ATOM      6  HT1 ALA S   1      -1.013  -0.221  -0.074  1.00  0.00           H  
+ATOM      7  HT2 ALA S   1       0.133   0.804   0.646  1.00  0.00           H  
+ATOM      8  HT3 ALA S   1       0.371   0.246  -0.940  1.00  0.00           H  
+ATOM      9  N   TRP S   2       2.734  -1.320   1.801  1.00  0.00           N  
+ATOM     10  CA  TRP S   2       4.163  -1.100   2.009  1.00  0.00           C  
+ATOM     11  C   TRP S   2       4.845  -2.273   2.682  1.00  0.00           C  
+ATOM     12  O   TRP S   2       4.366  -2.847   3.652  1.00  0.00           O  
+ATOM     13  CB  TRP S   2       4.319   0.152   2.876  1.00  0.00           C  
+ATOM     14  CG  TRP S   2       3.857   1.362   2.100  1.00  0.00           C  
+ATOM     15  CD1 TRP S   2       2.565   1.565   1.572  1.00  0.00           C  
+ATOM     16  CD2 TRP S   2       4.622   2.498   1.764  1.00  0.00           C  
+ATOM     17  CE2 TRP S   2       3.777   3.365   1.041  1.00  0.00           C  
+ATOM     18  CE3 TRP S   2       5.941   2.858   2.011  1.00  0.00           C  
+ATOM     19  NE1 TRP S   2       2.460   2.755   0.924  1.00  0.00           N  
+ATOM     20  CZ2 TRP S   2       4.264   4.580   0.574  1.00  0.00           C  
+ATOM     21  CZ3 TRP S   2       6.428   4.074   1.543  1.00  0.00           C  
+ATOM     22  CH2 TRP S   2       5.584   4.940   0.820  1.00  0.00           C  
+ATOM     23  H   TRP S   2       2.178  -1.770   2.499  1.00  0.00           H  
+ATOM     24  HE1 TRP S   2       1.666   3.116   0.478  1.00  0.00           H  
+ATOM     25  N   ALA S   3       6.008  -2.616   2.122  1.00  0.00           N  
+ATOM     26  CA  ALA S   3       6.735  -3.738   2.708  1.00  0.00           C  
+ATOM     27  C   ALA S   3       8.231  -3.504   2.761  1.00  0.00           C  
+ATOM     28  O   ALA S   3       8.947  -4.095   1.954  1.00  0.00           O  
+ATOM     29  CB  ALA S   3       6.439  -4.977   1.861  1.00  0.00           C  
+ATOM     30  OXT ALA S   3       8.675  -2.732   3.610  1.00  0.00           O1-
+ATOM     31  H   ALA S   3       6.373  -2.126   1.331  1.00  0.00           H  
+END                                                                             
