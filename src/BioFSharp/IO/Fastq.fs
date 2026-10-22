@@ -44,23 +44,30 @@ module Fastq =
                     if not (headerLine.StartsWith "@") then
                         fail recordStart "the header did not start with '@'"
 
-                    // Sequence lines until the '+' separator
+                    // Require at least one sequence line, even for an empty read.
                     let sequence = StringBuilder()
-                    let rec readSequence () =
+                    let rec readSequence hasSequenceLine =
                         match nextLine () with
                         | None -> fail lineNumber.Value (sprintf "record starting at line %i ended before the '+' seperator" recordStart)
-                        | Some l when l.StartsWith "+" -> l.Substring 1
+                        | Some l when l.StartsWith "+" ->
+                            if not hasSequenceLine then
+                                fail lineNumber.Value (sprintf "record starting at line %i is missing its sequence line before the '+' separator" recordStart)
+                            l.Substring 1
                         | Some l ->
                             sequence.Append l |> ignore
-                            readSequence ()
-                    let qualityHeader = readSequence ()
+                            readSequence true
+                    let qualityHeader = readSequence false
 
-                    // Store Quality lines
+                    // Consume at least one quality line before yielding, even for an empty read.
                     let quality = StringBuilder()
-                    while quality.Length < sequence.Length do
+                    let mutable hasQualityLine = false
+                    while not hasQualityLine || quality.Length < sequence.Length do
                         match nextLine () with
+                        | None when not hasQualityLine -> fail lineNumber.Value (sprintf "record starting at line %i ended before its quality line" recordStart)
                         | None -> fail lineNumber.Value (sprintf "record starting at line %i ended before its quality string was complete (%i of %i characters)" recordStart quality.Length sequence.Length)
-                        | Some l -> quality.Append l |> ignore
+                        | Some l ->
+                            quality.Append l |> ignore
+                            hasQualityLine <- true
                     if quality.Length <> sequence.Length then
                         fail lineNumber.Value (sprintf "record starting at line %i has a quality string of length %i but a sequence of length %i" recordStart quality.Length sequence.Length)
 

@@ -114,7 +114,38 @@ module FastqTests =
                     |> List.ofSeq
                 Expect.equal actual.Length 2 "Two records should be parsed"
                 Expect.isEmpty actual[0].Sequence "First record should have an empty sequence"
+                Expect.isEmpty actual[0].QualitySequence "First record should have an empty quality string"
                 Expect.equal actual[1].Header "read2" "Second record should be parsed after the empty one"
+                Expect.sequenceEqual actual[1].Sequence [A; C] "Second sequence should be preserved"
+                Expect.sequenceEqual actual[1].QualitySequence [40; 40] "Second quality string should be preserved"
+            }
+            test "readLines with zero-length read at end of input" {
+                let actual =
+                    [| "@empty"; ""; "+"; "" |]
+                    |> Fastq.readLines BioArray.ofNucleotideString charToPhred33
+                    |> Seq.exactlyOne
+                Expect.isEmpty actual.Sequence "Sequence should be empty"
+                Expect.isEmpty actual.QualitySequence "Quality string should be empty"
+            }
+            test "readLines fails when sequence line is missing" {
+                for lines in [ [| "@empty"; "+"; "" |]; [| "@empty"; "+" |] ] do
+                    Expect.throwsT<System.IO.InvalidDataException>
+                        (fun () -> lines |> Fastq.readLines BioArray.ofNucleotideString charToPhred33 |> Seq.head |> ignore)
+                        "An empty read must include a sequence line before '+'"
+            }
+            test "readLines fails when zero-length read has no quality line" {
+                for lines in [
+                    [| "@empty"; ""; "+" |]
+                    [| "@empty"; ""; "+"; "@read2"; "AC"; "+"; "II" |]
+                ] do
+                    Expect.throwsT<System.IO.InvalidDataException>
+                        (fun () -> lines |> Fastq.readLines BioArray.ofNucleotideString charToPhred33 |> Seq.head |> ignore)
+                        "An empty read must include a quality line before it can be yielded"
+            }
+            test "readLines fails when zero-length read has non-empty quality" {
+                Expect.throwsT<System.IO.InvalidDataException>
+                    (fun () -> [| "@empty"; ""; "+"; "I" |] |> Fastq.readLines BioArray.ofNucleotideString charToPhred33 |> Seq.head |> ignore)
+                    "A non-empty quality string must be rejected before yielding an empty read"
             }
             test "readLines with blank lines and CRLF line endings" {
                 let actual =
