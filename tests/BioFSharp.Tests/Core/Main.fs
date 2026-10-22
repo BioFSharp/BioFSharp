@@ -21,4 +21,5 @@ module All =
             TaggedSequenceTests.taggedSequencetests
             IsotopicDistributionTests.isotopicDistributionTests
             PhylogeneticTreeTests.phylogeneticTreeTests
+            PhredQualityScoreTests.phredTests
         ]
