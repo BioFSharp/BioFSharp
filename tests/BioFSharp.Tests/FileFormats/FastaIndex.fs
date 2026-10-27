@@ -45,8 +45,9 @@ module FastaIndexTests =
                 Expect.throwsT<System.IO.InvalidDataException> (fun () -> FastaIndexEntry.ofLine "seq1\tabc\t26\t10\t11" |> ignore) "Text should fail"
                 Expect.throwsT<System.IO.InvalidDataException> (fun () -> FastaIndexEntry.ofLine "seq1\t23 \t26\t10\t11" |> ignore) "Spaces should fail"
             }
-            test "ofLine fails on empty name" {
-                Expect.throwsT<System.IO.InvalidDataException> (fun () -> FastaIndexEntry.ofLine "\t23\t26\t10\t11" |> ignore) "Empty name should fail"
+            test "ofLine with empty name" {
+                let actual = FastaIndexEntry.ofLine "\t4\t2\t4\t5"
+                Expect.equal actual (FastaIndexEntry.create "" 4L 2L 4L 5L) ".fai line was not correctly parsed"
             }
         ]
         

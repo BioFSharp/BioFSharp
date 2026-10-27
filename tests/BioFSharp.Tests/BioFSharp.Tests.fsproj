@@ -55,6 +55,7 @@
     <Compile Include="IO\OrthoMCL.fs" />
     <Compile Include="IO\PDB.fs" />
     <Compile Include="IO\SOFT.fs" />
+    <Compile Include="IO\FastaIndex.fs" />
     <Compile Include="IO\Main.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>

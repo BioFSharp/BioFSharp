@@ -105,6 +105,7 @@
     <Compile Include="IO\PDB.fs" />
     <None Include="IO\GenerateSOFTTypes.fsx" />
     <Compile Include="IO\SOFT.fs" />
+    <Compile Include="IO\FastaIndex.fs" />
     <Compile Include="CLITools\CLITool.fs" />
     <Compile Include="CLITools\Blast.fs" />
     <Compile Include="CLITools\ClustalO.fs" />
