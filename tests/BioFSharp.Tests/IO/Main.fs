@@ -8,6 +8,7 @@ module All =
     let main = 
         testList "FileFormat IO" [
             FastaTests.IOTests
+            FastaIndexTests.IOTests
             FastqTests.IOTests
             AgilentRawTests.IOTests
             BlastQueriesTests.IOTests
