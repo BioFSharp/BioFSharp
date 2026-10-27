@@ -2,6 +2,7 @@ namespace BioFSharp.Tests.IO
 
 module FastaIndexTests =
 
+    open System
     open System.IO
     open BioFSharp.IO
     open BioFSharp.FileFormats.FastaIndex
@@ -32,6 +33,14 @@ module FastaIndexTests =
         try
             File.WriteAllText(path, content)
             FastaIndex.create path
+        finally
+            File.Delete path
+            
+    let private readOfString (content: string) =
+        let path = Path.GetTempFileName()
+        try
+            File.WriteAllText(path, content)
+            FastaIndex.read path
         finally
             File.Delete path
 
@@ -107,11 +116,66 @@ module FastaIndexTests =
             test "create fails (missing file)" {
                 Expect.throwsT<FileNotFoundException> (fun () -> FastaIndex.create (Path.Combine(Path.GetTempPath(), "missing.fa")) |> ignore) "Indexing did not fail"
             }
-            ptest "read" {
-                ()
+            test "write" {
+                let path = Path.GetTempFileName()
+                try
+                    FastaIndex.write path expectedEntries
+                    let actual = File.ReadAllBytes path
+                    let expected = Text.Encoding.ASCII.GetBytes "seq1\t23\t26\t10\t11\nseq2\t20\t58\t10\t11\nseq3\t4\t92\t4\t5\n"
+                    Expect.equal actual expected "Index file was not equal"
+                finally
+                    File.Delete path
             }
-            ptest "write" {
-                ()
+            test "write (no entries)" {
+                let path = Path.GetTempFileName()
+                try
+                    FastaIndex.write path [||]
+                    Expect.isEmpty (File.ReadAllBytes path) "Index file was not empty"
+                finally
+                    File.Delete path
+            }
+            test "read" {
+                let actual = readOfString "seq1\t23\t26\t10\t11\nseq2\t20\t58\t10\t11\nseq3\t4\t92\t4\t5\n"
+                Expect.equal actual expectedEntries "Index was not equal"
+            }
+            test "read (CRLF)" {
+                let actual = readOfString "seq1\t23\t26\t10\t11\r\nseq2\t20\t58\t10\t11\r\nseq3\t4\t92\t4\t5\r\n"
+                Expect.equal actual expectedEntries "Index was not equal"
+            }
+            test "read (no final line break)" {
+                let actual = readOfString "seq1\t23\t26\t10\t11\nseq2\t20\t58\t10\t11\nseq3\t4\t92\t4\t5"
+                Expect.equal actual expectedEntries "Index was not equal"
+            }
+            test "read (empty name)" {
+                let actual = readOfString "\t4\t2\t4\t5\nb\t4\t10\t4\t5\n"
+                Expect.equal actual [| FastaIndexEntry.create "" 4L 2L 4L 5L; FastaIndexEntry.create "b" 4L 10L 4L 5L |] "Index was not equal"
+            }
+            test "read (duplicate names)" {
+                let actual = readOfString "a\t4\t3\t4\t5\na\t4\t11\t4\t5\nb\t4\t11\t4\t5\n"
+                Expect.equal actual [| FastaIndexEntry.create "a" 4L 3L 4L 5L; FastaIndexEntry.create "b" 4L 11L 4L 5L |] "Index was not equal"
+            }
+            test "read (empty file)" {
+                Expect.isEmpty (readOfString "") "Index was not empty"
+            }
+            test "read fails (blank line)" {
+                Expect.throwsT<InvalidDataException> (fun () -> readOfString "a\t4\t3\t4\t5\n\nb\t4\t11\t4\t5\n" |> ignore) "Reading did not fail"
+                Expect.throwsT<InvalidDataException> (fun () -> readOfString "a\t4\t3\t4\t5\n\n" |> ignore) "Reading did not fail (at the end)"
+            }
+            test "read fails (invalid line)" {
+                Expect.throwsT<InvalidDataException> (fun () -> readOfString "a\t4\t3\t4\n" |> ignore) "Reading did not fail"
+            }
+            test "read fails (missing file)" {
+                Expect.throwsT<FileNotFoundException> (fun () -> FastaIndex.read (Path.Combine(Path.GetTempPath(), "missing.fai")) |> ignore) "Reading did not fail"
+            }
+            test "write and read" {
+                let path = Path.GetTempFileName()
+                try
+                    let entries = createOfString testString_protein
+                    FastaIndex.write path entries
+                    let actual = FastaIndex.read path
+                    Expect.equal actual entries "Index was not equal"
+                finally
+                    File.Delete path
             }
         ]
         

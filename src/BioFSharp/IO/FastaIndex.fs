@@ -139,4 +139,19 @@ module FastaIndex =
             raise (InvalidDataException "Incorrect FASTA format for indexing: the file contains no sequence")
 
         entries.ToArray()
+        
+    /// Writes the given entries to a .fai file
+    /// An existing file is overwritten
+    let write (indexPath: string) (entries: seq<FastaIndexEntry>) : unit =
+        use writer = new StreamWriter(indexPath, false, UTF8Encoding(false))
+        writer.NewLine <- "\n"
+        for entry in entries do
+            writer.WriteLine(FastaIndexEntry.toLine entry)
 
+    /// Reads the entries of the given .fai file.
+    /// Fails if a line is not a valid .fai line including blank lines
+    let read (indexPath: string) : FastaIndexEntry [] =
+        let names = HashSet<string>()
+        File.ReadAllLines indexPath
+        |> Array.map FastaIndexEntry.ofLine
+        |> Array.filter (fun entry -> names.Add entry.Name)
