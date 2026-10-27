@@ -34,7 +34,7 @@ module FastaIndex =
                 | true, number -> number
                 | false, _ -> raise (InvalidDataException (sprintf "Incorrect .fai format: %s '%s' is not a non-negative integer in line '%s'" column value line))
             match line.Split('\t') with
-            | [| name; length; offset; lineBases; lineWidth |] when name <> "" ->
+            | [| name; length; offset; lineBases; lineWidth |] ->
                 FastaIndexEntry.create
                     name
                     (parse "LENGTH" length)
@@ -42,5 +42,5 @@ module FastaIndex =
                     (parse "LINEBASES" lineBases)
                     (parse "LINEWIDTH" lineWidth)
             | _ ->
-                raise (InvalidDataException (sprintf "Incorrect .fai format: expected 5 tab-separated columns with a name in line '%s'" line))
+                raise (InvalidDataException (sprintf "Incorrect .fai format: expected 5 tab-separated columns in line '%s'" line))
                 
