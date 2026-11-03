@@ -16,4 +16,5 @@ module All =
             DSSPTests.IOTests
             StrideTests.IOTests
             GAFTests.IOTests
+            PDBTests.IOTests
         ]
