@@ -104,6 +104,52 @@ module PDBTests =
                 Expect.sequenceEqual actual hetatmSequence "atom sequence roundtrip unsuccessful"
             )
 
+            testCase "TER singleton parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine terSingleton
+                let expected =
+                    Some (PDB.Coordinate.Terminator {
+                        SerialNumber = Some 1070
+                        ResidueName = Some "ARG"
+                        ChainIdentifier = Some "A"
+                        ResidueSequenceNumber = Some 141
+                        ResidueInsertionCode = None
+                    })
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct TER record"
+            )
+
+            testCase "TER singleton roundtrip" (fun () ->
+                let actual =
+                    [terSingleton]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual terSingleton "ter singleton roundtrip unsuccessful"
+            )
+
+            testCase "TER with insertion code parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine terWithInsertionCode
+                let expected =
+                    Some (PDB.Coordinate.Terminator {
+                        SerialNumber = Some 1070
+                        ResidueName = Some "ARG"
+                        ChainIdentifier = Some "A"
+                        ResidueSequenceNumber = Some 141
+                        ResidueInsertionCode = Some "A"
+                    })
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct TER record"
+            )
+
+            testCase "TER with insertion code roundtrip" (fun () ->
+                let actual =
+                    [terWithInsertionCode]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual terWithInsertionCode "ter with insertion code roundtrip unsuccessful"
+            )
+            
             testCase "Glucagon roundtrip" (fun _ ->
                 let actual = 
                     glucagon
