@@ -17,4 +17,10 @@ module All =
             StrideTests.IOTests
             GAFTests.IOTests
             PDBTests.IOTests
+            GenBankTests.IOTests
+            MGFTests.IOTests
+            NewickTests.IOTests
+            OboTests.IOTests
+            OrthoMCLTests.IOTests
+            SOFTTests.IOTests
         ]
