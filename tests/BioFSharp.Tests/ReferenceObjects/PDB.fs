@@ -16,6 +16,20 @@ module PDB =
     
     let terWithInsertionCode = """TER    1070      ARG A 141A""".PadRight(80, ' ')
      
+    let modelSingleton = """MODEL        1""".PadRight(80, ' ')
+
+    let endModelSingleton = """ENDMDL""".PadRight(80, ' ')
+
+    let modelSequence =
+        [|
+            """MODEL        1""".PadRight(80, ' ')
+            """ATOM      1  N   ALA A   1      11.104   6.134  -6.504  1.00  0.00           N  """
+            """ENDMDL""".PadRight(80, ' ')
+            """MODEL        2""".PadRight(80, ' ')
+            """ATOM      1  N   ALA A   1      12.104   6.134  -6.504  1.00  0.00           N  """
+            """ENDMDL""".PadRight(80, ' ')
+        |]
+        
     let terNucleotide = """TER     487       DA B  24""".PadRight(80, ' ')
 
     let glucagon = TestingUtils.readEmbeddedDocument "Glucagon.txt"

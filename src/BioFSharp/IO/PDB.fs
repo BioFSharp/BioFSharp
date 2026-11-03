@@ -148,12 +148,25 @@ module PDB =
                 )
             else
                 None
+        let (|MODEL|_|) (line:string) =
+            if line.StartsWith "MODEL" then
+                Some (line.[6..].Trim() |> int)
+            else
+                None
+
+        let (|ENDMDL|_|) (line:string) =
+            if line.StartsWith "ENDMDL" then
+                Some ()
+            else
+                None                
 
     let tryParseCoordinateLine (line:string) =
         match line with
         | ActivePatterns.ATOM      a -> Some (Coordinate.Atom a)
         | ActivePatterns.HETATM    h -> Some (Coordinate.HetAtom h)
         | ActivePatterns.TER       t -> Some (Coordinate.Terminator t)
+        | ActivePatterns.MODEL     m -> Some (Coordinate.Model m)
+        | ActivePatterns.ENDMDL      -> Some Coordinate.EndModel        
         | _ -> None
 
     let readDBREFs (path: string) =
