@@ -16,4 +16,10 @@ module All =
             DSSPTests.IOTests
             StrideTests.IOTests
             GAFTests.IOTests
+            GenBankTests.IOTests
+            MGFTests.IOTests
+            NewickTests.IOTests
+            OboTests.IOTests
+            OrthoMCLTests.IOTests
+            SOFTTests.IOTests
         ]
