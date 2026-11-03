@@ -182,6 +182,47 @@ module PDBTests =
                 Expect.equal actual terNucleotide "ter nucleotide roundtrip unsuccessful"
             )
             
+            testCase "MODEL singleton parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine modelSingleton
+                let expected = Some (PDB.Coordinate.Model 1)
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct MODEL record"
+            )
+
+            testCase "MODEL singleton roundtrip" (fun () ->
+                let actual =
+                    [modelSingleton]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual modelSingleton "model singleton roundtrip unsuccessful"
+            )
+
+            testCase "ENDMDL singleton parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine endModelSingleton
+                let expected = Some PDB.Coordinate.EndModel
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct ENDMDL record"
+            )
+
+            testCase "ENDMDL singleton roundtrip" (fun () ->
+                let actual =
+                    [endModelSingleton]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual endModelSingleton "endmdl singleton roundtrip unsuccessful"
+            )
+
+            testCase "MODEL sequence roundtrip" (fun () ->
+                let actual =
+                    modelSequence
+                    |> Array.choose PDB.tryParseCoordinateLine
+                    |> Array.map PDB.Coordinate.toString
+
+                Expect.sequenceEqual actual modelSequence "model sequence roundtrip unsuccessful"
+            )
+            
             testCase "HasA roundtrip" (fun _ ->
                 let actual = 
                     HasA
