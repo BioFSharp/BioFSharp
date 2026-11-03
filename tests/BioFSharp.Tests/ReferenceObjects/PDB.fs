@@ -15,6 +15,8 @@ module PDB =
     let terSingleton = """TER    1070      ARG A 141""".PadRight(80, ' ')
     
     let terWithInsertionCode = """TER    1070      ARG A 141A""".PadRight(80, ' ')
+     
+    let terNucleotide = """TER     487       DA B  24""".PadRight(80, ' ')
 
     let glucagon = TestingUtils.readEmbeddedDocument "Glucagon.txt"
     

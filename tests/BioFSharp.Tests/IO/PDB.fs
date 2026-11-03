@@ -159,6 +159,29 @@ module PDBTests =
                 Expect.equal actual glucagon "glucagon chain roundtrip unsuccessful"
             )
 
+            testCase "TER nucleotide parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine terNucleotide
+                let expected =
+                    Some (PDB.Coordinate.Terminator {
+                        SerialNumber = Some 487
+                        ResidueName = Some "DA"
+                        ChainIdentifier = Some "B"
+                        ResidueSequenceNumber = Some 24
+                        ResidueInsertionCode = None
+                    })
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct TER record"
+            )
+
+            testCase "TER nucleotide roundtrip" (fun () ->
+                let actual =
+                    [terNucleotide]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual terNucleotide "ter nucleotide roundtrip unsuccessful"
+            )
+            
             testCase "HasA roundtrip" (fun _ ->
                 let actual = 
                     HasA
