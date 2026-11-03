@@ -124,6 +124,7 @@
     <EmbeddedResource Include="Resources\BLOSUM62.txt" />
     <Compile Include="Formatting.fs" />
     <None Include="Playground.fsx" />
+    <Compile Include="PhredQualityScore.fs" />
     <!-- Playground -->
   </ItemGroup>
   <ItemGroup>
