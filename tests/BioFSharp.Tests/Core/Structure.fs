@@ -19,6 +19,19 @@ module StructureTests =
         |> Structure.toCoordinates
         |> Array.map PDB.Coordinate.toString
    
+    let atomAt (x, y, z) =
+        let template = (parse [| atomSingleton |]).Models.[0].Chains.[0].Residues.[0].Atoms.[0]
+        { template with X = x; Y = y; Z = z }
+
+    let neighborAtoms =
+        [|
+            atomAt (-0.5, 0., 0.)
+            atomAt (0.5, 0., 0.)
+            atomAt (-3.9, -3.9, -3.9)
+            atomAt (10., 10., 10.)
+            atomAt (-1.0, 0., 0.)
+        |]
+        
     let structureTests =
         testList "Structure" [
             testCase "HasA hierarchy" (fun () ->
@@ -97,6 +110,35 @@ module StructureTests =
 
             testCase "Empty structure" (fun () ->
                 Expect.isEmpty (Structure.toCoordinates { Models = [||] }) "Empty structure should give no coordinates"
+            )
+            
+            testCase "Distance" (fun () ->
+                Expect.floatClose Accuracy.high (Structure.distance (atomAt (0., 0., 0.)) (atomAt (3., 4., 0.))) 5.0 "Distance of (0,0,0) and (3,4,0) should be 5"
+            )
+
+            testCase "Brute force neighbor search" (fun () ->
+                let actual = Structure.NeighborSearch.bruteForce 1.5 neighborAtoms
+                Expect.equal actual [| 0, 1; 0, 4; 1, 4 |] "Pairs within 1.5 should be found, including a pair at exactly 1.5"
+            )
+
+            testCase "Grid neighbor search with negative coordinates" (fun () ->
+                let actual = Structure.NeighborSearch.grid 1.5 neighborAtoms
+                Expect.equal actual [| 0, 1; 0, 4; 1, 4 |] "Grid should find pairs across cell boundaries at negative coordinates"
+            )
+
+            testCase "Grid equals brute force on HasA" (fun () ->
+                let atoms = Structure.atoms (parse HasA).Models.[0]
+                for cutoff in [ 4.0; 8.0 ] do
+                    Expect.equal (Structure.NeighborSearch.grid cutoff atoms) (Structure.NeighborSearch.bruteForce cutoff atoms) $"Grid and brute force should find the same pairs at {cutoff}"
+                Expect.equal (Structure.NeighborSearch.grid 4.0 atoms).Length 7294 "HasA should have 7294 atom pairs within 4"
+            )
+
+            testCase "Grid neighbor search without atoms" (fun () ->
+                Expect.isEmpty (Structure.NeighborSearch.grid 4.0 [||]) "No atoms should give no pairs"
+            )
+
+            testCase "Grid neighbor search with invalid cutoff" (fun () ->
+                Expect.throwsT<System.ArgumentException> (fun () -> Structure.NeighborSearch.grid 0.0 neighborAtoms |> ignore) "A cutoff of 0 should fail"
             )
         ]
         

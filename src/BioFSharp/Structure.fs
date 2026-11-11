@@ -45,7 +45,7 @@ module Structure =
             ElementSymbol               = h.ElementSymbol
             Charge                      = h.Charge
         }
-        
+
     let private toResidues (atoms: (bool * Atom) []) =
         atoms
         |> Array.groupBy (fun (_, a) -> a.ResidueSequenceNumber, a.ResidueInsertionCode, a.ResidueName)
@@ -110,7 +110,7 @@ module Structure =
             Charge                      = a.Charge
         }
 
-    
+
     let private residueCoordinates (residue: Residue) =
         residue.Atoms
         |> Array.map (fun a ->
@@ -171,8 +171,53 @@ module Structure =
         |> toCoordinates
         |> Array.map Coordinate.toString
         |> fun lines -> System.IO.File.WriteAllLines(path, lines)
-        
+
     let read (path: string) =
         path
         |> PDB.readCoordinates
         |> ofCoordinates
+
+    let distance (a: Atom) (b: Atom) =
+        let dx = a.X - b.X
+        let dy = a.Y - b.Y
+        let dz = a.Z - b.Z
+        sqrt (dx * dx + dy * dy + dz * dz)
+
+    let atoms (model: Model) =
+        model.Chains
+        |> Array.collect (fun chain -> chain.Residues |> Array.collect (fun residue -> residue.Atoms))
+
+    module NeighborSearch =
+
+        let bruteForce (cutoff: float) (atoms: Atom []) =
+            [|
+                for i in 0 .. atoms.Length - 1 do
+                    for j in i + 1 .. atoms.Length - 1 do
+                        if distance atoms.[i] atoms.[j] <= cutoff then
+                            yield i, j
+            |]
+
+        let grid (cutoff: float) (atoms: Atom []) =
+            if cutoff <= 0. then invalidArg (nameof cutoff) "The cutoff must be greater than 0."
+            let cell (a: Atom) =
+                struct (int (floor (a.X / cutoff)), int (floor (a.Y / cutoff)), int (floor (a.Z / cutoff)))
+            let cells = System.Collections.Generic.Dictionary<struct (int * int * int), ResizeArray<int>>()
+            for i in 0 .. atoms.Length - 1 do
+                let key = cell atoms.[i]
+                match cells.TryGetValue key with
+                | true, members -> members.Add i
+                | _ -> cells.[key] <- ResizeArray [ i ]
+            let pairs = ResizeArray<int * int>()
+            for i in 0 .. atoms.Length - 1 do
+                let struct (x, y, z) = cell atoms.[i]
+                for dx in -1 .. 1 do
+                    for dy in -1 .. 1 do
+                        for dz in -1 .. 1 do
+                            match cells.TryGetValue(struct (x + dx, y + dy, z + dz)) with
+                            | true, members ->
+                                for j in members do
+                                    if j > i && distance atoms.[i] atoms.[j] <= cutoff then
+                                        pairs.Add((i, j))
+                            | _ -> ()
+            pairs.ToArray() |> Array.sortBy (fun (i, j) -> int64 i * int64 atoms.Length + int64 j)
+            
