@@ -31,7 +31,11 @@ module StructureTests =
             atomAt (10., 10., 10.)
             atomAt (-1.0, 0., 0.)
         |]
-        
+       
+    let allAtoms = fun (_: PDB.Atom) -> true
+
+    let alphaCarbons = fun (a: PDB.Atom) -> PDB.AtomName.toString a.Name = " CA "
+    
     let structureTests =
         testList "Structure" [
             testCase "HasA hierarchy" (fun () ->
@@ -139,6 +143,36 @@ module StructureTests =
 
             testCase "Grid neighbor search with invalid cutoff" (fun () ->
                 Expect.throwsT<System.ArgumentException> (fun () -> Structure.NeighborSearch.grid 0.0 neighborAtoms |> ignore) "A cutoff of 0 should fail"
+            )
+            
+            testCase "Residue contacts" (fun () ->
+                let model = (parse contactSequence).Models.[0]
+                Expect.equal (Structure.residueContacts allAtoms 4.0 model) [| 0, 1; 1, 3 |] "Residues with atoms within 4 should be in contact"
+            )
+
+            testCase "Residue contacts of alpha carbons" (fun () ->
+                let model = (parse contactSequence).Models.[0]
+                Expect.isEmpty (Structure.residueContacts alphaCarbons 4.0 model) "Alpha carbons 4.5 apart should not be in contact at 4"
+                Expect.equal (Structure.residueContacts alphaCarbons 5.0 model) [| 0, 1 |] "Alpha carbons 4.5 apart should be in contact at 5"
+            )
+
+            testCase "Contact map" (fun () ->
+                let actual = Structure.contactMap allAtoms 4.0 (parse contactSequence).Models.[0]
+                let expected =
+                    array2D [
+                        [ false; true;  false; false ]
+                        [ true;  false; false; true  ]
+                        [ false; false; false; false ]
+                        [ false; true;  false; false ]
+                    ]
+                Expect.equal actual expected "Contact map should be symmetric with one row per residue"
+            )
+
+            testCase "HasA residue contacts" (fun () ->
+                let model = (parse HasA).Models.[0]
+                Expect.equal (Structure.residues model).Length 223 "HasA should have 223 residues"
+                Expect.equal (Structure.residueContacts allAtoms 4.0 model).Length 693 "HasA should have 693 residue contacts within 4"
+                Expect.equal (Structure.residueContacts alphaCarbons 8.0 model).Length 647 "HasA should have 647 alpha carbon contacts within 8"
             )
         ]
         

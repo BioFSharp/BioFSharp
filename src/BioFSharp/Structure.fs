@@ -221,3 +221,33 @@ module Structure =
                             | _ -> ()
             pairs.ToArray() |> Array.sortBy (fun (i, j) -> int64 i * int64 atoms.Length + int64 j)
             
+    
+    let residues (model: Model) =
+        model.Chains
+        |> Array.collect (fun chain -> chain.Residues)
+
+    let residueContacts (atomFilter: Atom -> bool) (cutoff: float) (model: Model) =
+        let residues = residues model
+        let selected =
+            residues
+            |> Array.mapi (fun r residue ->
+                residue.Atoms
+                |> Array.filter atomFilter
+                |> Array.map (fun atom -> r, atom)
+            )
+            |> Array.concat
+        selected
+        |> Array.map snd
+        |> NeighborSearch.grid cutoff
+        |> Array.map (fun (i, j) -> fst selected.[i], fst selected.[j])
+        |> Array.filter (fun (a, b) -> a <> b)
+        |> Array.distinct
+        |> Array.sort
+
+    let contactMap (atomFilter: Atom -> bool) (cutoff: float) (model: Model) =
+        let n = (residues model).Length
+        let map = Array2D.create n n false
+        for (a, b) in residueContacts atomFilter cutoff model do
+            map.[a, b] <- true
+            map.[b, a] <- true
+        map

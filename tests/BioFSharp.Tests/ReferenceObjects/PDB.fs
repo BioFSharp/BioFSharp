@@ -76,3 +76,14 @@ module PDB =
     let glucagon = TestingUtils.readEmbeddedDocument "Glucagon.txt"
     
     let HasA = TestingUtils.readEmbeddedDocument "HasA.txt"
+    
+    let contactSequence =
+        [|
+            """ATOM      1  N   ALA A   1       0.000   0.000   0.000  1.00  0.00           N  """
+            """ATOM      2  CA  ALA A   1       1.000   0.000   0.000  1.00  0.00           C  """
+            """ATOM      3  N   GLY A   2       4.500   0.000   0.000  1.00  0.00           N  """
+            """ATOM      4  CA  GLY A   2       5.500   0.000   0.000  1.00  0.00           C  """
+            """ATOM      5  N   SER A   3      20.000   0.000   0.000  1.00  0.00           N  """
+            """HETATM    6  O   HOH A 101       5.500   3.000   0.000  1.00  0.00           O  """
+        |]
+        
