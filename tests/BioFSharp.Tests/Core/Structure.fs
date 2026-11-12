@@ -189,5 +189,52 @@ module StructureTests =
                 Expect.floatClose Accuracy.high (Structure.dihedral a b c (atomAt (0., 1., 1.))) 90.0 "A clockwise quarter turn should give +90 degrees"
                 Expect.floatClose Accuracy.high (Structure.dihedral a b c (atomAt (0., -1., 1.))) -90.0 "A counterclockwise quarter turn should give -90 degrees"
             )
+            
+            testCase "Backbone torsions of HasA" (fun () ->
+                let actual = Structure.backboneTorsions (parse HasA).Models.[0].Chains.[0]
+                Expect.equal actual.Length 155 "All 155 amino acids, but no heme, sulfate or water, should have backbone torsions"
+                Expect.isNone actual.[0].Phi "The first residue should have no phi"
+                Expect.isNone actual.[actual.Length - 1].Psi "The last residue should have no psi"
+                Expect.isNone actual.[actual.Length - 1].Omega "The last residue should have no omega"
+                Expect.equal (actual |> Array.filter (fun t -> t.Phi.IsSome) |> Array.length) 152 "Phi should be missing at the chain start and after both chain breaks"
+            )
+
+            testCase "Backbone torsions at chain breaks of HasA" (fun () ->
+                let torsions = Structure.backboneTorsions (parse HasA).Models.[0].Chains.[0]
+                let at number = torsions |> Array.find (fun t -> t.Residue.SequenceNumber = number)
+                Expect.isNone (at 28).Psi "GLY 28 is followed by a gap and should have no psi"
+                Expect.isNone (at 45).Phi "GLY 45 follows a gap and should have no phi"
+                Expect.isNone (at 126).Psi "ASP 126 is followed by a gap and should have no psi"
+                Expect.isNone (at 138).Phi "ASP 138 follows a gap and should have no phi"
+                Expect.isSome (at 28).Phi "GLY 28 should still have phi"
+                Expect.isSome (at 45).Psi "GLY 45 should still have psi"
+            )
+
+            testCase "Backbone torsions with a moved residue" (fun () ->
+                let chain = (parse HasA).Models.[0].Chains.[0]
+                let moved =
+                    { chain with
+                        Residues =
+                            chain.Residues
+                            |> Array.mapi (fun i residue ->
+                                if i >= 3 then { residue with Atoms = residue.Atoms |> Array.map (fun a -> { a with X = a.X + 10.0 }) }
+                                else residue
+                            )
+                    }
+                let actual = Structure.backboneTorsions moved
+                Expect.isNone actual.[2].Psi "Residue 3 should have no psi when residue 4 is moved away"
+                Expect.isNone actual.[2].Omega "Residue 3 should have no omega when residue 4 is moved away"
+                Expect.isNone actual.[3].Phi "Residue 4 should have no phi when it is moved away"
+                Expect.isSome actual.[3].Psi "Residue 4 should still have psi, since its neighbor moved with it"
+            )
+
+            testCase "Right-handed helices in HasA" (fun () ->
+                let pairs =
+                    Structure.backboneTorsions (parse HasA).Models.[0].Chains.[0]
+                    |> Array.choose (fun t -> match t.Phi, t.Psi with | Some phi, Some psi -> Some (phi, psi) | _ -> None)
+                let rightHanded = pairs |> Array.filter (fun (phi, psi) -> phi > -100. && phi < -30. && psi > -80. && psi < -10.) |> Array.length
+                let leftHanded = pairs |> Array.filter (fun (phi, psi) -> phi > 30. && phi < 100. && psi > 10. && psi < 80.) |> Array.length
+                Expect.isGreaterThan rightHanded leftHanded "Most helical residues should be right-handed (negative phi and psi)"
+            )
         ]
         

@@ -279,3 +279,37 @@ module Structure =
         let x = dot n1 n2
         atan2 y x |> toDegrees
         
+    type BackboneTorsions = {
+        Residue : Residue
+        Phi     : float option
+        Psi     : float option
+        Omega   : float option
+    }
+
+    let private tryAtom (name: string) (residue: Residue) =
+        residue.Atoms
+        |> Array.tryFind (fun atom -> (AtomName.toString atom.Name).Trim() = name)
+
+    let backboneTorsions (chain: Chain) =
+        let backbone =
+            chain.Residues
+            |> Array.choose (fun residue ->
+                match tryAtom "N" residue, tryAtom "CA" residue, tryAtom "C" residue with
+                | Some n, Some ca, Some c -> Some (residue, n, ca, c)
+                | _ -> None
+            )
+        let bonded i =
+            let (_, _, _, c) = backbone.[i]
+            let (_, n, _, _) = backbone.[i + 1]
+            distance c n <= 2.0
+        backbone
+        |> Array.mapi (fun i (residue, n, ca, c) ->
+            let previous = if i > 0 && bonded (i - 1) then Some backbone.[i - 1] else None
+            let next = if i < backbone.Length - 1 && bonded i then Some backbone.[i + 1] else None
+            {
+                Residue = residue
+                Phi     = previous |> Option.map (fun (_, _, _, previousC) -> dihedral previousC n ca c)
+                Psi     = next |> Option.map (fun (_, nextN, _, _) -> dihedral n ca c nextN)
+                Omega   = next |> Option.map (fun (_, nextN, nextCA, _) -> dihedral ca c nextN nextCA)
+            }
+        )
