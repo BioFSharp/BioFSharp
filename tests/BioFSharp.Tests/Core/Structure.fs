@@ -20,7 +20,7 @@ module StructureTests =
         |> Array.map PDB.Coordinate.toString
    
     let atomAt (x, y, z) =
-        let template = (parse [| atomSingleton |]).Models.[0].Chains.[0].Residues.[0].Atoms.[0]
+        let template = (parse [| atomSingleton |]).Models[0].Chains[0].Residues[0].Atoms[0]
         { template with X = x; Y = y; Z = z }
 
     let neighborAtoms =
@@ -40,16 +40,16 @@ module StructureTests =
         testList "Structure" [
             testCase "HasA hierarchy" (fun () ->
                 let actual = parse HasA
-                let residues = actual.Models.[0].Chains.[0].Residues
+                let residues = actual.Models[0].Chains[0].Residues
                 Expect.equal actual.Models.Length 1 "HasA should have one model"
-                Expect.equal (actual.Models.[0].Chains |> Array.map (fun c -> c.Identifier)) [|"A"|] "HasA should have one chain A"
+                Expect.equal (actual.Models[0].Chains |> Array.map (fun c -> c.Identifier)) [|"A"|] "HasA should have one chain A"
                 Expect.equal residues.Length 223 "HasA should have 223 residues"
                 Expect.equal (residues |> Array.filter (fun r -> r.IsHetero) |> Array.length) 68 "HasA should have 68 hetero residues"
                 Expect.equal (residues |> Array.sumBy (fun r -> r.Atoms.Length)) 1291 "HasA should have 1291 atoms"
             )
 
             testCase "HasA first residue" (fun () ->
-                let actual = (parse HasA).Models.[0].Chains.[0].Residues.[0]
+                let actual = (parse HasA).Models[0].Chains[0].Residues[0]
                 Expect.equal actual.Name "MET" "First residue should be MET"
                 Expect.equal actual.SequenceNumber 1 "First residue should have sequence number 1"
                 Expect.equal actual.Atoms.Length 8 "MET 1 should have 8 atoms"
@@ -63,7 +63,7 @@ module StructureTests =
 
             testCase "Chains" (fun () ->
                 let actual =
-                    (parse chainSequence).Models.[0].Chains
+                    (parse chainSequence).Models[0].Chains
                     |> Array.map (fun c -> c.Identifier, c.Residues |> Array.map (fun r -> r.Name, r.SequenceNumber, r.IsHetero))
                 let expected =
                     [|
@@ -76,13 +76,13 @@ module StructureTests =
             testCase "Models" (fun () ->
                 let actual =
                     (parse modelSequence).Models
-                    |> Array.map (fun m -> m.Number, m.Chains.[0].Residues.[0].Atoms.[0].X)
+                    |> Array.map (fun m -> m.Number, m.Chains[0].Residues[0].Atoms[0].X)
                 Expect.equal actual [| 1, 11.104; 2, 12.104 |] "Each MODEL should be its own model"
             )
 
             testCase "Insertion codes" (fun () ->
                 let actual =
-                    (parse insertionCodeSequence).Models.[0].Chains.[0].Residues
+                    (parse insertionCodeSequence).Models[0].Chains[0].Residues
                     |> Array.map (fun r -> r.SequenceNumber, r.InsertionCode, r.Name)
                 Expect.equal actual [| 52, "", "ALA"; 52, "A", "GLY"; 53, "", "SER" |] "Residues with insertion codes should be separate residues"
             )
@@ -131,7 +131,7 @@ module StructureTests =
             )
 
             testCase "Grid equals brute force on HasA" (fun () ->
-                let atoms = Structure.atoms (parse HasA).Models.[0]
+                let atoms = Structure.atoms (parse HasA).Models[0]
                 for cutoff in [ 4.0; 8.0 ] do
                     Expect.equal (Structure.NeighborSearch.grid cutoff atoms) (Structure.NeighborSearch.bruteForce cutoff atoms) $"Grid and brute force should find the same pairs at {cutoff}"
                 Expect.equal (Structure.NeighborSearch.grid 4.0 atoms).Length 7294 "HasA should have 7294 atom pairs within 4"
@@ -146,18 +146,18 @@ module StructureTests =
             )
             
             testCase "Residue contacts" (fun () ->
-                let model = (parse contactSequence).Models.[0]
+                let model = (parse contactSequence).Models[0]
                 Expect.equal (Structure.residueContacts allAtoms 4.0 model) [| 0, 1; 1, 3 |] "Residues with atoms within 4 should be in contact"
             )
 
             testCase "Residue contacts of alpha carbons" (fun () ->
-                let model = (parse contactSequence).Models.[0]
+                let model = (parse contactSequence).Models[0]
                 Expect.isEmpty (Structure.residueContacts alphaCarbons 4.0 model) "Alpha carbons 4.5 apart should not be in contact at 4"
                 Expect.equal (Structure.residueContacts alphaCarbons 5.0 model) [| 0, 1 |] "Alpha carbons 4.5 apart should be in contact at 5"
             )
 
             testCase "Contact map" (fun () ->
-                let actual = Structure.contactMap allAtoms 4.0 (parse contactSequence).Models.[0]
+                let actual = Structure.contactMap allAtoms 4.0 (parse contactSequence).Models[0]
                 let expected =
                     array2D [
                         [ false; true;  false; false ]
@@ -169,10 +169,25 @@ module StructureTests =
             )
 
             testCase "HasA residue contacts" (fun () ->
-                let model = (parse HasA).Models.[0]
+                let model = (parse HasA).Models[0]
                 Expect.equal (Structure.residues model).Length 223 "HasA should have 223 residues"
                 Expect.equal (Structure.residueContacts allAtoms 4.0 model).Length 693 "HasA should have 693 residue contacts within 4"
                 Expect.equal (Structure.residueContacts alphaCarbons 8.0 model).Length 647 "HasA should have 647 alpha carbon contacts within 8"
+            )
+            
+            testCase "Bond angle" (fun () ->
+                let center = atomAt (0., 0., 0.)
+                Expect.floatClose Accuracy.high (Structure.angle (atomAt (1., 0., 0.)) center (atomAt (0., 1., 0.))) 90.0 "Perpendicular bonds should give 90 degrees"
+                Expect.floatClose Accuracy.high (Structure.angle (atomAt (1., 0., 0.)) center (atomAt (-1., 0., 0.))) 180.0 "Opposite bonds should give 180 degrees"
+                Expect.floatClose Accuracy.high (Structure.angle (atomAt (1., 0., 0.)) center (atomAt (0.5, sqrt 0.75, 0.))) 60.0 "Bonds of an equilateral triangle should give 60 degrees"
+            )
+
+            testCase "Dihedral angle" (fun () ->
+                let a, b, c = atomAt (1., 0., 0.), atomAt (0., 0., 0.), atomAt (0., 0., 1.)
+                Expect.floatClose Accuracy.high (Structure.dihedral a b c (atomAt (1., 0., 1.))) 0.0 "Atoms on the same side should give 0 degrees (cis)"
+                Expect.floatClose Accuracy.high (Structure.dihedral a b c (atomAt (-1., 0., 1.))) 180.0 "Atoms on opposite sides should give 180 degrees (trans)"
+                Expect.floatClose Accuracy.high (Structure.dihedral a b c (atomAt (0., 1., 1.))) 90.0 "A clockwise quarter turn should give +90 degrees"
+                Expect.floatClose Accuracy.high (Structure.dihedral a b c (atomAt (0., -1., 1.))) -90.0 "A counterclockwise quarter turn should give -90 degrees"
             )
         ]
         

@@ -221,7 +221,6 @@ module Structure =
                             | _ -> ()
             pairs.ToArray() |> Array.sortBy (fun (i, j) -> int64 i * int64 atoms.Length + int64 j)
             
-    
     let residues (model: Model) =
         model.Chains
         |> Array.collect (fun chain -> chain.Residues)
@@ -251,3 +250,32 @@ module Structure =
             map.[a, b] <- true
             map.[b, a] <- true
         map
+        
+    let private vector (a: Atom) (b: Atom) =
+        b.X - a.X, b.Y - a.Y, b.Z - a.Z
+
+    let private dot (x1, y1, z1) (x2, y2, z2) : float =
+        x1 * x2 + y1 * y2 + z1 * z2
+
+    let private cross (x1, y1, z1) (x2, y2, z2) : float * float * float =
+        y1 * z2 - z1 * y2, z1 * x2 - x1 * z2, x1 * y2 - y1 * x2
+
+    let private toDegrees (radians: float) =
+        radians * 180.0 / System.Math.PI
+
+    let angle (a: Atom) (b: Atom) (c: Atom) =
+        let ba = vector b a
+        let bc = vector b c
+        let cosine = dot ba bc / sqrt (dot ba ba * dot bc bc)
+        cosine |> max -1.0 |> min 1.0 |> acos |> toDegrees
+
+    let dihedral (a: Atom) (b: Atom) (c: Atom) (d: Atom) =
+        let b1 = vector a b
+        let b2 = vector b c
+        let b3 = vector c d
+        let n1 = cross b1 b2
+        let n2 = cross b2 b3
+        let y = sqrt (dot b2 b2) * dot b1 n2
+        let x = dot n1 n2
+        atan2 y x |> toDegrees
+        
