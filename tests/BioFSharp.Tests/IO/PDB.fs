@@ -104,6 +104,52 @@ module PDBTests =
                 Expect.sequenceEqual actual hetatmSequence "atom sequence roundtrip unsuccessful"
             )
 
+            testCase "TER singleton parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine terSingleton
+                let expected =
+                    Some (PDB.Coordinate.Terminator {
+                        SerialNumber = Some 1070
+                        ResidueName = Some "ARG"
+                        ChainIdentifier = Some "A"
+                        ResidueSequenceNumber = Some 141
+                        ResidueInsertionCode = None
+                    })
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct TER record"
+            )
+
+            testCase "TER singleton roundtrip" (fun () ->
+                let actual =
+                    [terSingleton]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual terSingleton "ter singleton roundtrip unsuccessful"
+            )
+
+            testCase "TER with insertion code parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine terWithInsertionCode
+                let expected =
+                    Some (PDB.Coordinate.Terminator {
+                        SerialNumber = Some 1070
+                        ResidueName = Some "ARG"
+                        ChainIdentifier = Some "A"
+                        ResidueSequenceNumber = Some 141
+                        ResidueInsertionCode = Some "A"
+                    })
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct TER record"
+            )
+
+            testCase "TER with insertion code roundtrip" (fun () ->
+                let actual =
+                    [terWithInsertionCode]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual terWithInsertionCode "ter with insertion code roundtrip unsuccessful"
+            )
+            
             testCase "Glucagon roundtrip" (fun _ ->
                 let actual = 
                     glucagon
@@ -113,6 +159,70 @@ module PDBTests =
                 Expect.equal actual glucagon "glucagon chain roundtrip unsuccessful"
             )
 
+            testCase "TER nucleotide parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine terNucleotide
+                let expected =
+                    Some (PDB.Coordinate.Terminator {
+                        SerialNumber = Some 487
+                        ResidueName = Some "DA"
+                        ChainIdentifier = Some "B"
+                        ResidueSequenceNumber = Some 24
+                        ResidueInsertionCode = None
+                    })
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct TER record"
+            )
+
+            testCase "TER nucleotide roundtrip" (fun () ->
+                let actual =
+                    [terNucleotide]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual terNucleotide "ter nucleotide roundtrip unsuccessful"
+            )
+            
+            testCase "MODEL singleton parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine modelSingleton
+                let expected = Some (PDB.Coordinate.Model 1)
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct MODEL record"
+            )
+
+            testCase "MODEL singleton roundtrip" (fun () ->
+                let actual =
+                    [modelSingleton]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual modelSingleton "model singleton roundtrip unsuccessful"
+            )
+
+            testCase "ENDMDL singleton parsing" (fun _ ->
+                let actual = PDB.tryParseCoordinateLine endModelSingleton
+                let expected = Some PDB.Coordinate.EndModel
+                Expect.equal actual expected "PDB.tryParseCoordinateLine did not return the correct ENDMDL record"
+            )
+
+            testCase "ENDMDL singleton roundtrip" (fun () ->
+                let actual =
+                    [endModelSingleton]
+                    |> Seq.choose PDB.tryParseCoordinateLine
+                    |> Seq.item 0
+                    |> PDB.Coordinate.toString
+
+                Expect.equal actual endModelSingleton "endmdl singleton roundtrip unsuccessful"
+            )
+
+            testCase "MODEL sequence roundtrip" (fun () ->
+                let actual =
+                    modelSequence
+                    |> Array.choose PDB.tryParseCoordinateLine
+                    |> Array.map PDB.Coordinate.toString
+
+                Expect.sequenceEqual actual modelSequence "model sequence roundtrip unsuccessful"
+            )
+            
             testCase "HasA roundtrip" (fun _ ->
                 let actual = 
                     HasA

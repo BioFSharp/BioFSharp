@@ -92,10 +92,10 @@ module PDB =
 
             if line.StartsWith "TER" then
                 let serialNumber            = line.[6..10]  |> emptyToOpt |> Option.map int
-                let residueName             = line.[17..19] |> emptyToOpt 
+                let residueName             = line.[17..19].Trim() |> emptyToOpt 
                 let chainIdentifier         = line.[21..21] |> emptyToOpt 
                 let residueSequenceNumber   = line.[22..25] |> emptyToOpt |> Option.map int
-                let residueInsertionCode    = line.[27..27] |> emptyToOpt 
+                let residueInsertionCode    = line.[26..26] |> emptyToOpt 
 
                 Some (
                     Terminator.create(
@@ -148,12 +148,25 @@ module PDB =
                 )
             else
                 None
+        let (|MODEL|_|) (line:string) =
+            if line.StartsWith "MODEL" then
+                Some (line.[6..].Trim() |> int)
+            else
+                None
+
+        let (|ENDMDL|_|) (line:string) =
+            if line.StartsWith "ENDMDL" then
+                Some ()
+            else
+                None                
 
     let tryParseCoordinateLine (line:string) =
         match line with
         | ActivePatterns.ATOM      a -> Some (Coordinate.Atom a)
         | ActivePatterns.HETATM    h -> Some (Coordinate.HetAtom h)
         | ActivePatterns.TER       t -> Some (Coordinate.Terminator t)
+        | ActivePatterns.MODEL     m -> Some (Coordinate.Model m)
+        | ActivePatterns.ENDMDL      -> Some Coordinate.EndModel        
         | _ -> None
 
     let readDBREFs (path: string) =
