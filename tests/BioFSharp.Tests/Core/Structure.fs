@@ -36,6 +36,13 @@ module StructureTests =
 
     let alphaCarbons = fun (a: PDB.Atom) -> PDB.AtomName.toString a.Name = " CA "
     
+    
+    let rotate (ax: float, ay: float, az: float) (tx: float, ty: float, tz: float) (atom: PDB.Atom) =
+        let x1, y1, z1 = atom.X, cos ax * atom.Y - sin ax * atom.Z, sin ax * atom.Y + cos ax * atom.Z
+        let x2, y2, z2 = cos ay * x1 + sin ay * z1, y1, -(sin ay) * x1 + cos ay * z1
+        let x3, y3, z3 = cos az * x2 - sin az * y2, sin az * x2 + cos az * y2, z2
+        { atom with X = x3 + tx; Y = y3 + ty; Z = z3 + tz }
+    
     let structureTests =
         testList "Structure" [
             testCase "HasA hierarchy" (fun () ->
@@ -235,6 +242,54 @@ module StructureTests =
                 let rightHanded = pairs |> Array.filter (fun (phi, psi) -> phi > -100. && phi < -30. && psi > -80. && psi < -10.) |> Array.length
                 let leftHanded = pairs |> Array.filter (fun (phi, psi) -> phi > 30. && phi < 100. && psi > 10. && psi < 80.) |> Array.length
                 Expect.isGreaterThan rightHanded leftHanded "Most helical residues should be right-handed (negative phi and psi)"
+            )
+            
+            testCase "Backbone torsion values of HasA" (fun () ->
+                let torsions = Structure.backboneTorsions (parse HasA).Models.[0].Chains.[0]
+                let accuracy = { absolute = 1e-6; relative = 0.0 }
+                let expected =
+                    [
+                        2,   ( -80.76470295, 150.0232299,  179.4284815)
+                        50,  ( -98.20191063, 123.3601233, -179.5331651)
+                        100, ( -54.93909091, 136.0193708,  176.8513965)
+                        150, (-123.25981571, 102.6597476,  179.2311984)
+                    ]
+                for (number, (phi, psi, omega)) in expected do
+                    let actual = torsions |> Array.find (fun t -> t.Residue.SequenceNumber = number)
+                    Expect.floatClose accuracy (Option.get actual.Phi) phi $"Phi of residue {number} was not equal"
+                    Expect.floatClose accuracy (Option.get actual.Psi) psi $"Psi of residue {number} was not equal"
+                    Expect.floatClose accuracy (Option.get actual.Omega) omega $"Omega of residue {number} was not equal"
+            )
+            
+        
+            testCase "RMSD" (fun () ->
+                let a = [| atomAt (0., 0., 0.); atomAt (1., 0., 0.) |]
+                let b = [| atomAt (1., 0., 0.); atomAt (2., 0., 0.) |]
+                Expect.floatClose Accuracy.high (Structure.rmsd a a) 0.0 "Identical atoms should have an RMSD of 0"
+                Expect.floatClose Accuracy.high (Structure.rmsd a b) 1.0 "Atoms shifted by 1 should have an RMSD of 1"
+                Expect.throwsT<System.ArgumentException> (fun () -> Structure.rmsd a [| atomAt (0., 0., 0.) |] |> ignore) "Different numbers of atoms should fail"
+            )
+
+            testCase "Superposition of a triangle" (fun () ->
+                let reference = [| atomAt (0., 0., 0.); atomAt (1., 0., 0.); atomAt (0., 1., 0.) |]
+                let mobile = [| atomAt (5., 5., 5.); atomAt (5., 6., 5.); atomAt (4., 5., 5.) |]
+                let actual = Structure.superpose reference mobile
+                Expect.floatClose Accuracy.high (Structure.rmsd reference actual) 0.0 "The moved and rotated triangle should fit exactly"
+            )
+
+            testCase "Superposition of rotated HasA alpha carbons" (fun () ->
+                let reference = Structure.atoms (parse HasA).Models.[0] |> Array.filter alphaCarbons
+                for angles in [ (0.7, -1.2, 2.5); (System.Math.PI, 0., 0.); (0., System.Math.PI, 0.); (0., 0., System.Math.PI) ] do
+                    let mobile = reference |> Array.map (rotate angles (10., -20., 5.))
+                    let actual = Structure.superpose reference mobile
+                    Expect.floatClose { absolute = 1e-9; relative = 0.0 } (Structure.rmsd reference actual) 0.0 $"A copy rotated by {angles} should fit exactly"
+            )
+
+            testCase "Superposition does not mirror" (fun () ->
+                let reference = Structure.atoms (parse HasA).Models.[0] |> Array.filter alphaCarbons
+                let mirrored = reference |> Array.map (fun a -> { a with X = -a.X })
+                let actual = Structure.superpose reference mirrored
+                Expect.isGreaterThan (Structure.rmsd reference actual) 1.0 "A mirror image cannot be superposed by a rotation"
             )
         ]
         
