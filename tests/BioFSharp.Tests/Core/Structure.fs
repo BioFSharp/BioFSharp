@@ -200,7 +200,8 @@ module StructureTests =
             testCase "Backbone torsions of HasA" (fun () ->
                 let actual = Structure.backboneTorsions (parse HasA).Models.[0].Chains.[0]
                 Expect.equal actual.Length 155 "All 155 amino acids, but no heme, sulfate or water, should have backbone torsions"
-                Expect.isNone actual.[0].Phi "The first residue should have no phi"
+                Expect.isNone actual
+                                  .[0].Phi "The first residue should have no phi"
                 Expect.isNone actual.[actual.Length - 1].Psi "The last residue should have no psi"
                 Expect.isNone actual.[actual.Length - 1].Omega "The last residue should have no omega"
                 Expect.equal (actual |> Array.filter (fun t -> t.Phi.IsSome) |> Array.length) 152 "Phi should be missing at the chain start and after both chain breaks"
