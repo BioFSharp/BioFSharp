@@ -6,7 +6,8 @@ open System.IO
 module PDB =
 
     module ActivePatterns =
-
+        
+        
         let (|ATOM|_|) (line:string) = 
             if line.StartsWith "ATOM" then
                 let serialNumber                = line.[6..10]  .Trim() |> int

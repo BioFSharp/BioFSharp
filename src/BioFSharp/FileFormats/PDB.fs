@@ -236,7 +236,9 @@ module PDB =
         | Atom of Atom
         | HetAtom of HetAtom
         | Terminator of Terminator
+        /// Start of a model with the serial number from columns 11 - 14
         | Model of int
+        /// End of a model
         | EndModel        
 
         static member toString (c:Coordinate) =
