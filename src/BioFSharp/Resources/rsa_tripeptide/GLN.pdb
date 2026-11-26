@@ -1,0 +1,30 @@
+REMARK   GENERATED USING QUANTA FOR NACCESS                                     
+REMARK   AUTHOR SIMON HUBBARD                                                   
+ATOM      1  N   ALA S   1       0.000   0.000   0.000  1.00  0.00           N  
+ATOM      2  CA  ALA S   1       1.470   0.000   0.000  1.00  0.00           C  
+ATOM      3  C   ALA S   1       2.028   1.409   0.000  1.00  0.00           C  
+ATOM      4  O   ALA S   1       1.592   2.291  -0.730  1.00  0.00           O  
+ATOM      5  CB  ALA S   1       1.951  -0.742  -1.248  1.00  0.00           C  
+ATOM      6  HT1 ALA S   1      -0.347  -0.981   0.000  1.00  0.00           H  
+ATOM      7  HT2 ALA S   1      -0.347   0.490   0.849  1.00  0.00           H  
+ATOM      8  HT3 ALA S   1      -0.347   0.490  -0.849  1.00  0.00           H  
+ATOM      9  N   GLN S   2       3.029   1.594   0.863  1.00  0.00           N  
+ATOM     10  CA  GLN S   2       3.628   2.924   0.930  1.00  0.00           C  
+ATOM     11  C   GLN S   2       5.135   2.883   1.077  1.00  0.00           C  
+ATOM     12  O   GLN S   2       5.701   2.131   1.861  1.00  0.00           O  
+ATOM     13  CB  GLN S   2       3.015   3.651   2.128  1.00  0.00           C  
+ATOM     14  CG  GLN S   2       3.569   5.066   2.301  1.00  0.00           C  
+ATOM     15  CD  GLN S   2       2.918   5.720   3.503  1.00  0.00           C  
+ATOM     16  NE2 GLN S   2       2.031   4.942   4.128  1.00  0.00           N  
+ATOM     17  OE1 GLN S   2       3.188   6.860   3.861  1.00  0.00           O  
+ATOM     18  H   GLN S   2       3.363   0.853   1.446  1.00  0.00           H  
+ATOM     19  HE2 GLN S   2       1.841   4.016   3.802  1.00  0.00           H  
+ATOM     20  HE2 GLN S   2       1.540   5.270   4.935  1.00  0.00           H  
+ATOM     21  N   ALA S   3       5.780   3.736   0.278  1.00  0.00           N  
+ATOM     22  CA  ALA S   3       7.237   3.764   0.353  1.00  0.00           C  
+ATOM     23  C   ALA S   3       7.803   5.167   0.269  1.00  0.00           C  
+ATOM     24  O   ALA S   3       8.338   5.522  -0.779  1.00  0.00           O  
+ATOM     25  CB  ALA S   3       7.779   2.922  -0.804  1.00  0.00           C  
+ATOM     26  OXT ALA S   3       7.706   5.898   1.254  1.00  0.00           O1-
+ATOM     27  H   ALA S   3       5.288   4.338  -0.352  1.00  0.00           H  
+END                                                                             

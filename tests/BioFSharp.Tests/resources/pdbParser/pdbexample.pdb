@@ -1,0 +1,28 @@
+HEADER    RubisCO Activase
+TITLE     Testparsing
+COMPND    MOLECULE: RIBULOSE BISPHOSPHATE CARBOXYLASE/OXYGENASE ACTIVASE
+SOURCE    Arabidopsis
+KEYWDS    RubisCO Activase, Test
+EXPDTA    X-RAY DIFFRACTION
+AUTHOR    John Doe
+REMARK    RESOLUTION.    2.90 ANGSTROMS.
+REMARK    Example remark 2
+MODEL        1                                                           
+ATOM      1  N   MET A   1      20.154  34.198  27.627  1.00 54.69           N  
+ATOM      2  CA  MET A   1      21.560  34.601  27.379  1.00 54.10           C  
+HETATM    3  C   MET B   2      21.933  36.041  27.761  1.00 53.59           C  
+ATOM   4502  CA  CYS A  25      11.111  22.222  33.333  1.00 10.00           C  
+ATOM   4503  CB  CYS A  25      12.111  23.222  34.333  1.00 10.00           C  
+ATOM   4504  SG  CYS A  25      13.111  24.222  35.333  1.00 10.00           S  
+ATOM   4505  CA  CYS B  80      14.111  25.222  36.333  1.00 10.00           C  
+ATOM   4506  CB  TYR B  85      15.111  26.222  37.333  1.00 10.00           C  
+ATOM   4507  CA  SER A  15      16.111  27.222  38.333  1.00 10.00           C  
+ATOM   4508  CB  VAL B  18      17.111  28.222  39.333  1.00 10.00           C  
+SSBOND   1 CYS A   25    CYS B   80                                                  
+TER                                                                    
+MODEL        2                                                           
+ATOM      1  N   GLY C   1      10.123  20.456  30.789  1.00 60.00           N  
+ATOM      2  CA  GLY C   1      11.456  21.789  31.123  1.00 61.00           C  
+ATOM      3  C   GLY D   1      12.789  22.123  32.456  1.00 62.00           C  
+TER                                                                    
+ENDMDL                                                                 

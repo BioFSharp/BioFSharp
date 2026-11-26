@@ -1,0 +1,27 @@
+REMARK   GENERATED USING QUANTA FOR NACCESS                                     
+REMARK   AUTHOR SIMON HUBBARD                                                   
+ATOM      1  N   ALA S   1       0.000   0.000   0.000  1.00  0.00           N  
+ATOM      2  CA  ALA S   1       1.430  -0.323  -0.112  1.00  0.00           C  
+ATOM      3  C   ALA S   1       1.864  -0.440  -1.559  1.00  0.00           C  
+ATOM      4  O   ALA S   1       1.212  -1.052  -2.396  1.00  0.00           O  
+ATOM      5  CB  ALA S   1       1.681  -1.649   0.608  1.00  0.00           C  
+ATOM      6  HT1 ALA S   1      -0.262   0.072   1.004  1.00  0.00           H  
+ATOM      7  HT2 ALA S   1      -0.189   0.907  -0.473  1.00  0.00           H  
+ATOM      8  HT3 ALA S   1      -0.561  -0.750  -0.451  1.00  0.00           H  
+ATOM      9  N   THR S   2       3.013   0.183  -1.831  1.00  0.00           N  
+ATOM     10  CA  THR S   2       3.507   0.122  -3.203  1.00  0.00           C  
+ATOM     11  C   THR S   2       5.008  -0.066  -3.279  1.00  0.00           C  
+ATOM     12  O   THR S   2       5.789   0.572  -2.583  1.00  0.00           O  
+ATOM     13  CB  THR S   2       3.120   1.430  -3.898  1.00  0.00           C  
+ATOM     14  CG2 THR S   2       3.608   1.489  -5.347  1.00  0.00           C  
+ATOM     15  OG1 THR S   2       1.697   1.563  -3.906  1.00  0.00           O  
+ATOM     16  H   THR S   2       3.522   0.675  -1.125  1.00  0.00           H  
+ATOM     17  HG1 THR S   2       1.444   2.386  -4.343  1.00  0.00           H  
+ATOM     18  N   ALA S   3       5.394  -0.983  -4.169  1.00  0.00           N  
+ATOM     19  CA  ALA S   3       6.826  -1.230  -4.308  1.00  0.00           C  
+ATOM     20  C   ALA S   3       7.250  -1.430  -5.749  1.00  0.00           C  
+ATOM     21  O   ALA S   3       7.513  -2.569  -6.130  1.00  0.00           O  
+ATOM     22  CB  ALA S   3       7.165  -2.481  -3.495  1.00  0.00           C  
+ATOM     23  OXT ALA S   3       7.315  -0.446  -6.484  1.00  0.00           O1-
+ATOM     24  H   ALA S   3       4.731  -1.487  -4.723  1.00  0.00           H  
+END                                                                             
