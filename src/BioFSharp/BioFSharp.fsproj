@@ -127,6 +127,7 @@
 	<EmbeddedResource Include="Resources\rsa_tripeptide\*.pdb" CopyToOutputDirectory="Always" />
     <Compile Include="Formatting.fs" />
     <None Include="Playground.fsx" />
+    <Compile Include="PhredQualityScore.fs" />
     <!-- Playground -->
   </ItemGroup>
   <ItemGroup>

@@ -18,4 +18,11 @@ module All =
             GAFTests.IOTests
             PDBTests.IOTests
             PDBParserTests.IOTests
+            GenBankTests.IOTests
+            GFF3Tests.IOTests
+            MGFTests.IOTests
+            NewickTests.IOTests
+            OboTests.IOTests
+            OrthoMCLTests.IOTests
+            SOFTTests.IOTests
         ]
