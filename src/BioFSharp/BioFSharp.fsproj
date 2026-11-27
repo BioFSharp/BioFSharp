@@ -84,6 +84,7 @@
     <Compile Include="FileFormats\OrthoMCL.fs" />
     <Compile Include="FileFormats\PDB.fs" />
     <Compile Include="FileFormats\SOFT.fs" />
+    <Compile Include="FileFormats\FastaIndex.fs" />
     <Compile Include="CLIArgs\Blast.fs" />
     <Compile Include="CLIArgs\ClustalO.fs" />
     <Compile Include="IO\Fasta.fs" />
@@ -104,6 +105,7 @@
     <Compile Include="IO\PDB.fs" />
     <None Include="IO\GenerateSOFTTypes.fsx" />
     <Compile Include="IO\SOFT.fs" />
+    <Compile Include="IO\FastaIndex.fs" />
     <Compile Include="CLITools\CLITool.fs" />
     <Compile Include="CLITools\Blast.fs" />
     <Compile Include="CLITools\ClustalO.fs" />
