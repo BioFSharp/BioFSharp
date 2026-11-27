@@ -1,5 +1,6 @@
 namespace BioFSharp
 
+open System.Collections.Generic
 open BioFSharp.FileFormats.PDB
 open BioFSharp.IO
 
@@ -19,6 +20,9 @@ module Structure =
         InsertionCode   : string
         /// True if the residue was read from HETATM records
         IsHetero        : bool
+        /// True if the residue belongs to the polymer of its chain, i.e.
+        /// Modified residues such as selenomethionine (MSE) can be both hetero and part of the polymer
+        IsPolymer       : bool
         /// Atoms of the residue in file order
         /// HETATM records are stored as atoms
         Atoms           : Atom []
@@ -72,26 +76,34 @@ module Structure =
             Charge                      = h.Charge
         }
 
-    let private toResidues (atoms: (bool * Atom) []) =
-        atoms
-        |> Array.groupBy (fun (_, a) -> a.ResidueSequenceNumber, a.ResidueInsertionCode, a.ResidueName)
-        |> Array.map (fun ((number, insertionCode, name), group) ->
-            {
-                Name            = name
-                SequenceNumber  = number
-                InsertionCode   = insertionCode
-                IsHetero        = fst group.[0]
-                Atoms           = group |> Array.map snd
-            }
-        )
+    let private toResidues (terminated: bool) (atoms: (bool * bool * Atom) []) =
+        let residues =
+            atoms
+            |> Array.groupBy (fun (_, _, a) -> a.ResidueSequenceNumber, a.ResidueInsertionCode, a.ResidueName)
+            |> Array.map (fun ((number, insertionCode, name), group) ->
+                let (isHetero, afterTerminator, _) = group.[0]
+                {
+                    Name            = name
+                    SequenceNumber  = number
+                    InsertionCode   = insertionCode
+                    IsHetero        = isHetero
+                    IsPolymer       = not afterTerminator
+                    Atoms           = group |> Array.map (fun (_, _, a) -> a)
+                }
+            )
+        if terminated then
+            residues
+        else
+            let polymerEnd = residues |> Array.tryFindIndexBack (fun r -> not r.IsHetero) |> Option.defaultValue -1
+            residues |> Array.mapi (fun i r -> { r with IsPolymer = i <= polymerEnd })
 
-    let private toChains (atoms: (bool * Atom) []) =
+    let private toChains (terminatedChains: HashSet<string>) (atoms: (bool * bool * Atom) []) =
         atoms
-        |> Array.groupBy (fun (_, a) -> a.ChainIdentifier)
+        |> Array.groupBy (fun (_, _, a) -> a.ChainIdentifier)
         |> Array.map (fun (identifier, group) ->
             {
                 Identifier  = identifier
-                Residues    = toResidues group
+                Residues    = toResidues (terminatedChains.Contains identifier) group
             }
         )
 
@@ -101,32 +113,45 @@ module Structure =
     /// Atoms are grouped by chain identifier, also when a chain continues later in the input (e.g. waters listed after other chains).
     /// Residues are grouped by sequence number, insertion code, and residue name.
     /// HETATM records become atoms of residues with IsHetero set to true.
-    /// TER and ENDMDL records are not stored. Atoms with alternate locations are all kept.
+    /// Residues before the TER record of their chain are part of the polymer (IsPolymer).
+    /// For a chain without TER record, the residues up to the last non-hetero residue are part of the polymer (IsPolymer).
+    /// ENDMDL records are not stored. Atoms with alternate locations are all kept.
     /// </summary>
     /// <param name="coordinates">The coordinates to group, e.g. from PDB.readCoordinates</param>
     /// <returns>The structure</returns>
     let ofCoordinates (coordinates: seq<Coordinate>) =
-        let models = ResizeArray<int * ResizeArray<bool * Atom>>()
+        let models = ResizeArray<int * ResizeArray<bool * bool * Atom> * HashSet<string>>()
         let current () =
-            if models.Count = 0 then models.Add((1, ResizeArray()))
-            snd models.[models.Count - 1]
+            if models.Count = 0 then models.Add((1, ResizeArray(), HashSet()))
+            models.[models.Count - 1]
+        let add (isHetero: bool) (atom: Atom) =
+            let (_, atoms, terminatedChains) = current ()
+            atoms.Add((isHetero, terminatedChains.Contains atom.ChainIdentifier, atom))
         for coordinate in coordinates do
             match coordinate with
-            | Coordinate.Model number   -> models.Add((number, ResizeArray()))
-            | Coordinate.Atom a         -> current().Add((false, a))
-            | Coordinate.HetAtom h      -> current().Add((true, ofHetAtom h))
-            | Coordinate.Terminator _
+            | Coordinate.Model number   -> models.Add((number, ResizeArray(), HashSet()))
+            | Coordinate.Atom a         -> add false a
+            | Coordinate.HetAtom h      -> add true (ofHetAtom h)
+            | Coordinate.Terminator t   ->
+                let (_, atoms, terminatedChains) = current ()
+                match t.ChainIdentifier with
+                | Some chain -> terminatedChains.Add chain |> ignore
+                | None when atoms.Count > 0 ->
+                    let (_, _, last) = atoms.[atoms.Count - 1]
+                    terminatedChains.Add last.ChainIdentifier |> ignore
+                | None -> ()
             | Coordinate.EndModel       -> ()
         {
             Models =
                 models.ToArray()
-                |> Array.map (fun (number, atoms) ->
+                |> Array.map (fun (number, atoms, terminatedChains) ->
                     {
                         Number  = number
-                        Chains  = toChains (atoms.ToArray())
+                        Chains  = toChains terminatedChains (atoms.ToArray())
                     }
                 )
         }
+
     let private toHetAtom (a: Atom) : HetAtom =
         {
             SerialNumber                = a.SerialNumber
@@ -146,52 +171,58 @@ module Structure =
             Charge                      = a.Charge
         }
 
-    let private residueCoordinates (residue: Residue) =
+    let private residueCoordinates (chain: Chain) (residue: Residue) =
         residue.Atoms
         |> Array.map (fun a ->
-            if residue.IsHetero then Coordinate.HetAtom (toHetAtom a)
-            else Coordinate.Atom a
+            let atom =
+                { a with
+                    ResidueName             = residue.Name
+                    ChainIdentifier         = chain.Identifier
+                    ResidueSequenceNumber   = residue.SequenceNumber
+                    ResidueInsertionCode    = residue.InsertionCode }
+            if residue.IsHetero then Coordinate.HetAtom (toHetAtom atom)
+            else Coordinate.Atom atom
         )
 
-    let private terminator (residue: Residue) =
+    let private terminator (chain: Chain) (residue: Residue) =
         let last = residue.Atoms.[residue.Atoms.Length - 1]
         Coordinate.Terminator (
             Terminator.create(
                 SerialNumber            = last.SerialNumber + 1,
                 ResidueName             = residue.Name,
-                ChainIdentifier         = last.ChainIdentifier,
+                ChainIdentifier         = chain.Identifier,
                 ResidueSequenceNumber   = residue.SequenceNumber,
                 ?ResidueInsertionCode   = (if residue.InsertionCode = "" then None else Some residue.InsertionCode)
             )
         )
 
     let private modelCoordinates (model: Model) =
-        let polymerEnd (chain: Chain) =
-            chain.Residues |> Array.tryFindIndexBack (fun r -> not r.IsHetero)
         let polymers =
             model.Chains
             |> Array.collect (fun chain ->
-                match polymerEnd chain with
-                | Some i ->
+                let polymer = chain.Residues |> Array.filter (fun r -> r.IsPolymer)
+                if polymer.Length = 0 then [||]
+                else
                     Array.append
-                        (chain.Residues.[..i] |> Array.collect residueCoordinates)
-                        [| terminator chain.Residues.[i] |]
-                | None -> [||]
+                        (polymer |> Array.collect (residueCoordinates chain))
+                        [| terminator chain polymer.[polymer.Length - 1] |]
             )
-        let heteros =
+        let others =
             model.Chains
             |> Array.collect (fun chain ->
-                let start = match polymerEnd chain with Some i -> i + 1 | None -> 0
-                chain.Residues.[start..]
+                chain.Residues
+                |> Array.filter (fun r -> not r.IsPolymer)
+                |> Array.map (fun r -> chain, r)
             )
-            |> Array.sortBy (fun residue -> residue.Atoms.[0].SerialNumber)
-            |> Array.collect residueCoordinates
-        Array.append polymers heteros
+            |> Array.sortBy (fun (_, residue) -> residue.Atoms.[0].SerialNumber)
+            |> Array.collect (fun (chain, residue) -> residueCoordinates chain residue)
+        Array.append polymers others
 
     /// <summary>
     /// Converts a structure back to PDB coordinates.
-    /// For each chain, the residues up to the last non-hetero residue are written and followed by a TER record.
-    /// The remaining hetero residues of all chains follow, ordered by the serial number of their first atom.
+    /// For each chain, the polymer residues (IsPolymer) are written and followed by a TER record for the last of them.
+    /// The remaining residues of all chains follow, ordered by the serial number of their first atom.
+    /// The chain identifier and the residue name, number and insertion code of each atom and TER record are taken from the enclosing chain and residue, so edits to them are written consistently.
     /// MODEL and ENDMDL records are only written when the structure has more than one model.
     /// </summary>
     /// <param name="structure">The structure to convert</param>
@@ -419,34 +450,36 @@ module Structure =
         |> Array.tryFind (fun atom -> (AtomName.toString atom.Name).Trim() = name)
 
     /// <summary>
-    /// Computes the backbone torsion angles phi, psi, and omega for each residue of a chain that has N, CA, and C atoms.
-    /// Residues without these atoms (e.g. waters, ligands) are left out.
-    /// Two residues count as connected when the distance of C to the N of the next residue is at most 2.0 Angstrom.
+    /// Computes the backbone torsion angles phi, psi, and omega for each polymer residue of a chain (IsPolymer).
+    /// The neighbors of a residue are the polymer residues before and after it.
+    /// Two neighbors count as connected when the distance of C to the N of the next residue is at most 2.0 Angstrom.
+    /// Each angle is computed when the four atoms it needs are present: phi needs C of the previous residue and N, CA, C;
+    /// psi needs N, CA, C, and N of the next residue;
+    /// omega needs CA, C and N, CA of the next residue.
     /// Use the first atom for atoms with alternate locations
     /// </summary>
     /// <param name="chain">The chain</param>
-    /// <returns>The backbone torsions of each residue with backbone atoms, in chain order</returns>
+    /// <returns>The backbone torsions of each polymer residue, in chain order</returns>
     let backboneTorsions (chain: Chain) =
-        let backbone =
-            chain.Residues
-            |> Array.choose (fun residue ->
-                match tryAtom "N" residue, tryAtom "CA" residue, tryAtom "C" residue with
-                | Some n, Some ca, Some c -> Some (residue, n, ca, c)
-                | _ -> None
-            )
+        let polymer = chain.Residues |> Array.filter (fun r -> r.IsPolymer)
+        let atom name i = tryAtom name polymer.[i]
         let bonded i =
-            let (_, _, _, c) = backbone.[i]
-            let (_, n, _, _) = backbone.[i + 1]
-            distance c n <= 2.0
-        backbone
-        |> Array.mapi (fun i (residue, n, ca, c) ->
-            let previous = if i > 0 && bonded (i - 1) then Some backbone.[i - 1] else None
-            let next = if i < backbone.Length - 1 && bonded i then Some backbone.[i + 1] else None
+            match atom "C" i, atom "N" (i + 1) with
+            | Some c, Some n -> distance c n <= 2.0
+            | _ -> false
+        polymer
+        |> Array.mapi (fun i residue ->
+            let hasPrevious = i > 0 && bonded (i - 1)
+            let hasNext = i < polymer.Length - 1 && bonded i
+            let torsion (atoms: Atom option list) =
+                match atoms with
+                | [ Some a; Some b; Some c; Some d ] -> Some (dihedral a b c d)
+                | _ -> None
             {
                 Residue = residue
-                Phi     = previous |> Option.map (fun (_, _, _, previousC) -> dihedral previousC n ca c)
-                Psi     = next |> Option.map (fun (_, nextN, _, _) -> dihedral n ca c nextN)
-                Omega   = next |> Option.map (fun (_, nextN, nextCA, _) -> dihedral ca c nextN nextCA)
+                Phi     = if hasPrevious then torsion [ atom "C" (i - 1); atom "N" i; atom "CA" i; atom "C" i ] else None
+                Psi     = if hasNext then torsion [ atom "N" i; atom "CA" i; atom "C" i; atom "N" (i + 1) ] else None
+                Omega   = if hasNext then torsion [ atom "CA" i; atom "C" i; atom "N" (i + 1); atom "CA" (i + 1) ] else None
             }
         )
 
@@ -549,4 +582,3 @@ module Structure =
                 Y = r.[1, 0] * x + r.[1, 1] * y + r.[1, 2] * z + ry
                 Z = r.[2, 0] * x + r.[2, 1] * y + r.[2, 2] * z + rz }
         )
-        

@@ -86,4 +86,11 @@ module PDB =
             """ATOM      5  N   SER A   3      20.000   0.000   0.000  1.00  0.00           N  """
             """HETATM    6  O   HOH A 101       5.500   3.000   0.000  1.00  0.00           O  """
         |]
-        
+
+    let terminalHeteroSequence =
+        [|
+            """ATOM      1  N   ALA A   1      11.104   6.134  -6.504  1.00  0.00           N  """
+            """HETATM    2 SE   MSE A   2      12.104   6.134  -6.504  1.00  0.00          SE  """
+            """TER       3      MSE A   2""".PadRight(80, ' ')
+            """HETATM    4  O   HOH A 101      13.104   6.134  -6.504  1.00  0.00           O  """
+        |]

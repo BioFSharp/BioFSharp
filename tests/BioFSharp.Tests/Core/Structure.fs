@@ -35,6 +35,17 @@ module StructureTests =
     let allAtoms = fun (_: PDB.Atom) -> true
 
     let alphaCarbons = fun (a: PDB.Atom) -> PDB.AtomName.toString a.Name = " CA "
+
+    let withoutAtom (name: string) (number: int) (chain: Structure.Chain) =
+        { chain with
+            Residues =
+                chain.Residues
+                |> Array.map (fun residue ->
+                    if residue.SequenceNumber = number then
+                        { residue with Atoms = residue.Atoms |> Array.filter (fun a -> (PDB.AtomName.toString a.Name).Trim() <> name) }
+                    else residue
+                )
+        }
     
     
     let rotate (ax: float, ay: float, az: float) (tx: float, ty: float, tz: float) (atom: PDB.Atom) =
@@ -117,6 +128,32 @@ module StructureTests =
             
             testCase "Hetero order roundtrip" (fun () ->
                 Expect.sequenceEqual (roundtrip heteroOrderSequence) heteroOrderSequence "Hetero residues should be written in their original order"
+            )
+
+            testCase "Terminal hetero residue roundtrip" (fun () ->
+                Expect.sequenceEqual (roundtrip terminalHeteroSequence) terminalHeteroSequence "A hetero residue before TER should stay in the polymer"
+            )
+
+            testCase "Polymer residues" (fun () ->
+                let residues (lines: string []) = (parse lines).Models.[0].Chains.[0].Residues |> Array.map (fun r -> r.Name, r.IsHetero, r.IsPolymer)
+                Expect.equal (residues terminalHeteroSequence) [| "ALA", false, true; "MSE", true, true; "HOH", true, false |] "Residues before TER should be polymer residues"
+                Expect.equal (residues contactSequence) [| "ALA", false, true; "GLY", false, true; "SER", false, true; "HOH", true, false |] "Without TER, residues up to the last non-hetero residue should be polymer residues"
+            )
+
+            testCase "Renumbered residue" (fun () ->
+                let structure = parse [| terminalHeteroSequence.[0]; """TER       2      ALA A   1""".PadRight(80, ' ') |]
+                let model = structure.Models.[0]
+                let chain = model.Chains.[0]
+                let edited = { structure with Models = [| { model with Chains = [| { chain with Identifier = "B"; Residues = [| { chain.Residues.[0] with SequenceNumber = 10 } |] } |] } |] }
+                let actual =
+                    Structure.toCoordinates edited
+                    |> Array.map (fun coordinate ->
+                        match coordinate with
+                        | PDB.Coordinate.Atom a -> a.ChainIdentifier, a.ResidueSequenceNumber
+                        | PDB.Coordinate.Terminator t -> Option.get t.ChainIdentifier, Option.get t.ResidueSequenceNumber
+                        | _ -> "", 0
+                    )
+                Expect.equal actual [| "B", 10; "B", 10 |] "ATOM and TER should be written with the chain and residue number of the enclosing chain and residue"
             )
 
             testCase "Empty structure" (fun () ->
@@ -236,6 +273,18 @@ module StructureTests =
                 Expect.isSome actual.[3].Psi "Residue 4 should still have psi, since its neighbor moved with it"
             )
 
+            testCase "Backbone torsions without neighboring alpha carbons" (fun () ->
+                let chain = (parse HasA).Models.[0].Chains.[0]
+                let at number (torsions: Structure.BackboneTorsions []) = torsions |> Array.find (fun t -> t.Residue.SequenceNumber = number)
+                let expected = Structure.backboneTorsions chain |> at 2
+                let withoutPrevious = Structure.backboneTorsions (withoutAtom "CA" 1 chain) |> at 2
+                let withoutNext = Structure.backboneTorsions (withoutAtom "CA" 3 chain) |> at 2
+                Expect.equal withoutPrevious.Phi expected.Phi "Phi should not need the alpha carbon of the previous residue"
+                Expect.equal withoutNext.Psi expected.Psi "Psi should not need the alpha carbon of the next residue"
+                Expect.isNone withoutNext.Omega "Omega needs the alpha carbon of the next residue"
+                Expect.isSome expected.Phi "Residue 2 should have phi"
+            )
+
             testCase "Right-handed helices in HasA" (fun () ->
                 let pairs =
                     Structure.backboneTorsions (parse HasA).Models.[0].Chains.[0]
@@ -293,4 +342,3 @@ module StructureTests =
                 Expect.isGreaterThan (Structure.rmsd reference actual) 1.0 "A mirror image cannot be superposed by a rotation"
             )
         ]
-        
