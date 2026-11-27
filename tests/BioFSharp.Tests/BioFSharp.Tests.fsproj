@@ -33,6 +33,7 @@
     <Compile Include="Core\IsotopicDistribution.fs" />
     <Compile Include="Core\PhylTreeTests.fs" />
     <Compile Include="Core\Structure.fs" />
+    <Compile Include="Core\PhredQualityScoreTests.fs" />
     <Compile Include="Core\Main.fs" />
     <Compile Include="FileFormats\Fasta.fs" />
     <Compile Include="FileFormats\Fastq.fs" />
