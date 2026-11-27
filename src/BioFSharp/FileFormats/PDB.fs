@@ -236,12 +236,18 @@ module PDB =
         | Atom of Atom
         | HetAtom of HetAtom
         | Terminator of Terminator
+        /// Start of a model with the serial number from columns 11 - 14
+        | Model of int
+        /// End of a model
+        | EndModel        
 
         static member toString (c:Coordinate) =
             match c with
             | Atom       c -> c |> Atom.toString
             | HetAtom    c -> c |> HetAtom.toString
             | Terminator c -> c |> Terminator.toString
+            | Model      m -> $"MODEL     {m,4}".PadRight(80, ' ')
+            | EndModel     -> "ENDMDL".PadRight(80, ' ')
 
     ///The DBREF record provides cross-reference links between PDB sequences (what appears in SEQRES record) and a corresponding database sequence. 
     type DBREF = {

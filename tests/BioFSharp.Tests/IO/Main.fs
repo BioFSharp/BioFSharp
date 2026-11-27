@@ -23,4 +23,5 @@ module All =
             OboTests.IOTests
             OrthoMCLTests.IOTests
             SOFTTests.IOTests
+            PDBTests.IOTests
         ]

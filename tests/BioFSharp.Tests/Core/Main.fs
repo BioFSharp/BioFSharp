@@ -23,4 +23,5 @@ module All =
             PhylogeneticTreeTests.phylogeneticTreeTests
             PhredQualityScoreTests.phredTests
             IsotopesTests.isotopesTests
+            StructureTests.structureTests
         ]
