@@ -165,4 +165,3 @@ module FastaIndex =
         File.ReadAllLines indexPath
         |> Array.map FastaIndexEntry.ofLine
         |> Array.filter (fun entry -> names.Add entry.Name)
-        
