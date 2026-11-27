@@ -28,6 +28,18 @@ module FastaIndexTests =
 
     let private expectedEntry_protein = FastaIndexEntry.create "sp|P69905|HBA_HUMAN" 142L 88L 74L 75L
 
+    let private expectedSequences =
+        [|
+            "seq1", "ACGTACGTACGTACGTACGTACG"
+            "seq2", "TTTTTGGGGGCCCCCAAAAA"
+            "seq3", "NNNN"
+        |]
+
+    /// Gets the base at a zero-based position of an indexed sequence, as an indexed reader seeks it
+    let private baseAt (content: string) (entry: FastaIndexEntry) (position: int64) =
+        let offset = entry.Offset + position / entry.LineBases * entry.LineWidth + position % entry.LineBases
+        content.[int offset]
+
     let private createOfString (content: string) =
         let path = Path.GetTempFileName()
         try
@@ -77,20 +89,33 @@ module FastaIndexTests =
             test "create (empty sequences)" {
                 Expect.equal (createOfString ">empty\n>x\nACGT\n") [| FastaIndexEntry.create "x" 4L 10L 4L 5L |] "Index was not equal"
                 Expect.equal (createOfString ">x\n\n>y\nAC\n") [| FastaIndexEntry.create "y" 2L 7L 2L 3L |] "Index was not equal (blank line)"
+                Expect.equal (createOfString ">x\r\n\r\n>y\r\nAC\r\n") [| FastaIndexEntry.create "y" 2L 10L 2L 4L |] "Index was not equal (blank line, CRLF)"
             }
             test "create (duplicate names)" {
                 Expect.equal (createOfString ">a\nAC\n>a\nGG\n") [| FastaIndexEntry.create "a" 2L 3L 2L 3L |] "Index was not equal"
                 Expect.equal (createOfString ">a\nAC\n>b\nGG\n>a\nTTTT\n") [| FastaIndexEntry.create "a" 2L 3L 2L 3L; FastaIndexEntry.create "b" 2L 9L 2L 3L |] "Index was not equal (3 entries)"
                 Expect.equal (createOfString ">a\n>a\nAC\n") [| FastaIndexEntry.create "a" 2L 6L 2L 3L |] "Index was not equal (empty first entry)"
             }
-            test "create (whitespace in sequence lines)" {
-                Expect.equal (createOfString ">x\nACGT ACGT\nACGTACGTA\n") [| FastaIndexEntry.create "x" 17L 3L 8L 10L |] "Index was not equal (space)"
-                Expect.equal (createOfString ">x\nACGT \nACGT \n") [| FastaIndexEntry.create "x" 8L 3L 4L 6L |] "Index was not equal (trailing space)"
-                Expect.equal (createOfString ">x\nAC\tGT\nACGT\n") [| FastaIndexEntry.create "x" 8L 3L 4L 6L |] "Index was not equal (tab)"
-            }
             test "create (line widths)" {
-                Expect.equal (createOfString ">x\nAC GT\nACGTA\n") [| FastaIndexEntry.create "x" 9L 3L 4L 6L |] "Index was not equal (same width)"
                 Expect.equal (createOfString ">x\r\nACGT\r\nACGT\n") [| FastaIndexEntry.create "x" 8L 4L 4L 6L |] "Index was not equal (narrower last line)"
+            }
+            test "create (bases across line breaks)" {
+                for content in [ testString_three_entries; testString_three_entries.Replace("\n", "\r\n") ] do
+                    let entries = createOfString content
+                    for (name, sequence) in expectedSequences do
+                        let entry = entries |> Array.find (fun e -> e.Name = name)
+                        let actual = String [| for position in 0L .. entry.Length - 1L -> baseAt content entry position |]
+                        Expect.equal actual sequence $"Bases of {name} were not equal"
+            }
+            test "create fails (whitespace in sequence lines)" {
+                Expect.throwsT<InvalidDataException> (fun () -> createOfString ">x\nAC GT\nACGTA\n" |> ignore) "Indexing did not fail (space)"
+                Expect.throwsT<InvalidDataException> (fun () -> createOfString ">x\nACGT \nACGT \n" |> ignore) "Indexing did not fail (trailing space)"
+                Expect.throwsT<InvalidDataException> (fun () -> createOfString ">x\nAC\tGT\nACGT\n" |> ignore) "Indexing did not fail (tab)"
+                Expect.throwsT<InvalidDataException> (fun () -> createOfString ">x\r\nAC GT\r\nACGT\r\n" |> ignore) "Indexing did not fail (space, CRLF)"
+            }
+            test "create fails (line without bases)" {
+                Expect.throwsT<InvalidDataException> (fun () -> createOfString ">x\n \nAC\n" |> ignore) "Indexing did not fail"
+                Expect.throwsT<InvalidDataException> (fun () -> createOfString ">x\r\n \r\nAC\r\n" |> ignore) "Indexing did not fail (CRLF)"
             }
             test "create fails (longer line)" {
                 Expect.throwsT<InvalidDataException> (fun () -> createOfString ">x\nACGT\nACGTAC\n" |> ignore) "Indexing did not fail"

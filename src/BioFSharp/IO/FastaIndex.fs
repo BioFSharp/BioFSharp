@@ -74,7 +74,12 @@ module FastaIndex =
         Encoding.UTF8.GetString(content, start, stop - start)
 
     /// Creates the index of the given FASTA file by reading it once as bytes. The result can be saved with FastaIndex.write
-    /// Fails if a line is longer than the first line of its sequence, sequence data follows a shorter line, the last sequence is empty, or the file contains no sequence
+    /// Fails if:
+    /// a sequence line contains whitespace or control characters,
+    /// a line has more bases or bytes than the first line of its sequence,
+    /// sequence data follows a shorter line,
+    /// the last sequence is empty,
+    /// or the file contains no sequence
     /// Empty sequences are left out and if the names are the same, only the first one is kept
     let create (fastaPath: string) : FastaIndexEntry [] =
         let entries = ResizeArray<FastaIndexEntry>()
@@ -90,8 +95,11 @@ module FastaIndex =
         let processLine (current: ScanState option) (lineNumber: int, line: ByteLine) : ScanState option =
             let content = line.Content
             let width = int64 content.Length + 1L
-            let bases = content |> Array.sumBy (fun b -> if isBase b then 1L else 0L)
-            let isBlank = content.Length = 0 || (content.Length = 1 && content.[0] = byte '\r' && line.HasBreak)
+            let sequenceLength =
+                if line.HasBreak && content.Length > 0 && content.[content.Length - 1] = byte '\r' then content.Length - 1
+                else content.Length
+            let isBlank = sequenceLength = 0
+            let bases = int64 sequenceLength
             if content.Length = 1 && content.[0] = byte '>' && not line.HasBreak then
                 current
             elif content.Length > 0 && content.[0] = byte '>' then
@@ -113,14 +121,16 @@ module FastaIndex =
                 | Some state when state.Ended ->
                     if isBlank then current
                     else fail lineNumber (sprintf "sequence '%s' continues after a shorter line or a blank line" state.Name)
+                | Some state when not isBlank && not (Array.forall isBase content.[.. sequenceLength - 1]) ->
+                    fail lineNumber (sprintf "sequence line of '%s' contains whitespace or control characters" state.Name)
                 | Some state when state.Lines = 0 ->
-                    if content.Length = 0 then Some { state with Ended = true }
+                    if isBlank then Some { state with Ended = true }
                     else Some { state with Length = bases; LineBases = bases; LineWidth = width; Lines = 1 }
                 | Some state ->
-                    if width = state.LineWidth then
-                        Some { state with Length = state.Length + bases; Lines = state.Lines + 1 }
-                    elif width > state.LineWidth then
+                    if bases > state.LineBases || width > state.LineWidth then
                         fail lineNumber (sprintf "line is longer than the first line of sequence '%s'" state.Name)
+                    elif bases = state.LineBases && width = state.LineWidth then
+                        Some { state with Length = state.Length + bases; Lines = state.Lines + 1 }
                     else
                         Some { state with Length = state.Length + bases; Lines = state.Lines + 1; Ended = true }
 
@@ -155,3 +165,4 @@ module FastaIndex =
         File.ReadAllLines indexPath
         |> Array.map FastaIndexEntry.ofLine
         |> Array.filter (fun entry -> names.Add entry.Name)
+        
